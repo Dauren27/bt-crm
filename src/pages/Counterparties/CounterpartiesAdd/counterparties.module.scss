@@ -1,0 +1,154 @@
+.counterparties__content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30px;
+  padding-bottom: 15px;
+  .title {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    margin-top: 20px;
+  }
+  .file__name {
+    max-width: 90%;
+    font-size: 16px;
+    overflow: hidden;
+    color: #42b4f4;
+    margin-top: -20px;
+  }
+  h2 {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 20px;
+  }
+  .counterparties__checkboxes {
+    display: flex;
+    margin-top: 40px;
+    width: 100%;
+    @media (max-width: 555px) {
+      flex-direction: column;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      @media (max-width: 555px) {
+        width: 400px;
+      }
+      @media (max-width: 455px) {
+        width: 100%;
+      }
+      &:last-child {
+        @media (max-width: 555px) {
+          margin-left: 0;
+          margin-top: 20px;
+        }
+      }
+      span {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 23px;
+      }
+      input {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .add__svg {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .change__svg {
+    width: 22px;
+    height: 22px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+  .counterparties__flexContainer {
+    display: flex;
+    align-items: center;
+  }
+}
+#counterparties__accor {
+  width: 157px;
+  height: 53px;
+
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.counterparties__accor {
+  width: 227px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  cursor: pointer;
+  span {
+    cursor: pointer;
+  }
+}
+
+.block__input {
+  display: flex;
+  flex-direction: column;
+  & > span {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: rgba(0, 0, 0, 0.8);
+  }
+  & > input {
+    width: 482px;
+    height: 60px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding: 4px 10px;
+
+    @media (max-width: 555px) {
+      width: 400px;
+    }
+    @media (max-width: 455px) {
+      width: 100%;
+    }
+  }
+}
+
+.counterparties__input {
+  width: 482px;
+  height: 60px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  padding: 4px 10px;
+
+  @media (max-width: 555px) {
+    width: 400px;
+  }
+  @media (max-width: 455px) {
+    width: 100%;
+  }
+}
+
+.counterparties__input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: gray;
+  opacity: 1; /* Firefox */
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: gray;
+  }
+
+  &::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: gray;
+  }
+}

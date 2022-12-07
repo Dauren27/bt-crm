@@ -1,0 +1,108 @@
+.documents {
+  padding-top: 20px;
+  .title {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    margin-top: 20px;
+  }
+  .documents__category {
+    margin-top: 50px;
+    position: relative;
+    .file__name{
+      max-width: 90%;
+      font-size: 16px;
+      overflow: hidden;
+      color: #42b4f4;
+      margin-top: 10px;
+    }
+    .add__svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .documents__title {
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 28px;
+      @media (max-width: 555px) {
+        font-size: 20px;
+      }
+    }
+    input {
+      margin-top: 30px;
+      padding: 4px 10px;
+    }
+    .documents__select__container {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      .documents__select {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        width: 227px;
+        cursor: pointer;
+        span {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .documents__input {
+      width: 482px;
+      height: 60px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      margin-top: 30px;
+      padding: 4px 10px;
+
+      &.documents__input__short {
+        height: 47px;
+      }
+      @media (max-width: 555px) {
+        width: 95%;
+      }
+    }
+    .documents__accor {
+      width: 227px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      cursor: pointer;
+      span {
+        cursor: pointer;
+      }
+    }
+    .documents__select {
+      width: 227px;
+      height: 50px;
+      border-radius: none;
+      outline: none;
+      &:hover {
+        cursor: text;
+      }
+    }
+    .documents__dropdown {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      margin-left: 5px;
+      width: 220px;
+      background-color: #fff;
+      user-select: none;
+      max-height: 150px;
+      overflow-y: scroll;
+      box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+      span {
+        padding-left: 10px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        &:hover {
+          background: #888;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

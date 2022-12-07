@@ -1,0 +1,43 @@
+.mortgagedProperty {
+    padding-top: 20px;
+    .mortgagedProperty__category {
+      margin-top: 50px;
+      position: relative;
+      .file__name{
+        max-width: 90%;
+        font-size: 16px;
+        overflow: hidden;
+        color: #42b4f4;
+        margin-top: 10px;
+      }
+      .mortgagedProperty__title {
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 28px;
+        @media (max-width: 555px) {
+          font-size: 20px;
+        }
+      }
+      input {
+        margin-top: 30px;
+        padding: 4px 10px;
+      }
+      .mortgagedProperty__input {
+        width: 482px;
+        height: 60px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        margin-top: 30px;
+        padding: 4px 10px;
+  
+        &.mortgagedProperty__input__short {
+          height: 47px;
+        }
+        @media (max-width: 555px) {
+          width: 95%;
+        }
+        
+      }
+    }
+  }
+  
