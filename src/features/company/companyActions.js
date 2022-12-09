@@ -26,7 +26,7 @@ export const fetchCompany = createAsyncThunk(
       };
 
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/company/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/company/`,
         {
           id,
           company_name,
@@ -63,7 +63,7 @@ export const patchCompany = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/company/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/company/${id}/`,
         obj,
         config
       );
@@ -87,7 +87,7 @@ export const getCompanies = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/company/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/company/`,
         config
       );
       return data;
@@ -111,7 +111,7 @@ export const getCompany = createAsyncThunk(
       };
       console.log(id);
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/company/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/company/${id}/`,
         config
       );
       return data;
@@ -134,7 +134,7 @@ export const deleteCompany = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://127.0.0.1:8000/crm/api/company/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/company/${id}/`,
         {
           id,
         },

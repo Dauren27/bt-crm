@@ -36,7 +36,7 @@ export const fetchClients = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/client/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/`,
         {
           id_credit_spec,
           full_name,
@@ -81,7 +81,7 @@ export const patchClient = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/client/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/${id}/`,
         obj,
         config
       );
@@ -105,7 +105,7 @@ export const getClient = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/client/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/${id}/`,
         config
       );
       return data;
@@ -128,7 +128,7 @@ export const getClients = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/client/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/`,
         config
       );
       return data;
@@ -151,7 +151,7 @@ export const deleteClient = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://127.0.0.1:8000/crm/api/client/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/${id}/`,
         {
           id,
         },

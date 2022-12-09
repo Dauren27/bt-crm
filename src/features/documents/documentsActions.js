@@ -25,7 +25,7 @@ export const fetchDocuments = createAsyncThunk(
       };
 
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/dataKK/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/dataKK/`,
         {
           credit_spec_report,
           committee_decision,
@@ -57,7 +57,7 @@ export const patchDocument = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/dataKK/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/dataKK/${id}/`,
         obj,
         config
       );
@@ -81,7 +81,7 @@ export const getDocuments = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/dataKK/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/dataKK/`,
         config
       );
       return data;
@@ -105,7 +105,7 @@ export const getDocument = createAsyncThunk(
       };
       console.log(id);
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/dataKK/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/dataKK/${id}/`,
         config
       );
       return data;
@@ -128,7 +128,7 @@ export const deleteDocument = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://127.0.0.1:8000/crm/api/dataKK/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/dataKK/${id}/`,
         {
           id,
         },

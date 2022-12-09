@@ -318,13 +318,13 @@ const EntityIdPage = () => {
               className={cl.counterparties__input}
               type="text"
               placeholder="Тот же что и по прописке"
-              defaultValue={entityInfo.client_actiual_address}
+              defaultValue={entityInfo.client_actual_address}
               onChange={handleInput}
               name="client_actual_address"
               maxLength="100"
             />
-            {patchError && patchError.client_actiual_address && (
-              <Error>{patchError.client_actiual_address}</Error>
+            {patchError && patchError.client_actual_address && (
+              <Error>{patchError.client_actual_address}</Error>
             )}
             
             <h2>Средний доход в месяц:</h2>

@@ -36,7 +36,7 @@ export const fetchEntities = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/entity/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/entity/`,
         {
           id_credit_spec,
           client_company,
@@ -82,7 +82,7 @@ export const patchEntity = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/entity/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/entity/${id}/`,
         obj,
         config
       );
@@ -108,7 +108,7 @@ export const getEntity = createAsyncThunk(
       };
       console.log("heloo");
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/entity/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/entity/${id}/`,
         config
       );
       return data;
@@ -131,7 +131,7 @@ export const getEntities = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/entity/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/entity/`,
         config
       );
       return data;
@@ -155,7 +155,7 @@ export const deleteEntity = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://127.0.0.1:8000/crm/api/entity/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/entity/${id}/`,
         {
           id,
         },

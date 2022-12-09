@@ -11,7 +11,7 @@ export const fetchProperties = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/property/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/property/`,
         {
           type,
           address,
@@ -41,7 +41,7 @@ export const patchProperty = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/property/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/property/${id}/`,
         obj,
         config
       );
@@ -65,7 +65,7 @@ export const getProperties = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/property/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/property/`,
         config
       );
       return data;

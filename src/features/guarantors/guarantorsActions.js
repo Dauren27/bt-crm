@@ -22,7 +22,7 @@ export const fetchGuarantors = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/crm/api/guarant/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/guarant/`,
         {
           full_name,
           status,
@@ -55,7 +55,7 @@ export const patchGuarantor = createAsyncThunk(
       };
 
       const { data } = await axios.patch(
-        `http://127.0.0.1:8000/crm/api/guarant/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/guarant/${id}/`,
         obj,
         config
       );
@@ -79,7 +79,7 @@ export const getGuarantor = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/guarant/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/guarant/${id}/`,
         config
       );
       return data;
@@ -102,7 +102,7 @@ export const getGuarantors = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/guarant/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/guarant/`,
         config
       );
       return data;
@@ -126,7 +126,7 @@ export const deleteGuarantor = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://127.0.0.1:8000/crm/api/guarant/${id}/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/guarant/${id}/`,
         {
           id,
         },

@@ -11,7 +11,7 @@ export const userLogin = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/auth/jwt/create/`,
+        `https://bt-back-demo.herokuapp.com/auth/jwt/create/`,
         { email, password },
         config
       );
@@ -36,7 +36,7 @@ export const updateToken = createAsyncThunk(
         localStorage.getItem("userToken")
       ).refresh;
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/auth/jwt/refresh/`,
+        `https://bt-back-demo.herokuapp.com/auth/jwt/refresh/`,
         { refresh },
         config
       );
@@ -76,7 +76,7 @@ export const registerUser = createAsyncThunk(
       };
 
       await axios.post(
-        `http://127.0.0.1:8000/register/spec/`,
+        `https://bt-back-demo.herokuapp.com/register/spec/`,
         {
           email,
           password,
@@ -114,7 +114,7 @@ export const registerClient = createAsyncThunk(
       };
 
       await axios.post(
-        `http://127.0.0.1:8000/register/client/`,
+        `https://bt-back-demo.herokuapp.com/register/client/`,
         { email, password, password_confirm, phone_number, full_name, address },
         config
       );
@@ -140,7 +140,7 @@ export const getUserDetail = createAsyncThunk(
       };
 
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/crm/api/client/`,
+        `https://bt-back-demo.herokuapp.com/crm/api/client/`,
         config
       );
       return data;
