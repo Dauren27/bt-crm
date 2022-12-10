@@ -65,7 +65,7 @@ const ConversationIdPage = () => {
             />
           </div>
           <div className={cl.conversations__category}>
-            <h2 className={cl.conversations__title}>ФИО специалиста: </h2>
+            <h2 className={cl.conversations__title}>Название: </h2>
             <Input
               className={cl.conversations__input}
               name="name"

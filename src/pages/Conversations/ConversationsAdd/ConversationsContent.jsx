@@ -88,7 +88,7 @@ const ConversationsContent = () => {
         />
       </div>
       <div className={cl.conversations__category}>
-        <h2 className={cl.conversations__title}>ФИО специалиста: </h2>
+        <h2 className={cl.conversations__title}>Название: </h2>
         <Form.Item
           name="name"
           rules={[{ required: true, message: "Заполните это поле" }]}
@@ -194,7 +194,7 @@ const ConversationsContent = () => {
         </Error>
       )}
       {success && <Success>Данные успешно отправлены.</Success>}
-      <Button>Submit</Button>
+      <Button>Отправить</Button>
     </Form>
   );
 };

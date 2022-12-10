@@ -241,7 +241,7 @@ const CompaniesContent = () => {
           </Error>
         )}
         {success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Опубликовать</Button>
+        <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Activites />

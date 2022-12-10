@@ -69,7 +69,7 @@ const ClientsList = () => {
             onChange={(e) => {
               setSearchValue(e.target.value.toLowerCase());
             }}
-            placeholder="Пойск"
+            placeholder="Поиск"
           />
           <BiSearch />
         </div>

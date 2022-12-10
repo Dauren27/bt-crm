@@ -415,14 +415,6 @@ const Individuals = () => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModal} />
-          <RiPencilFill
-            className={cl.change__svg}
-            onClick={() => {
-              dispatch(getGuarantor(state.guarantor)).then(() => {
-                if (state.guarantor) showModalFour();
-              });
-            }}
-          />
         </div>
         {error && error.guarantor && <Error>{error.guarantor}</Error>}
         <h2>Залоговое имущество:</h2>
@@ -449,7 +441,6 @@ const Individuals = () => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
-          <RiPencilFill className={cl.change__svg} />
         </div>
         {error && error.id_property && <Error>{error.id_property}</Error>}
         <h2>Переговоры:</h2>
@@ -476,7 +467,6 @@ const Individuals = () => {
               />
             </Form.Item>
             <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
-            <RiPencilFill className={cl.change__svg} />
           </div>
           {error && error.meet_conversation && (
             <Error>{error.meet_conversation}</Error>
@@ -489,7 +479,7 @@ const Individuals = () => {
           </Error>
         )}
         {success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Submit</Button>
+        <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Recipients />
