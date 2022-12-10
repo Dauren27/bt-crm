@@ -39,7 +39,7 @@ const Navbar = () => {
       location.pathname === "/conversations/add" ||
       location.pathname.includes("/conversations/conversation/")
     ) {
-      setList("Тел. переговоры");
+      setList("Переговоры");
     } else {
       setList("Документы на КК");
     }
@@ -55,7 +55,7 @@ const Navbar = () => {
       </h2>
       <h2 className={cl.navbar__right}>{list}</h2>
       <span>
-        <h2 className={cl.navbar__role}>User</h2>
+        <h2 className={cl.navbar__role}> </h2>
       </span>
     </div>
   );
