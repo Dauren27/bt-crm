@@ -186,7 +186,7 @@ const RecipientsContent = () => {
           </Error>
         )}
         {success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Submit</Button>
+        <Button>Отправить</Button>
       </Form>
     </div>
   );

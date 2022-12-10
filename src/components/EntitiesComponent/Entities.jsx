@@ -458,7 +458,7 @@ const EntitiesComponent = () => {
           </Error>
         )}
         {success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Submit</Button>
+        <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Activites />

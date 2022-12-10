@@ -75,7 +75,7 @@ const ConversationsList = () => {
               onChange={(e) => {
                 setSearchValue(e.target.value.toLocaleLowerCase());
               }}
-              placeholder="Пойск"
+              placeholder="Поиск"
             />
             <BiSearch />
           </div>

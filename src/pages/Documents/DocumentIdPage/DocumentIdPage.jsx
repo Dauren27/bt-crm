@@ -43,9 +43,10 @@ const DocumentIdPage = () => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   const submitForm = () => {
-    dispatch(patchDocument({ id: documentInfo.id, obj: state })).then(() =>
-      dispatch(getDocuments())
-    );
+    dispatch(patchDocument({ id: documentInfo.id, obj: state })).then(() => {
+      dispatch(getDocuments());
+      if (patchSuccess) navigate("/documents");
+    });
   };
   //-------------------------------------------
 

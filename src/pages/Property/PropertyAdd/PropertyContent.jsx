@@ -109,7 +109,7 @@ const PropertyContent = () => {
           <Error style={{ fontSize: "20px" }}>{item}</Error>
         ))}
       {success && <Success>Данные успешно отправлены.</Success>}
-      <Button>Submit</Button>
+      <Button>Отправить</Button>
     </Form>
   );
 };
