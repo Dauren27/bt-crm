@@ -11,11 +11,14 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
-  documents: null,
+  successMessage: false,
+  document: null,
   documentInfo: null,
   patchLoading: false,
   patchError: null,
   patchSuccess: false,
+  patchDocument: null,
+  patchMessage: false,
   getLoading: false,
   getError: null,
   getSuccess: false,
@@ -23,7 +26,7 @@ const initialState = {
   deleteLoading: false,
   deleteError: null,
   deleteSuccess: false,
-  deleteResult: null,
+  deletedDocument: null,
 };
 
 const documentsSlice = createSlice({
@@ -38,8 +41,11 @@ const documentsSlice = createSlice({
     },
     [fetchDocuments.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.documents = payload;
+      state.document = payload;
       state.success = true;
+      state.successMessage = true;
+      state.deleteSuccess = false;
+      state.patchMessage = false;
     },
     [fetchDocuments.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -55,6 +61,10 @@ const documentsSlice = createSlice({
       state.patchLoading = false;
       state.patchSuccess = true;
       state.patchError = null;
+      state.patchDocument = payload;
+      state.successMessage = false;
+      state.deleteSuccess = false;
+      state.patchMessage = true;
     },
     [patchDocument.rejected]: (state, { payload }) => {
       state.patchLoading = false;
@@ -68,6 +78,8 @@ const documentsSlice = createSlice({
     [getDocuments.fulfilled]: (state, { payload }) => {
       state.gerLoading = false;
       state.documentsList = payload;
+      state.success = false;
+      state.patchSuccess = false;
     },
     [getDocuments.rejected]: (state, { payload }) => {
       state.getLoading = false;
@@ -92,8 +104,10 @@ const documentsSlice = createSlice({
     },
     [deleteDocument.fulfilled]: (state, { payload }) => {
       state.deleteLoading = false;
-      state.deleteResult = payload;
+      state.deletedDocument = payload;
       state.deleteSuccess = true;
+      state.successMessage = false;
+      state.patchMessage = false;
     },
     [deleteDocument.rejected]: (state, { payload }) => {
       state.deleteLoading = false;

@@ -43,9 +43,7 @@ const ClientIdPage = () => {
     dispatch(getConversations());
   }, [dispatch]);
   const submitForm = async (e) => {
-    dispatch(patchClient({ id: clientInfo.id, obj: state })).then(() =>
-      dispatch(getClients())
-    );
+    dispatch(patchClient({ id: clientInfo.id, obj: state }));
   };
   const navigate = useNavigate();
   useEffect(() => {
@@ -54,7 +52,9 @@ const ClientIdPage = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-
+  useEffect(() => {
+    if (patchSuccess) navigate("/counterparties");
+  }, [patchSuccess]);
   //---Modals----------------------------------
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -350,7 +350,10 @@ const ClientIdPage = () => {
               }
             />
             <p className={cl.file__name}>
-              Текущий файл :  <a href={clientInfo.monitoring_report}>{clientInfo.monitoring_report}</a>
+              Текущий файл :{" "}
+              <a href={clientInfo.monitoring_report}>
+                {clientInfo.monitoring_report}
+              </a>
             </p>
             {patchError && patchError.monitoring_report && (
               <Error>{patchError.monitoring_report}</Error>
@@ -446,7 +449,7 @@ const ClientIdPage = () => {
             <Button>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Recipients />
+            <Recipients isModal={true}/>
           </Modal>
           <Modal
             open={isModalOpenTwo}
@@ -460,7 +463,7 @@ const ClientIdPage = () => {
             onOk={handleOkThree}
             onCancel={handleCancelThree}
           >
-            <ConversationsContent />
+            <ConversationsContent isModal={true}/>
           </Modal>
         </div>
       )}

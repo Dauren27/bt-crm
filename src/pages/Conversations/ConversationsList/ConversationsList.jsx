@@ -19,9 +19,16 @@ const ConversationsList = () => {
   useEffect(() => {
     dispatch(getConversations());
   }, [dispatch]);
-  const { conversations, deleteLoading, deleteSuccess, deleteError } = useSelector(
-    (state) => state.conversations
-  );
+  const {
+    conversations,
+    deleteLoading,
+    deleteSuccess,
+    deleteError,
+    successMessage,
+    patchMessage,
+    conversation,
+    patchConversation,
+  } = useSelector((state) => state.conversations);
   const [conversationsList, setConversationsList] = useState(
     conversations && conversations
   );
@@ -84,9 +91,19 @@ const ConversationsList = () => {
               Удалить
             </button>
           </div>
-          {deleteSuccess && <Success>Данные были успешно удалены</Success>}
+          {deleteSuccess && <Success>Документ был успешно удален</Success>}
           {deleteLoading && <Loading>Удаление...</Loading>}
-          {deleteError && <Error>Произошла ошибка при удалении...</Error> }
+          {deleteError && <Error>Произошла ошибка при удалении...</Error>}
+          {successMessage && (
+            <Success>
+              Документ {conversation && conversation.id} был успешно добавлен
+            </Success>
+          )}
+          {patchMessage && (
+            <Success>
+              Документ {patchConversation && patchConversation.id} был успешно изменён
+            </Success>
+          )}
           <div className={cl.content__list}>
             {conversationsList && (
               <Table>

@@ -21,10 +21,12 @@ import PropertyContent from "../../pages/Property/PropertyAdd/PropertyContent";
 import Error from "../Error/Error";
 import Loading from "../Loading/Loading";
 import Success from "../Success/Success";
+import { useNavigate } from "react-router";
 
-const EntitiesComponent = () => {
+const EntitiesComponent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { properties } = useSelector((state) => state.property);
   const { conversations } = useSelector((state) => state.conversations);
   useEffect(() => {
@@ -36,10 +38,13 @@ const EntitiesComponent = () => {
     dispatch(getConversations());
   }, [dispatch]);
   const submitForm = () => {
-    dispatch(fetchEntities(state)).then(() => dispatch(getEntities()));
+    if (isModal) {
+      dispatch(fetchEntities(state)).then(() => dispatch(getEntities()));
+    } else {
+      dispatch(fetchEntities(state));
+    }
   };
   const { companies } = useSelector((state) => state.companies);
-  const { activities } = useSelector((state) => state.activites);
   const [state, setState] = useState({
     id_credit_spec: "",
     client_company: "",
@@ -64,7 +69,12 @@ const EntitiesComponent = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { loading, success, error } = useSelector((state) => state.entity);
+  const { loading, success, error, successModal } = useSelector(
+    (state) => state.entity
+  );
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/counterparties");
+  }, [success]);
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -457,7 +467,7 @@ const EntitiesComponent = () => {
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {success && <Success>Данные успешно отправлены.</Success>}
+        {successModal && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -475,14 +485,14 @@ const EntitiesComponent = () => {
         onOk={handleOkThree}
         onCancel={handleCancelThree}
       >
-        <ConversationsContent />
+        <ConversationsContent isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenFour}
         onOk={handleOkFour}
         onCancel={handleCancelFour}
       >
-        <CompaniesContent />
+        <CompaniesContent isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenFive}

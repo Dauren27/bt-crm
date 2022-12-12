@@ -26,16 +26,12 @@ import { RiPencilFill } from "react-icons/ri";
 import RecipientIdPageContent from "../../pages/Recipients/RecipientIdPage/RecipietntIdPageContent";
 import { useNavigate } from "react-router";
 
-const Individuals = () => {
+const Individuals = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-  const [idCreditSpec, setIdCreditSpec] = useState("");
-  const { clientsInfo } = useSelector((state) => state.counterparties);
   const { guarantors } = useSelector((state) => state.guarantor);
-  const { propertyInfo, properties } = useSelector((state) => state.property);
-  const { conversationInfo, conversations } = useSelector(
-    (state) => state.conversations
-  );
+  const { properties } = useSelector((state) => state.property);
+  const { conversations } = useSelector((state) => state.conversations);
   const navigate = useNavigate();
   const [state, setState] = useState({
     id_credit_spec: "",
@@ -66,12 +62,16 @@ const Individuals = () => {
     dispatch(getConversations());
   }, [dispatch]);
   const submitForm = async (e) => {
-    dispatch(fetchClients(state)).then(() => dispatch(getClients()));
+    if (isModal) {
+      dispatch(fetchClients(state)).then(() => dispatch(getClients()));
+    } else {
+      dispatch(fetchClients(state));
+    }
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { loading, error, success } = useSelector(
+  const { loading, error, success, successModal } = useSelector(
     (state) => state.counterparties
   );
   const reversed = (arr) => {
@@ -79,6 +79,9 @@ const Individuals = () => {
     arr2.reverse();
     return arr2;
   };
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/counterparties");
+  }, [success]);
   // console.log(propertyInfo);
   // useEffect(()=>{
   //   setState({...state, id_property: propertyInfo && propertyInfo.id})
@@ -478,11 +481,11 @@ const Individuals = () => {
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {success && <Success>Данные успешно отправлены.</Success>}
+        {successModal && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Recipients />
+        <Recipients isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenTwo}
@@ -496,7 +499,7 @@ const Individuals = () => {
         onOk={handleOkThree}
         onCancel={handleCancelThree}
       >
-        <ConversationsContent />
+        <ConversationsContent isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenFour}

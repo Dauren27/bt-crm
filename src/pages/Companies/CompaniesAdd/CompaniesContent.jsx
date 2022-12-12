@@ -17,20 +17,27 @@ import {
 import Error from "../../../components/Error/Error";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
+import { useNavigate } from "react-router";
 
-const CompaniesContent = () => {
+const CompaniesContent = ({ isModal = false }) => {
   //----API-----
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchCompany());
     dispatch(getActivities());
   }, [dispatch]);
-  const submitForm = () => {
-    dispatch(fetchCompany(state)).then(() => dispatch(getCompanies()));
-  };
-  const { error, loading, company, success } = useSelector(
+  const { error, loading, company, success, successModal } = useSelector(
     (state) => state.companies
   );
+  const submitForm = () => {
+    if (isModal) {
+      dispatch(fetchCompany(state)).then(() => dispatch(getCompanies()));
+    } else {
+      dispatch(fetchCompany(state));
+    }
+  };
+
   const { activities } = useSelector((state) => state.activites);
   const [state, setState] = useState({
     company_name: "",
@@ -46,6 +53,9 @@ const CompaniesContent = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/companies");
+  }, [success]);
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -240,7 +250,7 @@ const CompaniesContent = () => {
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {success && <Success>Данные успешно отправлены.</Success>}
+        {successModal && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

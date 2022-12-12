@@ -90,6 +90,7 @@ export const getCompanies = createAsyncThunk(
         `https://bt-back-demo.herokuapp.com/crm/api/company/`,
         config
       );
+      
       return data;
     } catch (error) {
       if (error.response && error.response.data) {

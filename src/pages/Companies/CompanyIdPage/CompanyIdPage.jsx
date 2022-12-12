@@ -38,6 +38,9 @@ const CompanyIdPage = () => {
   useEffect(() => {
     if (!companyInfo) navigate("/companies");
   }, []);
+  useEffect(() => {
+    if (patchSuccess) navigate("/companies");
+  }, [patchSuccess]);
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -210,7 +213,8 @@ const CompanyIdPage = () => {
                 }}
               />
               <p className={cl.file__name}>
-                Текущий файл : <a href={companyInfo.document}>{companyInfo.document}</a>
+                Текущий файл :{" "}
+                <a href={companyInfo.document}>{companyInfo.document}</a>
               </p>
               {patchError && patchError.document && (
                 <Error>{patchError.document}</Error>

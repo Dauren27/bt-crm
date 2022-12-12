@@ -23,7 +23,6 @@ import { useNavigate } from "react-router";
 const DocumentIdPage = () => {
   //----API-----
   const dispatch = useDispatch();
-
   const { patchLoading, patchError, patchSuccess, documentInfo } = useSelector(
     (state) => state.documents
   );
@@ -39,6 +38,9 @@ const DocumentIdPage = () => {
   useEffect(() => {
     if (!documentInfo) navigate("/documents");
   }, []);
+  useEffect(() => {
+    if (patchSuccess) navigate("/documents");
+  }, [patchSuccess]);
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -229,14 +231,14 @@ const DocumentIdPage = () => {
             <Button>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Individuals />
+            <Individuals isModal={true}/>
           </Modal>
           <Modal
             open={isModalOpenTwo}
             onOk={handleOkTwo}
             onCancel={handleCancelTwo}
           >
-            <Entities />
+            <Entities isModal={true}/>
           </Modal>
         </div>
       )}

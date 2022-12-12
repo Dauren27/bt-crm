@@ -10,12 +10,18 @@ import { Select, Form, Input } from "antd";
 import Error from "../../../components/Error/Error";
 import Success from "../../../components/Success/Success";
 import Loading from "../../../components/Loading/Loading";
+import { useNavigate } from "react-router";
 
-const RecipientsContent = () => {
+const RecipientsContent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const submitForm = () => {
-    dispatch(fetchGuarantors(state)).then(() => dispatch(getGuarantors()));
+    if (isModal) {
+      dispatch(fetchGuarantors(state)).then(() => dispatch(getGuarantors()));
+    } else {
+      dispatch(fetchGuarantors(state));
+    }
   };
   const [state, setState] = useState({
     full_name: "",
@@ -29,7 +35,13 @@ const RecipientsContent = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { loading, success, error } = useSelector((state) => state.guarantor);
+  const { loading, success, error, successModal } = useSelector(
+    (state) => state.guarantor
+  );
+
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/recipients");
+  }, [success]);
   //-------------------------------------------
   return (
     <div>
@@ -185,7 +197,7 @@ const RecipientsContent = () => {
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {success && <Success>Данные успешно отправлены.</Success>}
+        {successModal && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
     </div>

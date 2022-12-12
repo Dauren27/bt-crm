@@ -30,7 +30,6 @@ const EntityIdPage = () => {
   const { properties } = useSelector((state) => state.property);
   const { conversations } = useSelector((state) => state.conversations);
   const { companies } = useSelector((state) => state.companies);
-  const { activities } = useSelector((state) => state.activites);
   const { entityInfo, patchLoading, patchSuccess, patchError } = useSelector(
     (state) => state.entity
   );
@@ -44,17 +43,19 @@ const EntityIdPage = () => {
     dispatch(getConversations());
   }, [dispatch]);
   const navigate = useNavigate();
-  
+
   const submitForm = () => {
-    dispatch(patchEntity(state)).then(() => dispatch(getEntities()));
+    dispatch(patchEntity({ id: entityInfo.id, obj: state }));
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
-    console.log(entityInfo);
     if (!entityInfo) navigate("/counterparties");
   }, []);
+  useEffect(() => {
+    if (patchSuccess) navigate("/counterparties");
+  }, [patchSuccess]);
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -326,7 +327,7 @@ const EntityIdPage = () => {
             {patchError && patchError.client_actual_address && (
               <Error>{patchError.client_actual_address}</Error>
             )}
-            
+
             <h2>Средний доход в месяц:</h2>
             <Input
               className={cl.counterparties__input}
@@ -455,14 +456,14 @@ const EntityIdPage = () => {
             onOk={handleOkThree}
             onCancel={handleCancelThree}
           >
-            <ConversationsContent />
+            <ConversationsContent isModal={true}/>
           </Modal>
           <Modal
             open={isModalOpenFour}
             onOk={handleOkFour}
             onCancel={handleCancelFour}
           >
-            <CompaniesContent />
+            <CompaniesContent isModal={true}/>
           </Modal>
           <Modal
             open={isModalOpenFive}

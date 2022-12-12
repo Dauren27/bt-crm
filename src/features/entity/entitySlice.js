@@ -11,10 +11,15 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
+  successMessage: false,
+  successModal: false,
+  entity: null,
   entityInfo: null,
   patchLoading: false,
   patchError: null,
   patchSuccess: false,
+  patchMessage: false,
+  patchEntity: null,
   getLoading: false,
   getError: null,
   getSuccess: false,
@@ -22,7 +27,7 @@ const initialState = {
   deleteLoading: false,
   deleteError: null,
   deleteSuccess: false,
-  entityDel: null,
+  deletedEntity: null,
 };
 
 const entitySlice = createSlice({
@@ -38,6 +43,11 @@ const entitySlice = createSlice({
     [fetchEntities.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
+      state.entity = payload;
+      state.successMessage = true;
+      state.patchMessage = false;
+      state.deleteSuccess = false;
+      state.successModal = false;
     },
     [fetchEntities.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -53,6 +63,10 @@ const entitySlice = createSlice({
       state.patchLoading = false;
       state.patchSuccess = true;
       state.patchError = null;
+      state.patchEntity = payload;
+      state.successMessage = false;
+      state.patchMessage = true;
+      state.deleteSuccess = false;
     },
     [patchEntity.rejected]: (state, { payload }) => {
       state.patchLoading = false;
@@ -66,6 +80,9 @@ const entitySlice = createSlice({
     [getEntities.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
       state.entities = payload;
+      state.success = false;
+      state.error = null;
+      state.patchSuccess = false;
     },
     [getEntities.rejected]: (state, { payload }) => {
       state.getLoading = false;
@@ -92,6 +109,9 @@ const entitySlice = createSlice({
     [deleteEntity.fulfilled]: (state, { payload }) => {
       state.deleteLoading = false;
       state.deleteSuccess = true;
+      state.deletedEntity = payload;
+      state.successMessage = false;
+      state.patchMessage = false;
     },
     [deleteEntity.rejected]: (state, { payload }) => {
       state.deleteLoading = false;

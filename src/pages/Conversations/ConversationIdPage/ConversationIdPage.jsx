@@ -35,6 +35,9 @@ const ConversationIdPage = () => {
   useEffect(() => {
     if (!conversationInfo) navigate("/conversations");
   }, []);
+  useEffect(() => {
+    if (patchSuccess) navigate("/conversations");
+  }, [patchSuccess]);
   //-------------------------------------------
   return (
     <Layout>

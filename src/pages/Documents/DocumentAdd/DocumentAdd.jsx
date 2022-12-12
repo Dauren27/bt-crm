@@ -18,12 +18,14 @@ import { getEntities } from "../../../features/entity/entityActions";
 import Error from "../../../components/Error/Error";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
+import { useNavigate } from "react-router";
 
 const DocumentAdd = () => {
   //----API-----
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const submitForm = () => {
-    dispatch(fetchDocuments(state)).then(() => dispatch(getDocuments()));
+    dispatch(fetchDocuments(state));
   };
   const [state, setState] = useState({
     committee_decision: null,
@@ -44,6 +46,9 @@ const DocumentAdd = () => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   const { loading, error, success } = useSelector((state) => state.documents);
+  useEffect(() => {
+    if (success) navigate("/documents");
+  }, [success]);
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -221,14 +226,14 @@ const DocumentAdd = () => {
           <Button>Отправить</Button>
         </Form>
         <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <Individuals />
+          <Individuals isModal={true}/>
         </Modal>
         <Modal
           open={isModalOpenTwo}
           onOk={handleOkTwo}
           onCancel={handleCancelTwo}
         >
-          <Entities />
+          <Entities isModal={true}/>
         </Modal>
       </div>
     </Layout>

@@ -22,9 +22,7 @@ const RecipientIdPageContent = () => {
   );
   const [state, setState] = useState({});
   const submitForm = () => {
-    dispatch(patchGuarantor({ id: recipientInfo.id, obj: state })).then(() =>
-      dispatch(getGuarantors())
-    );
+    dispatch(patchGuarantor({ id: recipientInfo.id, obj: state }));
   };
   const navigate = useNavigate();
   const handleInput = (e) => {
@@ -33,6 +31,9 @@ const RecipientIdPageContent = () => {
   useEffect(() => {
     if (!recipientInfo) navigate("/recipients");
   }, []);
+  useEffect(() => {
+    if (patchSuccess) navigate("/recipients");
+  }, [patchSuccess]);
   //-------------------------------------------
   return (
     <div>

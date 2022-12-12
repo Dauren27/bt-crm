@@ -1,5 +1,5 @@
 import { Form, Input } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Button from "../../../components/Button/Button";
@@ -12,13 +12,12 @@ import {
 } from "../../../features/conversations/conversationsActions";
 import cl from "./conversations.module.scss";
 
-const ConversationsContent = () => {
+const ConversationsContent = ({ isModal = false }) => {
   //-----------API---------------------
   const [value, setValue] = useState(true);
   function changeValue() {
     setValue(!value);
     setState({ ...state, is_meeting: value });
-    console.log(value);
   }
   const [state, setState] = useState({
     is_meeting: value,
@@ -29,20 +28,24 @@ const ConversationsContent = () => {
     results_report: null,
     statistics: null,
   });
-  const { loading, success, error } = useSelector(
+  const { loading, success, error, successModal } = useSelector(
     (state) => state.conversations
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const submitForm = () => {
-    dispatch(fetchConversations(state)).then(() =>
-      dispatch(getConversations())
-    );
+    if (isModal) {
+      dispatch(fetchConversations(state)).then(() => dispatch(getConversations()));
+    } else {
+      dispatch(fetchConversations(state));
+    }
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/conversations");
+  }, [success]);
   return (
     <Form
       className={cl.conversations}
@@ -193,7 +196,7 @@ const ConversationsContent = () => {
           Данные не были отправлены. Проверьте корректность заполненых данных.
         </Error>
       )}
-      {success && <Success>Данные успешно отправлены.</Success>}
+      {successModal && <Success>Данные успешно отправлены.</Success>}
       <Button>Отправить</Button>
     </Form>
   );

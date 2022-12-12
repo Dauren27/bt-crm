@@ -18,9 +18,16 @@ const CompaniesList = () => {
   useEffect(() => {
     dispatch(getCompanies());
   }, [dispatch]);
-  const { companies, deleteSuccess, deleteLoading } = useSelector(
-    (state) => state.companies
-  );
+  const {
+    companies,
+    deleteSuccess,
+    deleteLoading,
+    successMessage,
+    patchMessage,
+    company,
+    patchCompany,
+    deletedCompany,
+  } = useSelector((state) => state.companies);
   const [companiesList, setCompaniesList] = useState(companies && companies);
   useEffect(() => {
     setCompaniesList(companies);
@@ -81,8 +88,22 @@ const CompaniesList = () => {
               Удалить
             </button>
           </div>
-          {deleteSuccess && <Success>Документы были успешно удалены</Success>}
+          {deleteSuccess && (
+            <Success>
+              Документ {deletedCompany && deletedCompany.id} был успешно удален
+            </Success>
+          )}
           {deleteLoading && <Loading>Удаление...</Loading>}
+          {successMessage && (
+            <Success>
+              Документ {company && company.id} был успешно добавлен
+            </Success>
+          )}
+          {patchMessage && (
+            <Success>
+              Документ {patchCompany && patchCompany.id} был успешно изменён
+            </Success>
+          )}
           <div className={cl.content__list}>
             {companiesList && (
               <Table>

@@ -19,9 +19,15 @@ const RecipientsList = () => {
   useEffect(() => {
     dispatch(getGuarantors());
   }, [dispatch]);
-  const { guarantors, deleteLoading, deleteSuccess } = useSelector(
-    (state) => state.guarantor
-  );
+  const {
+    guarantors,
+    deleteLoading,
+    deleteSuccess,
+    successMessage,
+    patchMessage,
+    recipient,
+    patchRecipient,
+  } = useSelector((state) => state.guarantor);
   const [guarantorsList, setGuarantorsList] = useState(
     guarantors && guarantors
   );
@@ -80,8 +86,18 @@ const RecipientsList = () => {
               Удалить
             </button>
           </div>
-          {deleteSuccess && <Success>Документы были успешно удалены</Success>}
+          {deleteSuccess && <Success>Документ был успешно удален</Success>}
           {deleteLoading && <Loading>Удаление...</Loading>}
+          {successMessage && (
+            <Success>
+              Документ {recipient && recipient.id} был успешно добавлен
+            </Success>
+          )}
+          {patchMessage && (
+            <Success>
+              Документ {patchRecipient &&patchRecipient.id} был успешно изменён
+            </Success>
+          )}
           <div className={cl.content__list}>
             {guarantorsList && (
               <Table>

@@ -19,9 +19,16 @@ const DocumentsList = () => {
   useEffect(() => {
     dispatch(getDocuments());
   }, [dispatch]);
-  const { documentsList, deleteSuccess, deleteLoading } = useSelector(
-    (state) => state.documents
-  );
+  const {
+    documentsList,
+    deleteSuccess,
+    deleteLoading,
+    patchMessage,
+    deletedDocument,
+    successMessage,
+    document,
+    patchDocument,
+  } = useSelector((state) => state.documents);
   const deleteDoc = () => {
     documents.map((doc) => {
       if (doc?.isChecked) {
@@ -80,8 +87,18 @@ const DocumentsList = () => {
               Удалить
             </button>
           </div>
-          {deleteSuccess && <Success>Документы были успешно удалены</Success>}
+          {deleteSuccess && <Success>Документ был успешно удален</Success>}
           {deleteLoading && <Loading>Удаление...</Loading>}
+          {successMessage && (
+            <Success>
+              Документ {document && document.id} был успешно добавлен
+            </Success>
+          )}
+          {patchMessage && (
+            <Success>
+              Документ {patchDocument && patchDocument.id} был успешно изменён
+            </Success>
+          )}
           <div className={cl.content__list}>
             {documents && (
               <Table>

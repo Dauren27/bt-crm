@@ -11,16 +11,22 @@ import {
 import { BiSearch } from "react-icons/bi";
 import Success from "../../../components/Success/Success";
 import Loading from "../../../components/Loading/Loading";
-import { updateToken } from "../../../features/user/userActions";
+
 const ClientsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getClients());
   }, [dispatch]);
-  const { clients, deleteSuccess, deleteLoading } = useSelector(
-    (state) => state.counterparties
-  );
+  const {
+    clients,
+    deleteSuccess,
+    deleteLoading,
+    successMessage,
+    patchMessage,
+    client,
+    patchClient,
+  } = useSelector((state) => state.counterparties);
   const [clientsList, setClientsList] = useState(clients && clients);
   useEffect(() => {
     setClientsList(clients);
@@ -78,8 +84,16 @@ const ClientsList = () => {
             Удалить
           </button>
         </div>
-        {deleteSuccess && <Success>Документы были успешно удалены</Success>}
+        {deleteSuccess && <Success>Документ был успешно удален</Success>}
         {deleteLoading && <Loading>Удаление...</Loading>}
+        {successMessage && (
+          <Success>Документ {client && client.id} был успешно добавлен</Success>
+        )}
+        {patchMessage && (
+          <Success>
+            Документ {patchClient && patchClient.id} был успешно изменён
+          </Success>
+        )}
         <div className={cl.content__list}>
           {clientsList && (
             <Table>

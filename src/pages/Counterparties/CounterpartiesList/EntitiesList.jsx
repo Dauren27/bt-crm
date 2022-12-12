@@ -18,9 +18,15 @@ const EntitiesList = () => {
   useEffect(() => {
     dispatch(getEntities());
   }, [dispatch]);
-  const { entities, deleteSuccess, deleteLoading } = useSelector(
-    (state) => state.entity
-  );
+  const {
+    entities,
+    deleteSuccess,
+    deleteLoading,
+    successMessage,
+    patchMessage,
+    entity,
+    patchEntity,
+  } = useSelector((state) => state.entity);
   const [entitiesList, setEntitiesList] = useState(entities && entities);
   useEffect(() => {
     setEntitiesList(entities);
@@ -78,8 +84,16 @@ const EntitiesList = () => {
             Удалить
           </button>
         </div>
-        {deleteSuccess && <Success>Документы были успешно удалены</Success>}
+        {deleteSuccess && <Success>Документ был успешно удален</Success>}
         {deleteLoading && <Loading>Удаление...</Loading>}
+        {successMessage && (
+          <Success>Документ {entity && entity.id} был успешно добавлен</Success>
+        )}
+        {patchMessage && (
+          <Success>
+            Документ {patchEntity && patchEntity.id} был успешно изменён
+          </Success>
+        )}
         <div className={cl.content__list}>
           {entitiesList && (
             <Table>

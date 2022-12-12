@@ -1,14 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteClient, fetchClients, getClient, getClients, patchClient } from "./clientsActions";
+import {
+  deleteClient,
+  fetchClients,
+  getClient,
+  getClients,
+  patchClient,
+} from "./clientsActions";
 
 const initialState = {
   loading: false,
   error: null,
   success: false,
+  successMessage: false,
+  successModal: false,
   clientInfo: null,
+  client: null,
   patchLoading: false,
   patchError: null,
   patchSuccess: false,
+  patchMessage: false,
+  patchClient: null,
   getLoading: false,
   getError: null,
   getSuccess: false,
@@ -16,7 +27,7 @@ const initialState = {
   deleteLoading: false,
   deleteError: null,
   deleteSuccess: false,
-  clientsDelete: null,
+  deletedClient: null,
 };
 
 const counterpartiesSlice = createSlice({
@@ -32,6 +43,11 @@ const counterpartiesSlice = createSlice({
     [fetchClients.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
+      state.successMessage = true;
+      state.client = payload;
+      state.patchMessage = false;
+      state.deleteSuccess = false;
+      state.successModal = true;
     },
     [fetchClients.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -47,6 +63,10 @@ const counterpartiesSlice = createSlice({
       state.patchLoading = false;
       state.patchSuccess = true;
       state.patchError = null;
+      state.patchClient = payload;
+      state.successMessage = false;
+      state.patchMessage = true;
+      state.deleteSuccess = false;
     },
     [patchClient.rejected]: (state, { payload }) => {
       state.patchLoading = false;
@@ -60,6 +80,9 @@ const counterpartiesSlice = createSlice({
     [getClients.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
       state.clients = payload;
+      state.success = false;
+      state.error = null;
+      state.patchSuccess = false;
     },
     [getClients.rejected]: (state, { payload }) => {
       state.getLoading = false;
@@ -84,8 +107,10 @@ const counterpartiesSlice = createSlice({
     },
     [deleteClient.fulfilled]: (state, { payload }) => {
       state.deleteLoading = false;
-      state.clientsDelete = payload;
+      state.deletedClient = payload;
       state.deleteSuccess = true;
+      state.successMessage = false;
+      state.patchMessage = false;
     },
     [deleteClient.rejected]: (state, { payload }) => {
       state.deleteLoading = false;

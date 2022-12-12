@@ -11,6 +11,9 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
+  successMessage: false,
+  successModal: false,
+  conversation: null,
   conversationInfo: null,
   getLoading: false,
   getError: null,
@@ -19,10 +22,12 @@ const initialState = {
   patchLoading: false,
   patchError: null,
   patchSuccess: false,
+  patchMessage: false,
+  patchConversation: null,
   deleteLoading: false,
   deleteError: null,
   deleteSuccess: false,
-  conversationDel: null,
+  deletedConversation: null,
 };
 
 const conversationsSlice = createSlice({
@@ -39,6 +44,11 @@ const conversationsSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.error = null;
+      state.conversation = payload;
+      state.successMessage = true;
+      state.patchMessage = false;
+      state.successModal = true;
+      state.deleteSuccess = false;
     },
     [fetchConversations.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -52,6 +62,9 @@ const conversationsSlice = createSlice({
     [getConversations.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
       state.conversations = payload;
+      state.success = false;
+      state.error = null;
+      state.patchSuccess = false;
     },
     [getConversations.rejected]: (state, { payload }) => {
       state.getLoading = false;
@@ -78,6 +91,10 @@ const conversationsSlice = createSlice({
       state.patchLoading = false;
       state.patchSuccess = true;
       state.patchError = null;
+      state.patchConversation = payload;
+      state.successMessage = false;
+      state.patchMessage = true;
+      state.deleteSuccess = false;
     },
     [patchConversation.rejected]: (state, { payload }) => {
       state.patchLoading = false;
@@ -91,8 +108,10 @@ const conversationsSlice = createSlice({
     },
     [deleteConversation.fulfilled]: (state, { payload }) => {
       state.deleteLoading = false;
-      state.conversationDel = payload;
+      state.deletedConversation = payload;
       state.deleteSuccess = true;
+      state.successMessage = false;
+      state.patchMessage = false;
     },
     [deleteConversation.rejected]: (state, { payload }) => {
       state.deleteLoading = false;
