@@ -40,6 +40,12 @@ const Navbar = () => {
       location.pathname.includes("/conversations/conversation/")
     ) {
       setList("Переговоры");
+    } else if (
+      location.pathname === "/properties" ||
+      location.pathname === "/properties/add" ||
+      location.pathname.includes("/properties/property/")
+    ) {
+      setList("Залоговые имущества");
     } else {
       setList("Документы на КК");
     }

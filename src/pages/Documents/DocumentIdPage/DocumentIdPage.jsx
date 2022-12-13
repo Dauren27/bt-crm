@@ -49,6 +49,11 @@ const DocumentIdPage = () => {
       dispatch(getDocuments())
     );
   };
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -184,7 +189,7 @@ const DocumentIdPage = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={clients && clients}
+                  options={clients && reversed(clients)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModal} />
               </div>
@@ -212,7 +217,7 @@ const DocumentIdPage = () => {
                       option?.full_name_director.toLocaleLowerCase() ?? ""
                     ).includes(input.toLocaleLowerCase())
                   }
-                  options={entities && entities}
+                  options={entities && reversed(entities)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
               </div>

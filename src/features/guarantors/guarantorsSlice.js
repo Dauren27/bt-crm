@@ -78,7 +78,6 @@ const guarantorsSlice = createSlice({
     [getGuarantor.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
       state.recipientInfo = payload;
-      state.getLoading = false;
     },
     [getGuarantor.rejected]: (state, { payload }) => {
       state.getLoading = false;
@@ -107,7 +106,6 @@ const guarantorsSlice = createSlice({
     },
     [deleteGuarantor.fulfilled]: (state, { payload }) => {
       state.deleteLoading = false;
-      state.guarantorDel = payload;
       state.deleteSuccess = true;
       state.successMessage = false;
       state.patchMessage = false;

@@ -44,6 +44,11 @@ const CompanyIdPage = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -147,7 +152,7 @@ const CompanyIdPage = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={activities && activities}
+                  options={activities && reversed(activities)}
                 />
                 {patchError && patchError.activites_add && (
                   <Error>{patchError.activites_add}</Error>

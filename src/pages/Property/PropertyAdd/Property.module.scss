@@ -1,7 +1,12 @@
 .mortgagedProperty {
   padding-top: 20px;
   padding-bottom: 50px;
-
+  .title {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    margin-top: 20px;
+  }
   .mortgagedProperty__category {
     margin-top: 50px;
     position: relative;

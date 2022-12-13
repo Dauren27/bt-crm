@@ -55,6 +55,11 @@ const ClientIdPage = () => {
   useEffect(() => {
     if (patchSuccess) navigate("/counterparties");
   }, [patchSuccess]);
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //---Modals----------------------------------
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -146,8 +151,7 @@ const ClientIdPage = () => {
             {patchError && patchError.status && (
               <Error>{patchError.status}</Error>
             )}
-
-            {state.status == "payback" && (
+            {(clientInfo.status == "payback" || state.status == "payback") && (
               <>
                 <h2>Отступные документы:</h2>
 
@@ -160,18 +164,21 @@ const ClientIdPage = () => {
                     })
                   }
                 />
-                <p className={cl.file__name}>
-                  Текущий файл :{" "}
-                  <a href={clientInfo.repaid_by_redemption}>
-                    {clientInfo.repaid_by_redemption}
-                  </a>
-                </p>
+                {clientInfo.repaid_by_redemption && (
+                  <p className={cl.file__name}>
+                    Текущий файл :{" "}
+                    <a href={clientInfo.repaid_by_redemption}>
+                      {clientInfo.repaid_by_redemption}
+                    </a>
+                  </p>
+                )}
                 {patchError && patchError.repaid_by_redemption && (
                   <Error>{patchError.repaid_by_redemption}</Error>
                 )}
               </>
             )}
-            {state.status == "judicial" && (
+            {(clientInfo.status == "judicial" ||
+              state.status == "judicial") && (
               <>
                 <h2>Судебные документы:</h2>
 
@@ -184,12 +191,14 @@ const ClientIdPage = () => {
                     })
                   }
                 />
-                <p className={cl.file__name}>
-                  Текущий файл :{" "}
-                  <a href={clientInfo.court_documents}>
-                    {clientInfo.court_documents}
-                  </a>
-                </p>
+                {clientInfo.court_documents && (
+                  <p className={cl.file__name}>
+                    Текущий файл :{" "}
+                    <a href={clientInfo.court_documents}>
+                      {clientInfo.court_documents}
+                    </a>
+                  </p>
+                )}
                 {patchError && patchError.court_documents && (
                   <Error>{patchError.court_documents}</Error>
                 )}
@@ -285,6 +294,21 @@ const ClientIdPage = () => {
             {patchError && patchError.client_actual_address && (
               <Error>{patchError.client_actual_address}</Error>
             )}
+            {/* {(clientInfo.credit_type == "LS" || state.credit_type == "LS") && (
+              <>
+                <h2>Размер собственного взноса:</h2>
+                <Input
+                  className={cl.counterparties__input}
+                  type="number"
+                  onChange={handleInput}
+                  defaultValue={clientInfo.own_contribution}
+                  name="own_contribution"
+                />
+                {patchError && patchError.own_contribution && (
+                  <Error>{patchError.own_contribution}</Error>
+                )}
+              </>
+            )} */}
             <h2>Справка о доходах:</h2>
             <input
               type="file"
@@ -377,7 +401,7 @@ const ClientIdPage = () => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={guarantors && guarantors}
+                options={guarantors && reversed(guarantors)}
               />
               <BsPlusLg className={cl.add__svg} onClick={showModal} />
             </div>
@@ -403,7 +427,7 @@ const ClientIdPage = () => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={properties && properties}
+                options={properties && reversed(properties)}
               />
               <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
             </div>
@@ -430,7 +454,7 @@ const ClientIdPage = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={conversations && conversations}
+                  options={conversations && reversed(conversations)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
               </div>
@@ -449,7 +473,7 @@ const ClientIdPage = () => {
             <Button>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Recipients isModal={true}/>
+            <Recipients isModal={true} />
           </Modal>
           <Modal
             open={isModalOpenTwo}
@@ -463,7 +487,7 @@ const ClientIdPage = () => {
             onOk={handleOkThree}
             onCancel={handleCancelThree}
           >
-            <ConversationsContent isModal={true}/>
+            <ConversationsContent isModal={true} />
           </Modal>
         </div>
       )}

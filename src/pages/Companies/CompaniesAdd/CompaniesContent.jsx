@@ -56,6 +56,11 @@ const CompaniesContent = ({ isModal = false }) => {
   useEffect(() => {
     if (!isModal) if (success) navigate("/companies");
   }, [success]);
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -165,7 +170,7 @@ const CompaniesContent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={activities && activities}
+                options={activities && reversed(activities)}
               />
             </Form.Item>
             {error && error.activites_add && (

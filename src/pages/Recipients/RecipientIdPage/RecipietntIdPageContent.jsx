@@ -2,11 +2,7 @@ import cl from "../RecipientsAdd/recipients.module.scss";
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchGuarantors,
-  getGuarantors,
-  patchGuarantor,
-} from "../../../features/guarantors/guarantorsActions";
+import { patchGuarantor } from "../../../features/guarantors/guarantorsActions";
 import { Select, Form, Input } from "antd";
 import Error from "../../../components/Error/Error";
 import Success from "../../../components/Success/Success";

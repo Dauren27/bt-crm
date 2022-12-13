@@ -326,6 +326,25 @@ const Individuals = ({ isModal = false }) => {
           />
         </Form.Item>
         {error && error.status && <Error>{error.status}</Error>}
+        {/* {state.credit_type == "LS" && (
+          <>
+            <h2>Размер собственного взноса:</h2>
+            <Form.Item
+              name="own_contribution"
+              rules={[{ required: true, message: "Заполните это поле" }]}
+            >
+              <Input
+                className={cl.counterparties__input}
+                type="number"
+                onChange={handleInput}
+                name="own_contribution"
+              />
+            </Form.Item>
+            {error && error.own_contribution && (
+              <Error>{error.own_contribution}</Error>
+            )}
+          </>
+        )} */}
         <h2>Справка о доходах:</h2>
         <Form.Item
           name="income_statement"
@@ -347,7 +366,7 @@ const Individuals = ({ isModal = false }) => {
         <h2>Договора с подрядчиками и поставщиками:</h2>
         <Form.Item
           name="contracts"
-          rules={[{ required: true, message: "Заполните это поле" }]}
+          //rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <input
             type="file"
@@ -363,7 +382,7 @@ const Individuals = ({ isModal = false }) => {
         <h2>Отчёт подрядчиков и поставщиков об оказанной услуге:</h2>
         <Form.Item
           name="report"
-          rules={[{ required: true, message: "Заполните это поле" }]}
+          //rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <input
             type="file"
@@ -398,7 +417,7 @@ const Individuals = ({ isModal = false }) => {
         <div className={cl.counterparties__flexContainer}>
           <Form.Item
             name="guarantor"
-            rules={[{ required: true, message: "Заполните это поле" }]}
+            //rules={[{ required: true, message: "Заполните это поле" }]}
           >
             <Select
               className={cl.counterparties__accor}
@@ -492,7 +511,7 @@ const Individuals = ({ isModal = false }) => {
         onOk={handleOkTwo}
         onCancel={handleCancelTwo}
       >
-        <PropertyContent />
+        <PropertyContent isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenThree}

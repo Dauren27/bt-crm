@@ -19,6 +19,7 @@ import ConversationIdPage from "../pages/Conversations/ConversationIdPage/Conver
 import ClientIdPage from "../pages/Counterparties/ClientIdPage/ClientIdPage";
 import EntityIdPage from "../pages/Counterparties/EntityIdPage/EntityIdPage";
 import RecipientIdPage from "../pages/Recipients/RecipientIdPage/RecipientsIdPage";
+import PropertyIdPage from "../pages/Property/PropertyIdPage/PropertyIdPage";
 
 export const PrivateRoutes = () => {
   return (
@@ -40,6 +41,7 @@ export const PrivateRoutes = () => {
       />
       <Route path="/properties/add" element={<PropertyAdd />} />
       <Route path="/properties" element={<PropertyList />} />
+      <Route path="/properties/property/:id" element={<PropertyIdPage/>} />
       <Route path="*" element={<DocumentsList />} />
       <Route path="/counterparties/add" element={<CounterpartiesAdd />} />
       <Route path="/counterparties" element={<CounterpartiesList />} />

@@ -56,6 +56,11 @@ const EntityIdPage = () => {
   useEffect(() => {
     if (patchSuccess) navigate("/counterparties");
   }, [patchSuccess]);
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -170,7 +175,7 @@ const EntityIdPage = () => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={companies && companies}
+                options={companies && reversed(companies)}
               />
               <BsPlusLg className={cl.add__svg} onClick={showModalFour} />
             </div>
@@ -221,13 +226,12 @@ const EntityIdPage = () => {
             {patchError && patchError.status && (
               <Error>{patchError.status}</Error>
             )}
-            {state.status == "payback" && (
+            {(entityInfo.status == "payback" || state.status == "payback") && (
               <>
                 <h2>Отступные документы:</h2>
 
                 <input
                   type="file"
-                  defaultValue={entityInfo}
                   onChange={(e) =>
                     setState({
                       ...state,
@@ -235,24 +239,26 @@ const EntityIdPage = () => {
                     })
                   }
                 />
-                <p className={cl.file__name}>
-                  Текущий файл :{" "}
-                  <a href={entityInfo.repaid_by_redemption}>
-                    {entityInfo.repaid_by_redemption}
-                  </a>
-                </p>
+                {entityInfo.repaid_by_redemption && (
+                  <p className={cl.file__name}>
+                    Текущий файл :{" "}
+                    <a href={entityInfo.repaid_by_redemption}>
+                      {entityInfo.repaid_by_redemption}
+                    </a>
+                  </p>
+                )}
                 {patchError && patchError.repaid_by_redemption && (
                   <Error>{patchError.repaid_by_redemption}</Error>
                 )}
               </>
             )}
-            {state.status == "judicial" && (
+            {(entityInfo.status == "judicial" ||
+              state.status == "judicial") && (
               <>
                 <h2>Судебные документы:</h2>
 
                 <input
                   type="file"
-                  defaultValue={entityInfo}
                   onChange={(e) =>
                     setState({
                       ...state,
@@ -260,12 +266,14 @@ const EntityIdPage = () => {
                     })
                   }
                 />
-                <p className={cl.file__name}>
-                  Текущий файл :{" "}
-                  <a href={entityInfo.court_documents}>
-                    {entityInfo.court_documents}
-                  </a>
-                </p>
+                {entityInfo.court_documents && (
+                  <p className={cl.file__name}>
+                    Текущий файл :{" "}
+                    <a href={entityInfo.court_documents}>
+                      {entityInfo.court_documents}
+                    </a>
+                  </p>
+                )}
                 {patchError && patchError.court_documents && (
                   <Error>{patchError.court_documents}</Error>
                 )}
@@ -339,20 +347,22 @@ const EntityIdPage = () => {
             {patchError && patchError.average_salary && (
               <Error>{patchError.average_salary}</Error>
             )}
-            <h2>Размер собственного вклада:</h2>
-
-            <Input
-              className={cl.counterparties__input}
-              type="number"
-              onChange={handleInput}
-              defaultValue={entityInfo.own_contribution}
-              name="own_contribution"
-            />
-            {patchError && patchError.own_contribution && (
-              <Error>{patchError.own_contribution}</Error>
+            {(entityInfo.credit_type == "LS" || state.credit_type == "LS") && (
+              <>
+                <h2>Размер собственного взноса:</h2>
+                <Input
+                  className={cl.counterparties__input}
+                  type="number"
+                  onChange={handleInput}
+                  defaultValue={entityInfo.own_contribution}
+                  name="own_contribution"
+                />
+                {patchError && patchError.own_contribution && (
+                  <Error>{patchError.own_contribution}</Error>
+                )}
+              </>
             )}
             <h2>Активы на момент анализа:</h2>
-
             <Input
               className={cl.counterparties__input}
               type="text"
@@ -396,7 +406,7 @@ const EntityIdPage = () => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={properties && properties}
+                options={properties && reversed(properties)}
               />
               <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
             </div>
@@ -423,7 +433,7 @@ const EntityIdPage = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={conversations && conversations}
+                  options={conversations && reversed(conversations)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
               </div>
@@ -456,14 +466,14 @@ const EntityIdPage = () => {
             onOk={handleOkThree}
             onCancel={handleCancelThree}
           >
-            <ConversationsContent isModal={true}/>
+            <ConversationsContent isModal={true} />
           </Modal>
           <Modal
             open={isModalOpenFour}
             onOk={handleOkFour}
             onCancel={handleCancelFour}
           >
-            <CompaniesContent isModal={true}/>
+            <CompaniesContent isModal={true} />
           </Modal>
           <Modal
             open={isModalOpenFive}

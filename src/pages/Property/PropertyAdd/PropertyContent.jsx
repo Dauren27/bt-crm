@@ -1,6 +1,5 @@
 import { Form, Input } from "antd";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/Button/Button";
 import Error from "../../../components/Error/Error";
@@ -11,24 +10,34 @@ import {
   getProperties,
 } from "../../../features/property/propertyActions";
 import cl from "./Property.module.scss";
+import { useNavigate } from "react-router";
 
-const PropertyContent = () => {
+const PropertyContent = ({ isModal = false }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [state, setState] = useState({
     type: "",
     address: "",
     files: null,
     images: null,
   });
-  const dispatch = useDispatch();
+  const { loading, error, success, successModal } = useSelector(
+    (state) => state.property
+  );
+
   const submitForm = () => {
-    dispatch(fetchProperties(state)).then((response) =>
-      dispatch(getProperties())
-    );
+    if (isModal) {
+      dispatch(fetchProperties(state)).then(() => dispatch(getProperties()));
+    } else {
+      dispatch(fetchProperties(state));
+    }
   };
-  const { loading, error, success } = useSelector((state) => state.property);
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/properties");
+  }, [success]);
   return (
     <Form
       className={cl.mortgagedProperty}
@@ -50,6 +59,9 @@ const PropertyContent = () => {
             onChange={handleInput}
           />
         </Form.Item>
+        {error && error.type && (
+          <Error style={{ marginTop: "-20px" }}>{error.type}</Error>
+        )}
       </div>
       <div className={cl.mortgagedProperty__category}>
         <h2 className={cl.mortgagedProperty__title}>Местонахождение залога</h2>
@@ -64,6 +76,9 @@ const PropertyContent = () => {
             onChange={handleInput}
           />
         </Form.Item>
+        {error && error.address && (
+          <Error style={{ marginTop: "-20px" }}>{error.address}</Error>
+        )}
       </div>
       <div className={cl.mortgagedProperty__category}>
         <h2 className={cl.mortgagedProperty__title}>
@@ -83,6 +98,9 @@ const PropertyContent = () => {
             }
           />
         </Form.Item>
+        {error && error.files && (
+          <Error style={{ marginTop: "-20px" }}>{error.files}</Error>
+        )}
       </div>
       <div className={cl.mortgagedProperty__category}>
         <h2 className={cl.mortgagedProperty__title}>
@@ -102,12 +120,16 @@ const PropertyContent = () => {
             }
           />
         </Form.Item>
+        {error && error.images && (
+          <Error style={{ marginTop: "-20px" }}>{error.images}</Error>
+        )}
       </div>
       {loading && <Loading>Отправка...</Loading>}
-      {error &&
-        Object.keys(error).map((item) => (
-          <Error style={{ fontSize: "20px" }}>{item}</Error>
-        ))}
+      {error && (
+        <Error style={{ fontSize: "20px" }}>
+          Данные не были отправлены. Проверьте корректность заполненых данных.
+        </Error>
+      )}
       {success && <Success>Данные успешно отправлены.</Success>}
       <Button>Отправить</Button>
     </Form>

@@ -49,6 +49,11 @@ const DocumentAdd = () => {
   useEffect(() => {
     if (success) navigate("/documents");
   }, [success]);
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -181,7 +186,7 @@ const DocumentAdd = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={clients && clients}
+                  options={clients && reversed(clients)}
                 />
               </Form.Item>
               <BsPlusLg className={cl.add__svg} onClick={showModal} />
@@ -208,7 +213,7 @@ const DocumentAdd = () => {
                       option?.full_name_director.toLocaleLowerCase() ?? ""
                     ).includes(input.toLocaleLowerCase())
                   }
-                  options={entities && entities}
+                  options={entities && reversed(entities)}
                 />
               </Form.Item>
               <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />

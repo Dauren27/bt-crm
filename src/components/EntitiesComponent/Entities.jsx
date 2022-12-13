@@ -75,6 +75,11 @@ const EntitiesComponent = ({ isModal = false }) => {
   useEffect(() => {
     if (!isModal) if (success) navigate("/counterparties");
   }, [success]);
+  const reversed = (arr) => {
+    const arr2 = [...arr];
+    arr2.reverse();
+    return arr2;
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -190,7 +195,7 @@ const EntitiesComponent = ({ isModal = false }) => {
                   input.toLocaleLowerCase()
                 )
               }
-              options={companies && companies}
+              options={companies && reversed(companies)}
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalFour} />
@@ -366,21 +371,26 @@ const EntitiesComponent = ({ isModal = false }) => {
           />
         </Form.Item>
         {error && error.average_salary && <Error>{error.average_salary}</Error>}
-        <h2>Размер собственного вклада:</h2>
-        <Form.Item
-          name="own_contribution"
-          rules={[{ required: true, message: "Заполните это поле" }]}
-        >
-          <Input
-            className={cl.counterparties__input}
-            type="number"
-            onChange={handleInput}
-            name="own_contribution"
-          />
-        </Form.Item>
-        {error && error.own_contribution && (
-          <Error>{error.own_contribution}</Error>
+        {state.credit_type == "LS" && (
+          <>
+            <h2>Размер собственного взноса:</h2>
+            <Form.Item
+              name="own_contribution"
+              rules={[{ required: true, message: "Заполните это поле" }]}
+            >
+              <Input
+                className={cl.counterparties__input}
+                type="number"
+                onChange={handleInput}
+                name="own_contribution"
+              />
+            </Form.Item>
+            {error && error.own_contribution && (
+              <Error>{error.own_contribution}</Error>
+            )}
+          </>
         )}
+
         <h2>Активы на момент анализа:</h2>
         <Form.Item
           name="assets"
@@ -428,7 +438,7 @@ const EntitiesComponent = ({ isModal = false }) => {
                   input.toLocaleLowerCase()
                 )
               }
-              options={properties && properties}
+              options={properties && reversed(properties)}
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
@@ -454,7 +464,7 @@ const EntitiesComponent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={conversations && conversations}
+                options={conversations && reversed(conversations)}
               />
             </Form.Item>
             <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
@@ -478,7 +488,7 @@ const EntitiesComponent = ({ isModal = false }) => {
         onOk={handleOkTwo}
         onCancel={handleCancelTwo}
       >
-        <PropertyContent />
+        <PropertyContent isModal={true} />
       </Modal>
       <Modal
         open={isModalOpenThree}

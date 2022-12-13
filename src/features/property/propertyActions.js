@@ -55,6 +55,29 @@ export const patchProperty = createAsyncThunk(
     }
   }
 );
+export const getProperty = createAsyncThunk(
+  "property/get",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(
+        `https://bt-back-demo.herokuapp.com/crm/api/property/${id}/`,
+        config
+      );
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
 export const getProperties = createAsyncThunk(
   "getProperties",
   async (arg, { getState, rejectWithValue }) => {
@@ -66,6 +89,32 @@ export const getProperties = createAsyncThunk(
       };
       const { data } = await axios.get(
         `https://bt-back-demo.herokuapp.com/crm/api/property/`,
+        config
+      );
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+export const deleteProperty = createAsyncThunk(
+  "deleteProperty",
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.delete(
+        `https://bt-back-demo.herokuapp.com/crm/api/property/${id}/`,
+        {
+          id,
+        },
         config
       );
       return data;
