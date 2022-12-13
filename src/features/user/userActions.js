@@ -11,7 +11,7 @@ export const userLogin = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `https://bt-back-demo.herokuapp.com/auth/jwt/create/`,
+        `https://bt-back-demo.herokuapp.com/login/`,
         { email, password },
         config
       );
@@ -36,7 +36,7 @@ export const updateToken = createAsyncThunk(
         localStorage.getItem("userToken")
       ).refresh;
       const { data } = await axios.post(
-        `https://bt-back-demo.herokuapp.com/auth/jwt/refresh/`,
+        `https://bt-back-demo.herokuapp.com/token/refresh/`,
         { refresh },
         config
       );

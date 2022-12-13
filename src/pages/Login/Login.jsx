@@ -49,14 +49,14 @@ const Login = () => {
         </div>
         {loading && <Loading>Загрузка...</Loading>}
         {error &&
-          (error.response.data ? (
+          (error.response.data && typeof error.response.data == "object" ? (
             Object.keys(error.response.data).map((item) => (
               <Error style={{ fontSize: "24px" }}>
                 {error.response.data[item]}
               </Error>
             ))
           ) : (
-            <Error>{error.message}</Error>
+            <Error>{error.message && error.message}</Error>
           ))}
         <Button type="submit" disabled={loading}>
           Войти
