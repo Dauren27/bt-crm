@@ -21,7 +21,7 @@ export const fetchClients = createAsyncThunk(
       contracts,
       report,
       monitoring_report,
-      guarantor,
+      id_guarantor,
       id_property,
       meet_conversation,
     },
@@ -35,6 +35,7 @@ export const fetchClients = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       };
+      if (client_actual_address == "") client_actual_address = address;
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/crm/api/client/`,
         {
@@ -54,7 +55,7 @@ export const fetchClients = createAsyncThunk(
           contracts,
           report,
           monitoring_report,
-          guarantor,
+          id_guarantor,
           id_property,
           meet_conversation,
         },

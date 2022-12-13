@@ -35,6 +35,7 @@ export const fetchEntities = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       };
+      if (client_actual_address == "") client_actual_address = address;
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/crm/api/entity/`,
         {

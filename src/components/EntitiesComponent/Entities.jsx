@@ -241,7 +241,7 @@ const EntitiesComponent = ({ isModal = false }) => {
             className={cl.counterparties__accor}
             onChange={(e) => setState({ ...state, status: e })}
           >
-            <Select.Option value="success">Принят</Select.Option>
+            <Select.Option value="success">Выдан</Select.Option>
             <Select.Option value="processing">Обработка</Select.Option>
             <Select.Option value="discussion">На рассмотрении</Select.Option>
             <Select.Option value="denied">Отказано</Select.Option>
@@ -344,7 +344,7 @@ const EntitiesComponent = ({ isModal = false }) => {
         <h2>Адрес фактический</h2>
         <Form.Item
           name="client_actiual_address"
-          rules={[{ required: true, message: "Заполните это поле" }]}
+          //rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <Input
             className={cl.counterparties__input}

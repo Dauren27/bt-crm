@@ -392,8 +392,8 @@ const ClientIdPage = () => {
                   setState({ ...state, guarantor: e });
                 }}
                 defaultValue={{
-                  label: clientInfo.guarantor,
-                  value: clientInfo.guarantor,
+                  label: clientInfo.id_guarantor,
+                  value: clientInfo.id_guarantor,
                 }}
                 fieldNames={{ label: "full_name", value: "id" }}
                 filterOption={(input, option) =>

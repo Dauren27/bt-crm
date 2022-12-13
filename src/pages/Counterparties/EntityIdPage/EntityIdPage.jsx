@@ -214,7 +214,7 @@ const EntityIdPage = () => {
               onChange={(e) => setState({ ...state, status: e })}
               defaultValue={entityInfo.status}
             >
-              <Select.Option value="success">Принят</Select.Option>
+              <Select.Option value="success">Выдан</Select.Option>
               <Select.Option value="processing">Обработка</Select.Option>
               <Select.Option value="discussion">На рассмотрении</Select.Option>
               <Select.Option value="denied">Отказано</Select.Option>

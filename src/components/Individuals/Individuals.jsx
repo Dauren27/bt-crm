@@ -50,7 +50,7 @@ const Individuals = ({ isModal = false }) => {
     contracts: null,
     report: null,
     monitoring_report: null,
-    guarantor: null,
+    id_guarantor: null,
     id_property: null,
     meet_conversation: null,
   });
@@ -314,7 +314,7 @@ const Individuals = ({ isModal = false }) => {
         <h2>Адрес фактический</h2>
         <Form.Item
           name="client_actual_address"
-          rules={[{ required: true, message: "Заполните это поле" }]}
+          //rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <Input
             className={cl.counterparties__input}
@@ -424,7 +424,7 @@ const Individuals = ({ isModal = false }) => {
               showSearch
               allowClear
               onChange={(e) => {
-                setState({ ...state, guarantor: e });
+                setState({ ...state, id_guarantor: e });
                 console.log(e);
               }}
               fieldNames={{ label: "full_name", value: "id" }}
