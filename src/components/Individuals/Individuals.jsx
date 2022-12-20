@@ -425,7 +425,6 @@ const Individuals = ({ isModal = false }) => {
               allowClear
               onChange={(e) => {
                 setState({ ...state, id_guarantor: e });
-                console.log(e);
               }}
               fieldNames={{ label: "full_name", value: "id" }}
               filterOption={(input, option) =>
@@ -438,7 +437,7 @@ const Individuals = ({ isModal = false }) => {
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModal} />
         </div>
-        {error && error.guarantor && <Error>{error.guarantor}</Error>}
+        {error && error.id_guarantor && <Error>{error.id_guarantor}</Error>}
         <h2>Залоговое имущество:</h2>
         <div className={cl.counterparties__flexContainer}>
           <Form.Item
@@ -479,7 +478,7 @@ const Individuals = ({ isModal = false }) => {
                 onChange={(e) => {
                   setState({ ...state, meet_conversation: e });
                 }}
-                fieldNames={{ label: "name", value: "id" }}
+                fieldNames={{ label: "client", value: "id" }}
                 filterOption={(input, option) =>
                   (option?.name.toLocaleLowerCase() ?? "").includes(
                     input.toLocaleLowerCase()

@@ -389,7 +389,7 @@ const ClientIdPage = () => {
                 showSearch
                 allowClear
                 onChange={(e) => {
-                  setState({ ...state, guarantor: e });
+                  setState({ ...state, id_guarantor: e });
                 }}
                 defaultValue={{
                   label: clientInfo.id_guarantor,
@@ -448,7 +448,7 @@ const ClientIdPage = () => {
                   onChange={(e) => {
                     setState({ ...state, meet_conversation: e });
                   }}
-                  fieldNames={{ label: "name", value: "id" }}
+                  fieldNames={{ label: "client", value: "id" }}
                   filterOption={(input, option) =>
                     (option?.name.toLocaleLowerCase() ?? "").includes(
                       input.toLocaleLowerCase()

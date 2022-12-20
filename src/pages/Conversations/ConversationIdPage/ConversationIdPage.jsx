@@ -68,7 +68,7 @@ const ConversationIdPage = () => {
             />
           </div>
           <div className={cl.conversations__category}>
-            <h2 className={cl.conversations__title}>Название: </h2>
+            <h2 className={cl.conversations__title}>Клиент: </h2>
             <Input
               className={cl.conversations__input}
               name="client"
@@ -101,7 +101,7 @@ const ConversationIdPage = () => {
             {patchError && patchError.phone && <Error>{patchError.phone}</Error>}
           </div>
           <div className={cl.conversations__category}>
-            <h2 className={cl.conversations__title}>Тема разговора: </h2>
+            <h2 className={cl.conversations__title}>Содержание: </h2>
             <textarea
               className={cl.conversations__textarea}
               name="desc"

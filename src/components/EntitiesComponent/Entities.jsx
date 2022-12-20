@@ -61,6 +61,10 @@ const EntitiesComponent = ({ isModal = false }) => {
     average_salary: "",
     own_contribution: "",
     assets: "",
+    credit_history: null,
+    contracts: null,
+    report: null,
+    monitoring_report: null,
     current_loan: "",
     id_company: "",
     id_property: "",
@@ -176,7 +180,7 @@ const EntitiesComponent = ({ isModal = false }) => {
         </Form.Item>
         {error && error.client_company && <Error>{error.client_company}</Error>}
 
-        <h2>Компании:</h2>
+        <h2>Компания:</h2>
         <div className={cl.counterparties__flexContainer}>
           <Form.Item
             name="company_name"
@@ -313,6 +317,22 @@ const EntitiesComponent = ({ isModal = false }) => {
           </Form.Item>
           {error && error.credit_sum && <Error>{error.credit_sum}</Error>}
         </div>
+        <h2>Кредитная история:</h2>
+        <Form.Item
+          name="credit_history"
+          rules={[{ required: true, message: "Заполните это поле" }]}
+        >
+          <input
+            type="file"
+            onChange={(e) =>
+              setState({
+                ...state,
+                credit_history: e.target.files[0],
+              })
+            }
+          />
+        </Form.Item>
+        {error && error.credit_history && <Error>{error.credit_history}</Error>}
         <h2>Телефон компании:</h2>
         <Form.Item
           name="phone"
@@ -357,6 +377,56 @@ const EntitiesComponent = ({ isModal = false }) => {
         </Form.Item>
         {error && error.client_actiual_address && (
           <Error>{error.client_actiual_address}</Error>
+        )}
+        <h2>Договора с подрядчиками и поставщиками:</h2>
+        <Form.Item
+          name="contracts"
+          //rules={[{ required: true, message: "Заполните это поле" }]}
+        >
+          <input
+            type="file"
+            onChange={(e) =>
+              setState({
+                ...state,
+                contracts: e.target.files[0],
+              })
+            }
+          />
+        </Form.Item>
+        {error && error.contracts && <Error>{error.contracts}</Error>}
+        <h2>Отчёт подрядчиков и поставщиков об оказанной услуге:</h2>
+        <Form.Item
+          name="report"
+          //rules={[{ required: true, message: "Заполните это поле" }]}
+        >
+          <input
+            type="file"
+            onChange={(e) =>
+              setState({
+                ...state,
+                report: e.target.files[0],
+              })
+            }
+          />
+        </Form.Item>
+        {error && error.report && <Error>{error.report}</Error>}
+        <h2>Отчёт по мониторингу:</h2>
+        <Form.Item
+          name="monitoring_report"
+          rules={[{ required: true, message: "Заполните это поле" }]}
+        >
+          <input
+            type="file"
+            onChange={(e) =>
+              setState({
+                ...state,
+                monitoring_report: e.target.files[0],
+              })
+            }
+          />
+        </Form.Item>
+        {error && error.monitoring_report && (
+          <Error>{error.monitoring_report}</Error>
         )}
         <h2>Средний доход в месяц:</h2>
         <Form.Item
@@ -458,7 +528,7 @@ const EntitiesComponent = ({ isModal = false }) => {
                 onChange={(e) => {
                   setState({ ...state, id_num_parley: e });
                 }}
-                fieldNames={{ label: "name", value: "id" }}
+                fieldNames={{ label: "client", value: "id" }}
                 filterOption={(input, option) =>
                   (option?.name.toLocaleLowerCase() ?? "").includes(
                     input.toLocaleLowerCase()

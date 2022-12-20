@@ -101,6 +101,22 @@ const CompaniesContent = ({ isModal = false }) => {
           {error && error.company_name && <Error>{error.company_name}</Error>}
         </div>
         <div className={cl.companies__category}>
+          <h2 className={cl.companies__title}>ИНН Компании:</h2>
+          <Form.Item
+            name="inn"
+            rules={[{ required: true, message: "Заполните это поле" }]}
+          >
+            <Input
+              className={cl.companies__input}
+              type="text"
+              onChange={handleInput}
+              name="inn"
+              maxLength="14"
+            />
+          </Form.Item>
+          {error && error.inn && <Error>{error.inn}</Error>}
+        </div>
+        <div className={cl.companies__category}>
           <h2 className={cl.companies__title}>Юридический адрес:</h2>
           <Form.Item
             name="legal_address"
@@ -194,22 +210,6 @@ const CompaniesContent = ({ isModal = false }) => {
             />
           </Form.Item>
           {error && error.okpo && <Error>{error.okpo}</Error>}
-        </div>
-        <div className={cl.companies__category}>
-          <h2 className={cl.companies__title}>Инн:</h2>
-          <Form.Item
-            name="inn"
-            rules={[{ required: true, message: "Заполните это поле" }]}
-          >
-            <Input
-              className={cl.companies__input}
-              type="text"
-              onChange={handleInput}
-              name="inn"
-              maxLength="14"
-            />
-          </Form.Item>
-          {error && error.inn && <Error>{error.inn}</Error>}
         </div>
         <div className={cl.companies__category}>
           <h2 className={cl.companies__title}>Регистрационный номер:</h2>

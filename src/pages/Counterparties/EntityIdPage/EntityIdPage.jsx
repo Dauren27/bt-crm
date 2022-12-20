@@ -141,9 +141,7 @@ const EntityIdPage = () => {
             {patchError && patchError.full_name_director && (
               <Error>{patchError.full_name_director}</Error>
             )}
-
             <h2>Компания клиента:</h2>
-
             <Input
               className={cl.counterparties__input}
               type="text"
@@ -155,8 +153,7 @@ const EntityIdPage = () => {
             {patchError && patchError.client_company && (
               <Error>{patchError.client_company}</Error>
             )}
-
-            <h2>Компании:</h2>
+            <h2>Компания:</h2>
             <div className={cl.counterparties__flexContainer}>
               <Select
                 className={cl.counterparties__accor}
@@ -192,9 +189,7 @@ const EntityIdPage = () => {
               maxLength="20"
             />
             {patchError && patchError.inn && <Error>{patchError.inn}</Error>}
-
             <h2>Тип кредита:</h2>
-
             <Select
               id="credit_type"
               className={cl.counterparties__accor}
@@ -295,8 +290,26 @@ const EntityIdPage = () => {
                 <Error>{patchError.credit_sum}</Error>
               )}
             </div>
+            <h2>Кредитная история:</h2>
+            <input
+              type="file"
+              onChange={(e) =>
+                setState({
+                  ...state,
+                  credit_history: e.target.files[0],
+                })
+              }
+            />
+            <p className={cl.file__name}>
+              Текущий файл :{" "}
+              <a href={entityInfo.credit_history}>
+                {entityInfo.credit_history}
+              </a>
+            </p>
+            {patchError && patchError.credit_history && (
+              <Error>{patchError.credit_history}</Error>
+            )}
             <h2>Телефон компании:</h2>
-
             <Input
               className={cl.counterparties__input}
               type="text"
@@ -335,7 +348,59 @@ const EntityIdPage = () => {
             {patchError && patchError.client_actual_address && (
               <Error>{patchError.client_actual_address}</Error>
             )}
+            <h2>Договора с подрядчиками и поставщиками:</h2>
 
+            <input
+              type="file"
+              onChange={(e) =>
+                setState({
+                  ...state,
+                  contracts: e.target.files[0],
+                })
+              }
+            />
+            <p className={cl.file__name}>
+              Текущий файл :{" "}
+              <a href={entityInfo.contracts}>{entityInfo.contracts}</a>
+            </p>
+            {patchError && patchError.contracts && (
+              <Error>{patchError.contracts}</Error>
+            )}
+            <h2>Отчёт подрядчиков и поставщиков об оказанной услуге:</h2>
+            <input
+              type="file"
+              onChange={(e) =>
+                setState({
+                  ...state,
+                  report: e.target.files[0],
+                })
+              }
+            />
+            <p className={cl.file__name}>
+              Текущий файл : <a href={entityInfo.report}>{entityInfo.report}</a>
+            </p>
+            {patchError && patchError.report && (
+              <Error>{patchError.report}</Error>
+            )}
+            <h2>Отчёт по мониторингу:</h2>
+            <input
+              type="file"
+              onChange={(e) =>
+                setState({
+                  ...state,
+                  monitoring_report: e.target.files[0],
+                })
+              }
+            />
+            <p className={cl.file__name}>
+              Текущий файл :{" "}
+              <a href={entityInfo.monitoring_report}>
+                {entityInfo.monitoring_report}
+              </a>
+            </p>
+            {patchError && patchError.monitoring_report && (
+              <Error>{patchError.monitoring_report}</Error>
+            )}
             <h2>Средний доход в месяц:</h2>
             <Input
               className={cl.counterparties__input}
@@ -427,7 +492,7 @@ const EntityIdPage = () => {
                   onChange={(e) => {
                     setState({ ...state, id_num_parley: e });
                   }}
-                  fieldNames={{ label: "name", value: "id" }}
+                  fieldNames={{ label: "client", value: "id" }}
                   filterOption={(input, option) =>
                     (option?.name.toLocaleLowerCase() ?? "").includes(
                       input.toLocaleLowerCase()

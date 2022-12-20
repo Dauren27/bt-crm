@@ -90,6 +90,19 @@ const CompanyIdPage = () => {
               )}
             </div>
             <div className={cl.companies__category}>
+              <h2 className={cl.companies__title}>ИНН Компании:</h2>
+
+              <Input
+                className={cl.companies__input}
+                type="text"
+                defaultValue={companyInfo.inn}
+                onChange={handleInput}
+                name="inn"
+                maxLength="14"
+              />
+              {patchError && patchError.inn && <Error>{patchError.inn}</Error>}
+            </div>
+            <div className={cl.companies__category}>
               <h2 className={cl.companies__title}>Юридический адрес:</h2>
               <Input
                 className={cl.companies__input}
@@ -174,19 +187,6 @@ const CompanyIdPage = () => {
               {patchError && patchError.okpo && (
                 <Error>{patchError.okpo}</Error>
               )}
-            </div>
-            <div className={cl.companies__category}>
-              <h2 className={cl.companies__title}>Инн:</h2>
-
-              <Input
-                className={cl.companies__input}
-                type="text"
-                defaultValue={companyInfo.inn}
-                onChange={handleInput}
-                name="inn"
-                maxLength="14"
-              />
-              {patchError && patchError.inn && <Error>{patchError.inn}</Error>}
             </div>
             <div className={cl.companies__category}>
               <h2 className={cl.companies__title}>Регистрационный номер:</h2>

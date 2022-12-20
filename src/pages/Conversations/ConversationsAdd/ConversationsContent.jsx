@@ -90,7 +90,7 @@ const ConversationsContent = ({ isModal = false }) => {
         />
       </div>
       <div className={cl.conversations__category}>
-        <h2 className={cl.conversations__title}>Название: </h2>
+        <h2 className={cl.conversations__title}>Клиент: </h2>
         <Form.Item
           name="client"
           rules={[{ required: true, message: "Заполните это поле" }]}
@@ -120,7 +120,7 @@ const ConversationsContent = ({ isModal = false }) => {
         {error && error.phone && <Error>{error.phone}</Error>}
       </div>
       <div className={cl.conversations__category}>
-        <h2 className={cl.conversations__title}>Тема разговора: </h2>
+        <h2 className={cl.conversations__title}>Содержание: </h2>
         <Form.Item
           name="desc"
           rules={[{ required: true, message: "Заполните это поле" }]}
