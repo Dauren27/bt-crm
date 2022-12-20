@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getUserDetails, registerUser, userLogin, getUserDetail, updateToken } from "./userActions";
 
 // initialize userToken from local storage
-const userToken = localStorage.getItem("userToken")
-  ? localStorage.getItem("userToken")
+const userToken = sessionStorage.getItem("userToken")
+  ? sessionStorage.getItem("userToken")
   : null;
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
   error: null,
   userInfo: null,
   success: false,
-  isAuth: localStorage.getItem("isAuth") ? true : false,
+  isAuth: sessionStorage.getItem("isAuth") ? true : false,
   userToken,
   registerLoading: false,
   registerError: null,
@@ -23,8 +23,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("userToken");
-      localStorage.removeItem("isAuth");
+      sessionStorage.removeItem("userToken");
+      sessionStorage.removeItem("isAuth");
       state.isAuth=false;
       state.loading = false;
       state.userInfo = null;

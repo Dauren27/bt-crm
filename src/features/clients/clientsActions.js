@@ -28,7 +28,7 @@ export const fetchClients = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = JSON.parse(localStorage.getItem("userToken"));
+      const token = JSON.parse(sessionStorage.getItem("userToken"));
       const config = {
         headers: {
           Authorization: `Bearer ${token.access}`,

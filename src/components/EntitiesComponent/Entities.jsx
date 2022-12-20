@@ -30,7 +30,7 @@ const EntitiesComponent = ({ isModal = false }) => {
   const { properties } = useSelector((state) => state.property);
   const { conversations } = useSelector((state) => state.conversations);
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
+    const token = JSON.parse(sessionStorage.getItem("userToken"));
     token && dispatch(getUserDetail(token.access));
     dispatch(getCompanies());
     dispatch(getActivities());

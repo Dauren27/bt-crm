@@ -36,7 +36,7 @@ const ClientIdPage = () => {
   );
   const [state, setState] = useState({});
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
+    const token = JSON.parse(sessionStorage.getItem("userToken"));
     token && dispatch(getUserDetail(token.access));
     dispatch(getGuarantors());
     dispatch(getProperties());

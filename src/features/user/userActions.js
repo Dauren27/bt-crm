@@ -15,8 +15,8 @@ export const userLogin = createAsyncThunk(
         { email, password },
         config
       );
-      localStorage.setItem("userToken", JSON.stringify(data));
-      localStorage.setItem("isAuth", JSON.stringify(true));
+      sessionStorage.setItem("userToken", JSON.stringify(data));
+      sessionStorage.setItem("isAuth", JSON.stringify(true));
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -33,14 +33,14 @@ export const updateToken = createAsyncThunk(
         },
       };
       const refresh = JSON.parse(
-        localStorage.getItem("userToken")
+        sessionStorage.getItem("userToken")
       ).refresh;
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/token/refresh/`,
         { refresh },
         config
       );
-      localStorage.setItem("userToken", JSON.stringify(data));
+      sessionStorage.setItem("userToken", JSON.stringify(data));
       console.log("refreshToken", data);
       return data;
     } catch (error) {

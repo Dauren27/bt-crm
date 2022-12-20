@@ -33,6 +33,7 @@ const Login = () => {
             className={cl.input}
             {...register("email")}
             required
+            autocomplete="off"
           />
         </div>
         <div className={cl.login__row}>
@@ -42,6 +43,7 @@ const Login = () => {
             className={cl.input}
             {...register("password")}
             required
+            autocomplete="off"
           />
         </div>
         <div className={cl.link} style={{ marginTop: "10px" }}>
@@ -51,7 +53,7 @@ const Login = () => {
         {error &&
           (error.response.data && typeof error.response.data == "object" ? (
             Object.keys(error.response.data).map((item) => (
-              <Error style={{ fontSize: "24px" }}>
+              <Error style={{ fontSize: "20px" }}>
                 {error.response.data[item]}
               </Error>
             ))

@@ -8,7 +8,7 @@ const $api = axios.create({
 $api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken');
+      const token = sessionStorage.getItem('accessToken');
       if (token) {
         return {
           ...config,
