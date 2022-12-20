@@ -114,6 +114,7 @@ const ConversationsContent = ({ isModal = false }) => {
             className={cl.conversations__input}
             name="phone"
             onChange={handleInput}
+            defaultValue="+996"
             maxLength="30"
           />
         </Form.Item>

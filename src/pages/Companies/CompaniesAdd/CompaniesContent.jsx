@@ -10,10 +10,7 @@ import {
   fetchCompany,
   getCompanies,
 } from "../../../features/company/companyActions";
-import {
-  fetchActivites,
-  getActivities,
-} from "../../../features/activity/activityActions";
+import { getActivities } from "../../../features/activity/activityActions";
 import Error from "../../../components/Error/Error";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
@@ -159,6 +156,7 @@ const CompaniesContent = ({ isModal = false }) => {
             <Input
               className={cl.companies__input}
               type="text"
+              defaultValue="+996"
               onChange={handleInput}
               name="telephone"
               maxLength="30"

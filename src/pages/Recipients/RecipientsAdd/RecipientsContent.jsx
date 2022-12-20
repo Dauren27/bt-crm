@@ -123,6 +123,7 @@ const RecipientsContent = ({ isModal = false }) => {
                 className={cl.recipients__input}
                 type="text"
                 name="phone"
+                defaultValue="+996"
                 onChange={handleInput}
                 maxLength="30"
               />

@@ -342,6 +342,7 @@ const EntitiesComponent = ({ isModal = false }) => {
             className={cl.counterparties__input}
             type="text"
             onChange={handleInput}
+            defaultValue="+996"
             name="phone"
             maxLength="100"
           />
