@@ -100,7 +100,7 @@ const DocumentsList = () => {
             </Success>
           )}
           <div className={cl.content__list}>
-            {documents && (
+            {documents ? (
               <Table>
                 <tr className="header__tr">
                   <th>
@@ -124,26 +124,28 @@ const DocumentsList = () => {
                     item.id.toString().toLowerCase().includes(searchValue)
                   )
                   .map((document) => (
-                    <tr key={document.id} className="body__tr">
+                    <tr
+                      key={document.id}
+                      className="body__tr"
+                      onClick={() => navigateToDocument(document.id)}
+                    >
                       <td>
                         <input
                           type="checkbox"
                           name={document.id}
                           checked={document?.isChecked || false}
                           onChange={handleChange}
+                          onClick={(event) => event.stopPropagation()}
                         />
                       </td>
-                      <td
-                        className="main_field"
-                        onClick={() => navigateToDocument(document.id)}
-                      >
-                        {document.id}
-                      </td>
+                      <td className="main_field">{document.id}</td>
                       <td>{document.scoring}</td>
                       <td>{document.created_date}</td>
                     </tr>
                   ))}
               </Table>
+            ) : (
+              <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
           </div>
         </div>

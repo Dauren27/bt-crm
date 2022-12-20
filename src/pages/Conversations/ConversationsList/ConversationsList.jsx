@@ -101,11 +101,12 @@ const ConversationsList = () => {
           )}
           {patchMessage && (
             <Success>
-              Документ {patchConversation && patchConversation.id} был успешно изменён
+              Документ {patchConversation && patchConversation.id} был успешно
+              изменён
             </Success>
           )}
           <div className={cl.content__list}>
-            {conversationsList && (
+            {conversationsList ? (
               <Table>
                 <tr className="header__tr">
                   <th>
@@ -126,29 +127,31 @@ const ConversationsList = () => {
                 </tr>
                 {conversationsList
                   .filter((item) =>
-                    item.name.toLowerCase().includes(searchValue)
+                    item.client.toLowerCase().includes(searchValue)
                   )
                   .map((conversation) => (
-                    <tr key={conversation.id} className="body__tr">
+                    <tr
+                      key={conversation.id}
+                      className="body__tr"
+                      onClick={() => navigateToConversation(conversation.id)}
+                    >
                       <td>
                         <input
                           type="checkbox"
                           name={conversation.id}
                           checked={conversation?.isChecked || false}
                           onChange={handleChange}
+                          onClick={(event) => event.stopPropagation()}
                         />
                       </td>
-                      <td
-                        className="main_field"
-                        onClick={() => navigateToConversation(conversation.id)}
-                      >
-                        {conversation.id}
-                      </td>
-                      <td>{conversation.name}</td>
+                      <td className="main_field">{conversation.id}</td>
+                      <td>{conversation.client}</td>
                       <td>{conversation.date}</td>
                     </tr>
                   ))}
               </Table>
+            ) : (
+              <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
           </div>
         </div>

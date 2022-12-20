@@ -7,7 +7,11 @@ import Table from "../../../components/Table/Table";
 import { BiSearch } from "react-icons/bi";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
-import { deleteProperty, getProperties, getProperty } from "../../../features/property/propertyActions";
+import {
+  deleteProperty,
+  getProperties,
+  getProperty,
+} from "../../../features/property/propertyActions";
 
 const PropertyList = () => {
   const navigate = useNavigate();
@@ -95,7 +99,7 @@ const PropertyList = () => {
             </Success>
           )}
           <div className={cl.content__list}>
-            {propertiesList && (
+            {propertiesList ? (
               <Table>
                 <tr className="header__tr">
                   <th>
@@ -119,26 +123,28 @@ const PropertyList = () => {
                     item.type.toLowerCase().includes(searchValue)
                   )
                   .map((property) => (
-                    <tr key={property.id} className="body__tr">
+                    <tr
+                      key={property.id}
+                      className="body__tr"
+                      onClick={() => navigateToProperty(property.id)}
+                    >
                       <td>
                         <input
                           type="checkbox"
                           name={property.id}
                           checked={property?.isChecked || false}
                           onChange={handleChange}
+                          onClick={(event) => event.stopPropagation()}
                         />
                       </td>
-                      <td
-                        className="main_field"
-                        onClick={() => navigateToProperty(property.id)}
-                      >
-                        {property.id}
-                      </td>
+                      <td className="main_field">{property.id}</td>
                       <td>{property.type}</td>
                       <td>{property.address}</td>
                     </tr>
                   ))}
               </Table>
+            ) : (
+              <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
           </div>
         </div>

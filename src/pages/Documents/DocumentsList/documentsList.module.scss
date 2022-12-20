@@ -27,6 +27,10 @@
     }
   }
   .content {
+    .documents__loading{
+      color: #42b4f4;
+      font-weight: 400;
+    }
     .content__search {
       margin-top: 30px;
       display: flex;

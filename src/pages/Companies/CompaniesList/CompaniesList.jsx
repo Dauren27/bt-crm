@@ -105,7 +105,7 @@ const CompaniesList = () => {
             </Success>
           )}
           <div className={cl.content__list}>
-            {companiesList && (
+            {companiesList ? (
               <Table>
                 <tr className="header__tr">
                   <th>
@@ -129,25 +129,30 @@ const CompaniesList = () => {
                     item.company_name.toLowerCase().includes(searchValue)
                   )
                   .map((company) => (
-                    <tr key={company.id} className="body__tr">
+                    <tr
+                      key={company.id}
+                      className="body__tr"
+                      onClick={() => navigateToCompany(company.id)}
+                    >
                       <td>
                         <input
                           type="checkbox"
                           name={company.company_name}
                           checked={company?.isChecked || false}
                           onChange={handleChange}
+                          onClick={(event) => event.stopPropagation()}
                         />
                       </td>
                       <td className="main_field">
-                        <span onClick={() => navigateToCompany(company.id)}>
-                          {company.id}
-                        </span>
+                        <span>{company.id}</span>
                       </td>
                       <td>{company.company_name}</td>
                       <td>{company.legal_address}</td>
                     </tr>
                   ))}
               </Table>
+            ) : (
+              <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
           </div>
         </div>

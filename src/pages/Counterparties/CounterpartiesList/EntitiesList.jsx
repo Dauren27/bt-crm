@@ -95,7 +95,7 @@ const EntitiesList = () => {
           </Success>
         )}
         <div className={cl.content__list}>
-          {entitiesList && (
+          {entitiesList ? (
             <Table>
               <tr className="header__tr">
                 <th>
@@ -117,26 +117,28 @@ const EntitiesList = () => {
                   item.full_name_director.toLowerCase().includes(searchValue)
                 )
                 .map((entity) => (
-                  <tr key={entity.id} className="body__tr">
+                  <tr
+                    key={entity.id}
+                    className="body__tr"
+                    onClick={() => navigateToEntity(entity.id)}
+                  >
                     <td>
                       <input
                         type="checkbox"
                         name={entity.id}
                         checked={entity?.isChecked || false}
                         onChange={handleChange}
+                        onClick={(event) => event.stopPropagation()}
                       />
                     </td>
-                    <td
-                      className="main_field"
-                      onClick={() => navigateToEntity(entity.id)}
-                    >
-                      {entity.id}
-                    </td>
+                    <td className="main_field">{entity.id}</td>
                     <td>{entity.full_name_director}</td>
                     <td>{entity.client_company}</td>
                   </tr>
                 ))}
             </Table>
+          ) : (
+            <h1 className={cl.documents__loading}>Загрузка...</h1>
           )}
         </div>
       </div>

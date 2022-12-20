@@ -50,7 +50,7 @@ const ConversationIdPage = () => {
           onFinishFailed={() => alert("Заполните все поля")}
         >
           <h2 className={cl.title}>
-            {conversationInfo.id}.{conversationInfo.name}
+            {conversationInfo.id}.{conversationInfo.client}
           </h2>
           <div className={cl.conversations__checkbox}>
             <h2 className={cl.conversations__title}>Личная встреча: </h2>
@@ -71,41 +71,41 @@ const ConversationIdPage = () => {
             <h2 className={cl.conversations__title}>Название: </h2>
             <Input
               className={cl.conversations__input}
-              name="name"
-              defaultValue={conversationInfo.name}
+              name="client"
+              defaultValue={conversationInfo.client}
               onChange={handleInput}
               maxLength="100"
             />
-            {patchError && patchError.name && <Error>{patchError.name}</Error>}
+            {patchError && patchError.client && <Error>{patchError.client}</Error>}
           </div>
           <div className={cl.conversations__category}>
             <h2 className={cl.conversations__title}>Дата: </h2>
             <Input
               className={cl.conversations__input}
               name="date"
-              defaultValue={conversationInfo.name}
+              defaultValue={conversationInfo.date}
               onChange={handleInput}
               maxLength="30"
             />
             {patchError && patchError.date && <Error>{patchError.date}</Error>}
           </div>
           <div className={cl.conversations__category}>
-            <h2 className={cl.conversations__title}>Время: </h2>
+            <h2 className={cl.conversations__title}>Номер телефона: </h2>
             <Input
               className={cl.conversations__input}
-              name="time"
-              defaultValue={conversationInfo.name}
+              name="phone"
+              defaultValue={conversationInfo.phone}
               onChange={handleInput}
               maxLength="30"
             />
-            {patchError && patchError.time && <Error>{patchError.time}</Error>}
+            {patchError && patchError.phone && <Error>{patchError.phone}</Error>}
           </div>
           <div className={cl.conversations__category}>
             <h2 className={cl.conversations__title}>Тема разговора: </h2>
             <textarea
               className={cl.conversations__textarea}
               name="desc"
-              defaultValue={conversationInfo.name}
+              defaultValue={conversationInfo.desc}
               onChange={handleInput}
               maxLength="200"
             ></textarea>

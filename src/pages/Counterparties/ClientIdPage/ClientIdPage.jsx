@@ -462,6 +462,16 @@ const ClientIdPage = () => {
                 <Error>{patchError.meet_conversation}</Error>
               )}
             </div>
+            <h2>Кредитный специалсит</h2>
+            <input
+              className={cl.counterparties__input}
+              type="text"
+              //onChange={handleInput}
+              disabled
+              defaultValue={clientInfo.id_credit_spec}
+              name="client_actual_address"
+              maxLength="100"
+            />
             {patchLoading && <Loading>Отправка...</Loading>}
             {patchError && (
               <Error style={{ fontSize: "20px" }}>

@@ -95,7 +95,7 @@ const ClientsList = () => {
           </Success>
         )}
         <div className={cl.content__list}>
-          {clientsList && (
+          {clientsList ? (
             <Table>
               <tr className="header__tr">
                 <th>
@@ -117,21 +117,21 @@ const ClientsList = () => {
                   item.full_name.toLowerCase().includes(searchValue)
                 )
                 .map((client) => (
-                  <tr key={client.id} className="body__tr">
+                  <tr
+                    key={client.id}
+                    className="body__tr"
+                    onClick={() => navigateToClient(client.id)}
+                  >
                     <td>
                       <input
                         type="checkbox"
                         name={client.id}
                         checked={client?.isChecked || false}
                         onChange={handleChange}
+                        onClick={(event) => event.stopPropagation()}
                       />
                     </td>
-                    <td
-                      className="main_field"
-                      onClick={() => navigateToClient(client.id)}
-                    >
-                      {client.id}
-                    </td>
+                    <td className="main_field">{client.id}</td>
                     <td>{client.full_name}</td>
                     {client.credit_type == "CR" ? (
                       <td>Кредит</td>
@@ -142,6 +142,8 @@ const ClientsList = () => {
                   </tr>
                 ))}
             </Table>
+          ) : (
+            <h1 className={cl.documents__loading}>Загрузка...</h1>
           )}
         </div>
       </div>

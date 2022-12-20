@@ -437,10 +437,20 @@ const EntityIdPage = () => {
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
               </div>
+
               {patchError && patchError.id_num_parley && (
                 <Error>{patchError.id_num_parley}</Error>
               )}
             </div>
+            <h2>Кредитный специалсит</h2>
+            <input
+              className={cl.counterparties__input}
+              type="text"
+              disabled
+              defaultValue={entityInfo.id_credit_spec}
+              name="client_actual_address"
+              maxLength="100"
+            />
             {patchLoading && <Loading>Отправка...</Loading>}
             {patchError && (
               <Error style={{ fontSize: "20px" }}>

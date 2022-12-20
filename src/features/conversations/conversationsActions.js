@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchConversations = createAsyncThunk(
   "conversations",
   async (
-    { is_meeting, name, date, time, desc, results_report, statistics },
+    { is_meeting, client, phone, desc, results_report, statistics },
     { rejectWithValue }
   ) => {
     try {
@@ -17,12 +17,10 @@ export const fetchConversations = createAsyncThunk(
         `https://bt-back-demo.herokuapp.com/crm/api/convers/`,
         {
           is_meeting,
-          name,
-          date,
-          time,
+          client,
+          phone,
           desc,
           results_report,
-          statistics,
         },
         config
       );

@@ -95,11 +95,11 @@ const RecipientsList = () => {
           )}
           {patchMessage && (
             <Success>
-              Документ {patchRecipient &&patchRecipient.id} был успешно изменён
+              Документ {patchRecipient && patchRecipient.id} был успешно изменён
             </Success>
           )}
           <div className={cl.content__list}>
-            {guarantorsList && (
+            {guarantorsList ? (
               <Table>
                 <tr className="header__tr">
                   <th>
@@ -123,26 +123,28 @@ const RecipientsList = () => {
                     item.full_name.toLowerCase().includes(searchValue)
                   )
                   .map((guarantor) => (
-                    <tr key={guarantor.id} className="body__tr">
+                    <tr
+                      key={guarantor.id}
+                      className="body__tr"
+                      onClick={() => navigateToRecipient(guarantor.id)}
+                    >
                       <td>
                         <input
                           type="checkbox"
                           name={guarantor.id}
                           checked={guarantor?.isChecked || false}
                           onChange={handleChange}
+                          onClick={(event) => event.stopPropagation()}
                         />
                       </td>
-                      <td
-                        className="main_field"
-                        onClick={() => navigateToRecipient(guarantor.id)}
-                      >
-                        {guarantor.id}
-                      </td>
+                      <td className="main_field">{guarantor.id}</td>
                       <td>{guarantor.full_name}</td>
                       <td>{guarantor.address}</td>
                     </tr>
                   ))}
               </Table>
+            ) : (
+              <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
           </div>
         </div>

@@ -21,10 +21,9 @@ const ConversationsContent = ({ isModal = false }) => {
   }
   const [state, setState] = useState({
     is_meeting: value,
-    name: "",
-    date: "",
-    time: "",
+    client: "",
     desc: "",
+    phone: "",
     results_report: null,
     statistics: null,
   });
@@ -93,47 +92,32 @@ const ConversationsContent = ({ isModal = false }) => {
       <div className={cl.conversations__category}>
         <h2 className={cl.conversations__title}>Название: </h2>
         <Form.Item
-          name="name"
+          name="client"
           rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <Input
             className={cl.conversations__input}
-            name="name"
+            name="client"
             onChange={handleInput}
             maxLength="100"
           />
         </Form.Item>
-        {error && error.name && <Error>{error.name}</Error>}
+        {error && error.client && <Error>{error.client}</Error>}
       </div>
       <div className={cl.conversations__category}>
-        <h2 className={cl.conversations__title}>Дата: </h2>
+        <h2 className={cl.conversations__title}>Номер телефона: </h2>
         <Form.Item
-          name="date"
+          name="phone"
           rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <Input
             className={cl.conversations__input}
-            name="date"
+            name="phone"
             onChange={handleInput}
             maxLength="30"
           />
         </Form.Item>
-        {error && error.date && <Error>{error.date}</Error>}
-      </div>
-      <div className={cl.conversations__category}>
-        <h2 className={cl.conversations__title}>Время: </h2>
-        <Form.Item
-          name="time"
-          rules={[{ required: true, message: "Заполните это поле" }]}
-        >
-          <Input
-            className={cl.conversations__input}
-            name="time"
-            onChange={handleInput}
-            maxLength="30"
-          />
-        </Form.Item>
-        {error && error.time && <Error>{error.time}</Error>}
+        {error && error.phone && <Error>{error.phone}</Error>}
       </div>
       <div className={cl.conversations__category}>
         <h2 className={cl.conversations__title}>Тема разговора: </h2>
