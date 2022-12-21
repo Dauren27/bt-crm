@@ -3,14 +3,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchProperties = createAsyncThunk(
   "properties",
-  async ({ type, address, files, imagess }, { rejectWithValue }) => {
+  async ({ type, address, files, images }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
-      const images = new FormData("images", imagess);
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/crm/api/property/`,
         {

@@ -19,16 +19,12 @@ const PropertyContent = ({ isModal = false }) => {
     type: "",
     address: "",
     files: null,
-    images: [],
+    images: null,
   });
   const { loading, error, success, successModal } = useSelector(
     (state) => state.property
   );
-  const obj = new FormData();
-  // for (let [name, value] of state.images) {
-  //   console.log(`${name} = ${value}`); // key1=value1, потом key2=value2
-  // }
-  console.log("state ", state);
+
   const submitForm = () => {
     if (isModal) {
       dispatch(fetchProperties(state)).then(() => dispatch(getProperties()));
@@ -112,31 +108,18 @@ const PropertyContent = ({ isModal = false }) => {
         </h2>
         <Form.Item
           name="images"
-          //rules={[{ required: true, message: "Заполните это поле" }]}
+          rules={[{ required: true, message: "Заполните это поле" }]}
         >
           <input
             type="file"
             onChange={(e) => {
-              state.images.push( e.target.files[0]);
+              setState({
+                ...state,
+                images: e.target.files[0],
+              });
             }}
           />
         </Form.Item>
-        <input
-          type="file"
-          className={cl.conversations__file}
-          name="statistics"
-          onChange={(e) => {
-            state.images.push(e.target.files[0]);
-          }}
-        />
-        <input
-          type="file"
-          className={cl.conversations__file}
-          name="statistics"
-          onChange={(e) => {
-            state.images.push(e.target.files[0]);
-          }}
-        />
         {error && error.images && (
           <Error style={{ marginTop: "-20px" }}>{error.images}</Error>
         )}

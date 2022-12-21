@@ -443,7 +443,7 @@ const Individuals = ({ isModal = false }) => {
         <div className={cl.counterparties__flexContainer}>
           <Form.Item
             name="id_property"
-            rules={[{ required: true, message: "Заполните это поле" }]}
+            //rules={[{ required: true, message: "Заполните это поле" }]}
           >
             <Select
               className={cl.counterparties__accor}
