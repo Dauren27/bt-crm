@@ -34,7 +34,9 @@ const ConversationsContent = ({ isModal = false }) => {
   const navigate = useNavigate();
   const submitForm = () => {
     if (isModal) {
-      dispatch(fetchConversations(state)).then(() => dispatch(getConversations()));
+      dispatch(fetchConversations(state)).then(() =>
+        dispatch(getConversations())
+      );
     } else {
       dispatch(fetchConversations(state));
     }
