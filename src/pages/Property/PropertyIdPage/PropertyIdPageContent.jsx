@@ -5,28 +5,61 @@ import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
 import { Form, Input } from "antd";
 import Button from "../../../components/Button/Button";
-import { patchProperty } from "../../../features/property/propertyActions";
+import {
+  getProperties,
+  getProperty,
+  patchProperty,
+} from "../../../features/property/propertyActions";
 import cl from "../PropertyAdd/Property.module.scss";
 import { useNavigate } from "react-router";
+import { BsPlusLg } from "react-icons/bs";
 
-const PropertyIdPageContent = () => {
+const PropertyIdPageContent = ({
+  isModal = false,
+  handleCancelFive = false,
+  handleCancelSix = false,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { patchLoading, patchSuccess, patchError, propertyInfo } = useSelector(
     (state) => state.property
   );
-  const [state, setState] = useState({});
+  useEffect(() => {
+    if (!propertyInfo) navigate("/properties");
+  }, []);
+  const [state, setState] = useState({
+    type: propertyInfo && propertyInfo.type,
+    address: propertyInfo && propertyInfo.address,
+    imagesArray: propertyInfo && [...propertyInfo.images],
+    filesArray: propertyInfo && [...propertyInfo.files],
+  });
+  const [imageFiles, setImageFiles] = useState(
+    propertyInfo && propertyInfo.files.length
+  );
+  const [fileFiles, setFileFiles] = useState(
+    propertyInfo && propertyInfo.images.length
+  );
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   const submitForm = () => {
-    dispatch(patchProperty({ id: propertyInfo.id, obj: state }));
+    dispatch(patchProperty({ id: propertyInfo.id, obj: state })).then(() => {
+      dispatch(getProperties());
+    });
   };
   useEffect(() => {
-    if (!propertyInfo) navigate("/properties");
-  }, []);
+    propertyInfo &&
+      setState({
+        type: propertyInfo && propertyInfo.type,
+        address: propertyInfo && propertyInfo.address,
+      });
+  }, [propertyInfo]);
   useEffect(() => {
-    if (patchSuccess) navigate("/properties");
+    if (!isModal && patchSuccess) navigate("/properties");
+    if (isModal && patchSuccess) {
+      handleCancelFive && handleCancelFive();
+      handleCancelSix && handleCancelSix();
+    }
   }, [patchSuccess]);
   return (
     <div>
@@ -47,7 +80,7 @@ const PropertyIdPageContent = () => {
               type="text"
               className={cl.mortgagedProperty__input}
               name="type"
-              defaultValue={propertyInfo.type}
+              value={state.type}
               onChange={handleInput}
             />
             {patchError && patchError.type && <Error>{patchError.type}</Error>}
@@ -60,7 +93,7 @@ const PropertyIdPageContent = () => {
               type="text"
               className={cl.mortgagedProperty__input}
               name="address"
-              defaultValue={propertyInfo.address}
+              value={state.address}
               onChange={handleInput}
             />
             {patchError && patchError.address && (
@@ -71,19 +104,37 @@ const PropertyIdPageContent = () => {
             <h2 className={cl.mortgagedProperty__title}>
               Документы на залоговое имущество
             </h2>
-            <input
-              type="file"
-              onChange={(e) =>
-                setState({
-                  ...state,
-                  files: e.target.files[0],
-                })
-              }
-            />
-            <p className={cl.file__name}>
-              Текущий файл :{" "}
-              <a href={propertyInfo.files[0].file}>{propertyInfo.files[0].file}</a>
-            </p>
+            {propertyInfo.files.map((item, index) => (
+              <>
+                <input
+                  type="file"
+                  onChange={(e) => state.filesArray.push(e.target.files[0])}
+                />
+                <p className={cl.file__name}>
+                  Текущий файл :{" "}
+                  <a href={propertyInfo.files[index].file}>
+                    {propertyInfo.files[index].file}
+                  </a>
+                </p>
+              </>
+            ))}
+            {[...Array(fileFiles)].map((item) => (
+              <input
+                className={cl.mortgagedProperty__additionalFiles}
+                type="file"
+                onChange={(e) => {
+                  state.filesArray.push(e.target.files[0]);
+                }}
+              />
+            ))}
+            {fileFiles != 5 && (
+              <div
+                className={cl.mortgagedProperty__addFiles}
+                onClick={() => setFileFiles(fileFiles + 1)}
+              >
+                <BsPlusLg /> <span>Add another file</span>
+              </div>
+            )}
             {patchError && patchError.files && (
               <Error>{patchError.files}</Error>
             )}
@@ -92,19 +143,37 @@ const PropertyIdPageContent = () => {
             <h2 className={cl.mortgagedProperty__title}>
               Фотографии залогового имущество
             </h2>
-            <input
-              type="file"
-              onChange={(e) =>
-                setState({
-                  ...state,
-                  images: e.target.files[0],
-                })
-              }
-            />
-            <p className={cl.file__name}>
-              Текущий файл :{" "}
-              <a href={propertyInfo.images[0].image}>{propertyInfo.images[0].image}</a>
-            </p>
+            {propertyInfo.images.map((item, index) => (
+              <>
+                <input
+                  type="file"
+                  onChange={(e) => state.imagesArray.push(e.target.files[0])}
+                />
+                <p className={cl.file__name}>
+                  Текущий файл :{" "}
+                  <a href={propertyInfo.images[index].image}>
+                    {propertyInfo.images[index].image}
+                  </a>
+                </p>
+              </>
+            ))}
+            {[...Array(imageFiles)].map((item) => (
+              <input
+                className={cl.mortgagedProperty__additionalFiles}
+                type="file"
+                onChange={(e) => {
+                  state.imagesArray.push(e.target.files[0]);
+                }}
+              />
+            ))}
+            {imageFiles != 5 && (
+              <div
+                className={cl.mortgagedProperty__addFiles}
+                onClick={() => setImageFiles(imageFiles + 1)}
+              >
+                <BsPlusLg /> <span>Add another image</span>
+              </div>
+            )}
             {patchError && patchError.images && (
               <Error>{patchError.images}</Error>
             )}
@@ -117,7 +186,7 @@ const PropertyIdPageContent = () => {
             </Error>
           )}
           {patchSuccess && <Success>Данные успешно изменены.</Success>}
-          <Button>Отправить</Button>
+          <Button>Сохранить</Button>
         </Form>
       )}
     </div>

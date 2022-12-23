@@ -5,27 +5,19 @@ import { PrivateRoutes, PublicRoutes } from "./routes/routes";
 import { SidebarContext } from "./context";
 import { useDispatch, useSelector } from "react-redux";
 import { updateToken } from "./features/user/userActions";
-import { getEntities } from "./features/entity/entityActions";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    let fourMinutes = 1000 * 600 * 4;
-    let interval = setInterval(() => {
-      dispatch(updateToken());
-    }, fourMinutes);
+    dispatch(updateToken());
   }, []);
   return (
     <>
       <BrowserRouter>
         <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
-          {isAuth ? (
-            <PrivateRoutes />
-          ) : (
-            <PublicRoutes />
-          )}
+          {isAuth ? <PrivateRoutes /> : <PublicRoutes />}
         </SidebarContext.Provider>
       </BrowserRouter>
     </>

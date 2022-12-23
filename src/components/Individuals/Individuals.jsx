@@ -17,7 +17,10 @@ import {
   fetchClients,
   getClients,
 } from "../../features/clients/clientsActions";
-import { getProperties } from "../../features/property/propertyActions";
+import {
+  getProperties,
+  getProperty,
+} from "../../features/property/propertyActions";
 import PropertyContent from "../../pages/Property/PropertyAdd/PropertyContent";
 import Error from "../Error/Error";
 import Success from "../Success/Success";
@@ -25,16 +28,15 @@ import Loading from "../Loading/Loading";
 import { RiPencilFill } from "react-icons/ri";
 import RecipientIdPageContent from "../../pages/Recipients/RecipientIdPage/RecipietntIdPageContent";
 import { useNavigate } from "react-router";
+import PropertyIdPageContent from "../../pages/Property/PropertyIdPage/PropertyIdPageContent";
 
 const Individuals = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const { guarantors } = useSelector((state) => state.guarantor);
   const { properties } = useSelector((state) => state.property);
-  const { conversations } = useSelector((state) => state.conversations);
   const navigate = useNavigate();
   const [state, setState] = useState({
-    id_credit_spec: "",
     full_name: "",
     credit_type: "",
     status: "",
@@ -52,7 +54,6 @@ const Individuals = ({ isModal = false }) => {
     monitoring_report: null,
     id_guarantor: null,
     id_property: null,
-    meet_conversation: null,
   });
   useEffect(() => {
     const token = JSON.parse(sessionStorage.getItem("userToken"));
@@ -63,7 +64,9 @@ const Individuals = ({ isModal = false }) => {
   }, [dispatch]);
   const submitForm = async (e) => {
     if (isModal) {
-      dispatch(fetchClients(state)).then(() => dispatch(getClients()));
+      dispatch(fetchClients(state)).then(() => {
+        success && dispatch(getClients());
+      });
     } else {
       dispatch(fetchClients(state));
     }
@@ -82,11 +85,13 @@ const Individuals = ({ isModal = false }) => {
   useEffect(() => {
     if (!isModal) if (success) navigate("/counterparties");
   }, [success]);
-  // console.log(propertyInfo);
-  // useEffect(()=>{
-  //   setState({...state, id_property: propertyInfo && propertyInfo.id})
-  // },[propertyInfo])
-  // console.log(state.id_property);
+
+  const openRecipientModal = (id) => {
+    dispatch(getGuarantor({ id: id })).then(() => showModalFour());
+  };
+  const openPropertyModal = (id) => {
+    dispatch(getProperty({ id: id })).then(() => showModalFive());
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -132,6 +137,17 @@ const Individuals = ({ isModal = false }) => {
   };
   const handleCancelFour = () => {
     setIsModalOpenFour(false);
+  };
+
+  const [isModalOpenFive, setIsModalOpenFive] = useState(false);
+  const showModalFive = () => {
+    setIsModalOpenFive(true);
+  };
+  const handleOkFive = () => {
+    setIsModalOpenFive(false);
+  };
+  const handleCancelFive = () => {
+    setIsModalOpenFive(false);
   };
   //-------------------------------------------
   return (
@@ -437,6 +453,12 @@ const Individuals = ({ isModal = false }) => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModal} />
+          <RiPencilFill
+            className={`${cl.add__svg} ${!state.id_guarantor && cl.disabled}`}
+            onClick={() => {
+              state.id_guarantor && openRecipientModal(state.id_guarantor);
+            }}
+          />
         </div>
         {error && error.id_guarantor && <Error>{error.id_guarantor}</Error>}
         <h2>Залоговое имущество:</h2>
@@ -463,44 +485,22 @@ const Individuals = ({ isModal = false }) => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+          <RiPencilFill
+            className={`${cl.add__svg} ${!state.id_property && cl.disabled}`}
+            onClick={() => {
+              state.id_property && openPropertyModal(state.id_property);
+            }}
+          />
         </div>
         {error && error.id_property && <Error>{error.id_property}</Error>}
-        <h2>Переговоры:</h2>
-        <div>
-          <div className={cl.counterparties__flexContainer}>
-            <Form.Item
-              name="meet_conversation"
-              rules={[{ required: true, message: "Заполните это поле" }]}
-            >
-              <Select
-                className={cl.counterparties__accor}
-                showSearch
-                allowClear
-                onChange={(e) => {
-                  setState({ ...state, meet_conversation: e });
-                }}
-                fieldNames={{ label: "client", value: "id" }}
-                filterOption={(input, option) =>
-                  (option?.name.toLocaleLowerCase() ?? "").includes(
-                    input.toLocaleLowerCase()
-                  )
-                }
-                options={conversations && reversed(conversations)}
-              />
-            </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
-          </div>
-          {error && error.meet_conversation && (
-            <Error>{error.meet_conversation}</Error>
-          )}
-        </div>
+
         {loading && <Loading>Отправка...</Loading>}
         {error && (
           <Error style={{ fontSize: "20px" }}>
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {successModal && <Success>Данные успешно отправлены.</Success>}
+        {isModal && success && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -525,7 +525,14 @@ const Individuals = ({ isModal = false }) => {
         onOk={handleOkFour}
         onCancel={handleCancelFour}
       >
-        <RecipientIdPageContent />
+        <RecipientIdPageContent isModal handleCancelFour={handleCancelFour} />
+      </Modal>
+      <Modal
+        open={isModalOpenFive}
+        onOk={handleOkFive}
+        onCancel={handleCancelFive}
+      >
+        <PropertyIdPageContent isModal handleCancelFive={handleCancelFive} />
       </Modal>
     </>
   );

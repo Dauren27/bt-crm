@@ -40,7 +40,7 @@ const Registration = () => {
             className={cl.input}
             {...register("full_name")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
           {registerError && registerError.full_name && (
             <Error>{registerError.full_name}</Error>
@@ -53,7 +53,7 @@ const Registration = () => {
             type="tel"
             {...register("phone_number")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
           {registerError && registerError.phone_number && (
             <Error>{registerError.phone_number}</Error>
@@ -81,7 +81,7 @@ const Registration = () => {
             {...register("email")}
             required
             className={cl.input}
-            autocomplete="off"
+            autoComplete="off"
           />
           {registerError && registerError.email && (
             <Error>{registerError.email}</Error>
@@ -94,7 +94,7 @@ const Registration = () => {
             className={cl.input}
             {...register("password")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
           {registerError && registerError.password && (
             <Error>{registerError.password}</Error>
@@ -107,7 +107,7 @@ const Registration = () => {
             className={cl.input}
             {...register("password_confirm")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
           {registerError && registerError.password_confirm && (
             <Error>{registerError.password_confirm}</Error>

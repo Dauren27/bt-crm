@@ -9,16 +9,22 @@ import { Modal } from "antd";
 import Individuals from "../../../components/Individuals/Individuals";
 import Entities from "../../../components/EntitiesComponent/Entities";
 import { getUserDetail } from "../../../features/user/userActions";
-import { getClients } from "../../../features/clients/clientsActions";
+import {
+  getClient,
+  getClients,
+} from "../../../features/clients/clientsActions";
 import {
   getDocuments,
   patchDocument,
 } from "../../../features/documents/documentsActions";
-import { getEntities } from "../../../features/entity/entityActions";
+import { getEntities, getEntity } from "../../../features/entity/entityActions";
 import Error from "../../../components/Error/Error";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
 import { useNavigate } from "react-router";
+import ClientIdPageContent from "../../Counterparties/ClientIdPage/ClientIdPageContent";
+import { RiPencilFill } from "react-icons/ri";
+import EntityIdPageContent from "../../Counterparties/EntityIdPage/EntityIdPageContent";
 
 const DocumentIdPage = () => {
   //----API-----
@@ -28,7 +34,11 @@ const DocumentIdPage = () => {
   );
   const { clients } = useSelector((state) => state.counterparties);
   const { entities } = useSelector((state) => state.entity);
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    scoring: documentInfo && documentInfo.scoring,
+    id_client: documentInfo && documentInfo.id_client,
+    id_entity: documentInfo && documentInfo.id_entity,
+  });
   useEffect(() => {
     dispatch(getUserDetail());
     dispatch(getClients());
@@ -54,6 +64,12 @@ const DocumentIdPage = () => {
     arr2.reverse();
     return arr2;
   };
+  const openClientModal = (id) => {
+    dispatch(getClient({ id: id })).then(() => showModalThree());
+  };
+  const openEntityModal = (id) => {
+    dispatch(getEntity({ id: id })).then(() => showModalFour());
+  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -77,6 +93,28 @@ const DocumentIdPage = () => {
   };
   const handleCancelTwo = () => {
     setIsModalOpenTwo(false);
+  };
+
+  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
+  const showModalThree = () => {
+    setIsModalOpenThree(true);
+  };
+  const handleOkThree = () => {
+    setIsModalOpenThree(false);
+  };
+  const handleCancelClientModal = () => {
+    setIsModalOpenThree(false);
+  };
+
+  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
+  const showModalFour = () => {
+    setIsModalOpenFour(true);
+  };
+  const handleOkFour = () => {
+    setIsModalOpenFour(false);
+  };
+  const handleCancelEntityModal = () => {
+    setIsModalOpenFour(false);
   };
   //-------------------------------------------
   return (
@@ -192,6 +230,14 @@ const DocumentIdPage = () => {
                   options={clients && reversed(clients)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModal} />
+                <RiPencilFill
+                  className={`${cl.add__svg} ${
+                    !state.id_client && cl.disabled
+                  }`}
+                  onClick={() => {
+                    state.id_client && openClientModal(state.id_client);
+                  }}
+                />
               </div>
               {patchError && patchError.id_client && (
                 <Error>{patchError.id_client}</Error>
@@ -220,6 +266,14 @@ const DocumentIdPage = () => {
                   options={entities && reversed(entities)}
                 />
                 <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+                <RiPencilFill
+                  className={`${cl.add__svg} ${
+                    !state.id_entity && cl.disabled
+                  }`}
+                  onClick={() => {
+                    state.id_entity && openEntityModal(state.id_entity);
+                  }}
+                />
               </div>
               {patchError && patchError.id_entity && (
                 <Error>{patchError.id_entity}</Error>
@@ -236,14 +290,34 @@ const DocumentIdPage = () => {
             <Button>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Individuals isModal={true}/>
+            <Individuals isModal={true} />
           </Modal>
           <Modal
             open={isModalOpenTwo}
             onOk={handleOkTwo}
             onCancel={handleCancelTwo}
           >
-            <Entities isModal={true}/>
+            <Entities isModal={true} />
+          </Modal>
+          <Modal
+            open={isModalOpenThree}
+            onOk={handleOkThree}
+            onCancel={handleCancelClientModal}
+          >
+            <ClientIdPageContent
+              isModal
+              handleCancelClientModal={handleCancelClientModal}
+            />
+          </Modal>
+          <Modal
+            open={isModalOpenFour}
+            onOk={handleOkFour}
+            onCancel={handleCancelEntityModal}
+          >
+            <EntityIdPageContent
+              isModal
+              handleCancelEntityModal={handleCancelEntityModal}
+            />
           </Modal>
         </div>
       )}

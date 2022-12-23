@@ -33,7 +33,7 @@ const Login = () => {
             className={cl.input}
             {...register("email")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
         </div>
         <div className={cl.login__row}>
@@ -43,7 +43,7 @@ const Login = () => {
             className={cl.input}
             {...register("password")}
             required
-            autocomplete="off"
+            autoComplete="off"
           />
         </div>
         <div className={cl.link} style={{ marginTop: "10px" }}>

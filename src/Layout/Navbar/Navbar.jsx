@@ -3,10 +3,14 @@ import { SidebarContext } from "../../context";
 import cl from "./Navbar.module.scss";
 import { MdOutlineMenu } from "react-icons/md";
 import { useLocation } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserDetail } from "../../features/user/userActions";
 
 const Navbar = () => {
   const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
   const [list, setList] = useState("Документы на КК");
   useEffect(() => {
     if (
@@ -49,6 +53,7 @@ const Navbar = () => {
     } else {
       setList("Документы на КК");
     }
+    dispatch(getUserDetail());
   }, []);
 
   return (
@@ -61,7 +66,9 @@ const Navbar = () => {
       </h2>
       <h2 className={cl.navbar__right}>{list}</h2>
       <span>
-        <h2 className={cl.navbar__role}> </h2>
+        <h2 className={cl.navbar__role}>
+          {userInfo && userInfo.fullname && userInfo.fullname}
+        </h2>
       </span>
     </div>
   );

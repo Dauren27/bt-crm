@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserDetails, registerUser, userLogin, getUserDetail, updateToken } from "./userActions";
+import {
+  getUserDetails,
+  registerUser,
+  userLogin,
+  getUserDetail,
+  updateToken,
+} from "./userActions";
 
-// initialize userToken from local storage
+// initialize userToken from session storage
 const userToken = sessionStorage.getItem("userToken")
   ? sessionStorage.getItem("userToken")
   : null;
@@ -16,6 +22,7 @@ const initialState = {
   registerLoading: false,
   registerError: null,
   registerSuccess: false,
+  userDetailError: false,
 };
 
 const userSlice = createSlice({
@@ -25,7 +32,7 @@ const userSlice = createSlice({
     logout: (state) => {
       sessionStorage.removeItem("userToken");
       sessionStorage.removeItem("isAuth");
-      state.isAuth=false;
+      state.isAuth = false;
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -36,17 +43,17 @@ const userSlice = createSlice({
     [userLogin.pending]: (state) => {
       state.loading = true;
       state.error = null;
-      state.isAuth=false;
+      state.isAuth = false;
     },
     [userLogin.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.userToken = payload.userToken;
-      state.isAuth=true;
+      state.isAuth = true;
     },
     [userLogin.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
-      state.isAuth=false;
+      state.isAuth = false;
     },
     [updateToken.fulfilled]: (state, { payload }) => {
       state.userToken = payload;
@@ -64,15 +71,11 @@ const userSlice = createSlice({
       state.registerError = payload;
       state.registerSuccess = false;
     },
-    [getUserDetail.pending]: (state) => {
-      state.loading = true;
-    },
     [getUserDetail.fulfilled]: (state, { payload }) => {
-      state.loading = false;
       state.userInfo = payload;
     },
     [getUserDetail.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.userDetailError = true;
     },
   },
 });

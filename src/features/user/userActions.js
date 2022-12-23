@@ -32,9 +32,7 @@ export const updateToken = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const refresh = JSON.parse(
-        sessionStorage.getItem("userToken")
-      ).refresh;
+      const refresh = JSON.parse(sessionStorage.getItem("userToken")).refresh;
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/token/refresh/`,
         { refresh },
@@ -132,15 +130,14 @@ export const getUserDetail = createAsyncThunk(
   "user/getUserDetail",
   async (arg, { getState, rejectWithValue }) => {
     try {
-      const { user } = getState();
+      const token = JSON.parse(sessionStorage.getItem("userToken"));
       const config = {
         headers: {
-          Authorization: `Bearer${user.userToken}`,
+          Authorization: `Bearer ${token.access}`,
         },
       };
-
       const { data } = await axios.get(
-        `https://bt-back-demo.herokuapp.com/crm/api/client/`,
+        `https://bt-back-demo.herokuapp.com/full_name/`,
         config
       );
       return data;

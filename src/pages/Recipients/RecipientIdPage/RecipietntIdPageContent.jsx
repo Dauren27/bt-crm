@@ -2,33 +2,55 @@ import cl from "../RecipientsAdd/recipients.module.scss";
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { patchGuarantor } from "../../../features/guarantors/guarantorsActions";
+import {
+  getGuarantor,
+  getGuarantors,
+  patchGuarantor,
+} from "../../../features/guarantors/guarantorsActions";
 import { Select, Form, Input } from "antd";
 import Error from "../../../components/Error/Error";
 import Success from "../../../components/Success/Success";
 import Loading from "../../../components/Loading/Loading";
 import { useNavigate } from "react-router";
 
-const RecipientIdPageContent = () => {
+const RecipientIdPageContent = ({ isModal = false, handleCancelFour }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { patchLoading, patchSuccess, patchError, recipientInfo } = useSelector(
     (state) => state.guarantor
   );
-  const [state, setState] = useState({});
+  useEffect(() => {
+    if (!recipientInfo) navigate("/recipients");
+  }, []);
+  const [state, setState] = useState({
+    full_name: recipientInfo && recipientInfo.full_name,
+    address: recipientInfo && recipientInfo.address,
+    actual_address: recipientInfo && recipientInfo.actual_address,
+    status: recipientInfo && recipientInfo.status,
+    phone: recipientInfo && recipientInfo.phone,
+  });
   const submitForm = () => {
-    dispatch(patchGuarantor({ id: recipientInfo.id, obj: state }));
+    dispatch(patchGuarantor({ id: recipientInfo.id, obj: state })).then(() => {
+      dispatch(getGuarantors());
+    });
   };
-  const navigate = useNavigate();
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
-    if (!recipientInfo) navigate("/recipients");
-  }, []);
+    recipientInfo &&
+      setState({
+        full_name: recipientInfo.full_name,
+        address: recipientInfo.address,
+        actual_address: recipientInfo.actual_address,
+        status: recipientInfo.status,
+        phone: recipientInfo.phone,
+      });
+  }, [recipientInfo]);
   useEffect(() => {
-    if (patchSuccess) navigate("/recipients");
+    if (!isModal && patchSuccess) navigate("/recipients");
+    if (isModal && patchSuccess) handleCancelFour();
   }, [patchSuccess]);
   //-------------------------------------------
   return (
@@ -51,10 +73,10 @@ const RecipientIdPageContent = () => {
                 <Input
                   className={cl.recipients__input}
                   type="text"
-                  defaultValue={recipientInfo.full_name}
                   name="full_name"
-                  onChange={handleInput}
                   maxLength="100"
+                  value={state.full_name}
+                  onChange={handleInput}
                 />
                 {patchError && patchError.full_name && (
                   <Error>{patchError.full_name}</Error>
@@ -65,7 +87,7 @@ const RecipientIdPageContent = () => {
                 <Select
                   className={cl.recipients__accor}
                   onChange={(e) => setState({ ...state, status: e })}
-                  defaultValue={recipientInfo.status}
+                  value={state.status}
                 >
                   <Select.Option value="married">Женат/Замужем</Select.Option>
                   <Select.Option value="divorced">Разведен</Select.Option>
@@ -81,7 +103,6 @@ const RecipientIdPageContent = () => {
 
               <div className={cl.recipients__category}>
                 <h2>Кредитная история:</h2>
-
                 <input
                   type="file"
                   onChange={(e) => {
@@ -101,14 +122,13 @@ const RecipientIdPageContent = () => {
                   <Error>{patchError.credit_history}</Error>
                 )}
               </div>
-
               <div className={cl.recipients__category}>
                 <h2>Номер телефона:</h2>
                 <Input
                   className={cl.recipients__input}
                   type="text"
                   name="phone"
-                  defaultValue={recipientInfo.phone}
+                  value={state.phone}
                   onChange={handleInput}
                   maxLength="30"
                 />
@@ -119,12 +139,11 @@ const RecipientIdPageContent = () => {
 
               <div className={cl.recipients__category}>
                 <h2>Адрес прописки:</h2>
-
                 <Input
                   className={cl.recipients__input}
                   type="text"
                   name="address"
-                  defaultValue={recipientInfo.address}
+                  value={state.address}
                   onChange={handleInput}
                   maxLength="100"
                 />
@@ -138,7 +157,7 @@ const RecipientIdPageContent = () => {
                 <Input
                   className={cl.recipients__input}
                   type="text"
-                  defaultValue={recipientInfo.actual_address}
+                  value={state.actual_address}
                   name="actual_address"
                   onChange={handleInput}
                   maxLength="100"
@@ -179,6 +198,7 @@ const RecipientIdPageContent = () => {
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
+
             <Button>Сохранить</Button>
           </Form>
         </div>

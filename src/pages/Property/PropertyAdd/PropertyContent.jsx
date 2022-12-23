@@ -11,6 +11,7 @@ import {
 } from "../../../features/property/propertyActions";
 import cl from "./Property.module.scss";
 import { useNavigate } from "react-router";
+import { BsPlusLg } from "react-icons/bs";
 
 const PropertyContent = ({ isModal = false }) => {
   const dispatch = useDispatch();
@@ -18,9 +19,11 @@ const PropertyContent = ({ isModal = false }) => {
   const [state, setState] = useState({
     type: "",
     address: "",
-    files: null,
-    images: null,
+    filesArray: [],
+    imagesArray: [],
   });
+  const [imageFiles, setImageFiles] = useState(2);
+  const [fileFiles, setFileFiles] = useState(2);
   const { loading, error, success, successModal } = useSelector(
     (state) => state.property
   );
@@ -90,14 +93,26 @@ const PropertyContent = ({ isModal = false }) => {
         >
           <input
             type="file"
-            onChange={(e) =>
-              setState({
-                ...state,
-                files: e.target.files[0],
-              })
-            }
+            onChange={(e) => state.filesArray.push(e.target.files[0])}
           />
         </Form.Item>
+        {[...Array(fileFiles)].map((item) => (
+          <input
+            className={cl.mortgagedProperty__additionalFiles}
+            type="file"
+            onChange={(e) => {
+              state.filesArray.push(e.target.files[0]);
+            }}
+          />
+        ))}
+        {fileFiles != 4 && (
+          <div
+            className={cl.mortgagedProperty__addFiles}
+            onClick={() => setFileFiles(fileFiles + 1)}
+          >
+            <BsPlusLg /> <span>Add another file</span>
+          </div>
+        )}
         {error && error.files && (
           <Error style={{ marginTop: "-20px" }}>{error.files}</Error>
         )}
@@ -113,13 +128,27 @@ const PropertyContent = ({ isModal = false }) => {
           <input
             type="file"
             onChange={(e) => {
-              setState({
-                ...state,
-                images: e.target.files[0],
-              });
+              state.imagesArray.push(e.target.files[0]);
             }}
           />
         </Form.Item>
+        {[...Array(imageFiles)].map((item) => (
+          <input
+            className={cl.mortgagedProperty__additionalFiles}
+            type="file"
+            onChange={(e) => {
+              state.imagesArray.push(e.target.files[0]);
+            }}
+          />
+        ))}
+        {imageFiles != 4 && (
+          <div
+            className={cl.mortgagedProperty__addFiles}
+            onClick={() => setImageFiles(imageFiles + 1)}
+          >
+            <BsPlusLg /> <span>Add another image</span>
+          </div>
+        )}
         {error && error.images && (
           <Error style={{ marginTop: "-20px" }}>{error.images}</Error>
         )}

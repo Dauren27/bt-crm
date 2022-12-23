@@ -5,33 +5,38 @@ import { useDispatch, useSelector } from "react-redux";
 import cl from "../../pages/Counterparties/CounterpartiesAdd/counterparties.module.scss";
 import { Modal } from "antd";
 import { BsPlusLg } from "react-icons/bs";
-import { getUserDetail } from "../../features/user/userActions";
 import ConversationsContent from "../../pages/Conversations/ConversationsAdd/ConversationsContent";
 import CompaniesContent from "../../pages/Companies/CompaniesAdd/CompaniesContent";
 import Activites from "../Actives/Actives";
-import { getCompanies } from "../../features/company/companyActions";
+import {
+  getCompanies,
+  getCompany,
+} from "../../features/company/companyActions";
 import { getConversations } from "../../features/conversations/conversationsActions";
 import { getActivities } from "../../features/activity/activityActions";
 import {
   fetchEntities,
   getEntities,
 } from "../../features/entity/entityActions";
-import { getProperties } from "../../features/property/propertyActions";
+import {
+  getProperties,
+  getProperty,
+} from "../../features/property/propertyActions";
 import PropertyContent from "../../pages/Property/PropertyAdd/PropertyContent";
 import Error from "../Error/Error";
 import Loading from "../Loading/Loading";
 import Success from "../Success/Success";
 import { useNavigate } from "react-router";
+import { RiPencilFill } from "react-icons/ri";
+import PropertyIdPageContent from "../../pages/Property/PropertyIdPage/PropertyIdPageContent";
+import CompanyIdPageContent from "../../pages/Companies/CompanyIdPage/CompanyIdPageContent";
 
 const EntitiesComponent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { properties } = useSelector((state) => state.property);
-  const { conversations } = useSelector((state) => state.conversations);
   useEffect(() => {
-    const token = JSON.parse(sessionStorage.getItem("userToken"));
-    token && dispatch(getUserDetail(token.access));
     dispatch(getCompanies());
     dispatch(getActivities());
     dispatch(getProperties());
@@ -39,7 +44,9 @@ const EntitiesComponent = ({ isModal = false }) => {
   }, [dispatch]);
   const submitForm = () => {
     if (isModal) {
-      dispatch(fetchEntities(state)).then(() => dispatch(getEntities()));
+      dispatch(fetchEntities(state)).then(() => {
+        success && dispatch(getEntities());
+      });
     } else {
       dispatch(fetchEntities(state));
     }
@@ -68,7 +75,6 @@ const EntitiesComponent = ({ isModal = false }) => {
     current_loan: "",
     id_company: "",
     id_property: "",
-    id_num_parley: "",
   });
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -83,6 +89,12 @@ const EntitiesComponent = ({ isModal = false }) => {
     const arr2 = [...arr];
     arr2.reverse();
     return arr2;
+  };
+  const openPropertyModal = (id) => {
+    dispatch(getProperty({ id: id })).then(() => showModalSix());
+  };
+  const openCompanyModal = (id) => {
+    dispatch(getCompany({ id: id })).then(() => showModalSeven());
   };
   //-------------------------------------------
 
@@ -137,6 +149,28 @@ const EntitiesComponent = ({ isModal = false }) => {
   };
   const handleCancelFive = () => {
     setIsModalOpenFive(false);
+  };
+
+  const [isModalOpenSix, setIsModalOpenSix] = useState(false);
+  const showModalSix = () => {
+    setIsModalOpenSix(true);
+  };
+  const handleOkSix = () => {
+    setIsModalOpenSix(false);
+  };
+  const handleCancelSix = () => {
+    setIsModalOpenSix(false);
+  };
+
+  const [isModalOpenSeven, setIsModalOpenSeven] = useState(false);
+  const showModalSeven = () => {
+    setIsModalOpenSeven(true);
+  };
+  const handleOkSeven = () => {
+    setIsModalOpenSeven(false);
+  };
+  const handleCancelSeven = () => {
+    setIsModalOpenSeven(false);
   };
   //-------------------------------------------
   return (
@@ -203,8 +237,14 @@ const EntitiesComponent = ({ isModal = false }) => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalFour} />
+          <RiPencilFill
+            className={`${cl.add__svg} ${!state.id_company && cl.disabled}`}
+            onClick={() => {
+              state.id_company && openCompanyModal(state.id_company);
+            }}
+          />
         </div>
-        {error && error.company_name && <Error>{error.company_name}</Error>}
+        {error && error.id_company && <Error>{error.id_company}</Error>}
 
         <h2>ИНН:</h2>
         <Form.Item
@@ -494,7 +534,7 @@ const EntitiesComponent = ({ isModal = false }) => {
         <div className={cl.counterparties__flexContainer}>
           <Form.Item
             name="id_property"
-            rules={[{ required: true, message: "Заполните это поле" }]}
+            //rules={[{ required: true, message: "Заполните это поле" }]}
           >
             <Select
               className={cl.counterparties__accor}
@@ -513,42 +553,22 @@ const EntitiesComponent = ({ isModal = false }) => {
             />
           </Form.Item>
           <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+          <RiPencilFill
+            className={`${cl.add__svg} ${!state.id_property && cl.disabled}`}
+            onClick={() => {
+              state.id_property && openPropertyModal(state.id_property);
+            }}
+          />
         </div>
         {error && error.id_property && <Error>{error.id_property}</Error>}
-        <h2>Переговоры:</h2>
-        <div>
-          <div className={cl.counterparties__flexContainer}>
-            <Form.Item
-              name="id_num_parley"
-              rules={[{ required: true, message: "Заполните это поле" }]}
-            >
-              <Select
-                className={cl.counterparties__accor}
-                showSearch
-                allowClear
-                onChange={(e) => {
-                  setState({ ...state, id_num_parley: e });
-                }}
-                fieldNames={{ label: "client", value: "id" }}
-                filterOption={(input, option) =>
-                  (option?.name.toLocaleLowerCase() ?? "").includes(
-                    input.toLocaleLowerCase()
-                  )
-                }
-                options={conversations && reversed(conversations)}
-              />
-            </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalThree} />
-          </div>
-          {error && error.id_num_parley && <Error>{error.id_num_parley}</Error>}
-        </div>
+
         {loading && <Loading>Отправка...</Loading>}
         {error && (
           <Error style={{ fontSize: "20px" }}>
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {successModal && <Success>Данные успешно отправлены.</Success>}
+        {isModal && success && <Success>Данные успешно отправлены.</Success>}
         <Button>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -581,6 +601,20 @@ const EntitiesComponent = ({ isModal = false }) => {
         onCancel={handleCancelFive}
       >
         <Activites />
+      </Modal>
+      <Modal
+        open={isModalOpenSix}
+        onOk={handleOkSix}
+        onCancel={handleCancelSix}
+      >
+        <PropertyIdPageContent isModal handleCancelSix={handleCancelSix} />
+      </Modal>
+      <Modal
+        open={isModalOpenSeven}
+        onOk={handleOkSeven}
+        onCancel={handleCancelSeven}
+      >
+        <CompanyIdPageContent isModal handleCancelSeven={handleCancelSeven} />
       </Modal>
     </>
   );

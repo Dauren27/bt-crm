@@ -3,21 +3,25 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchProperties = createAsyncThunk(
   "properties",
-  async ({ type, address, files, images }, { rejectWithValue }) => {
+  async ({ type, address, filesArray, imagesArray }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
+      const formData = new FormData();
+      formData.append("type", type);
+      formData.append("address", address);
+      for (let i = 0; i < imagesArray.length; i++) {
+        formData.append("images", imagesArray[i]);
+      }
+      for (let i = 0; i < filesArray.length; i++) {
+        formData.append("files", filesArray[i]);
+      }
       const { data } = await axios.post(
         `https://bt-back-demo.herokuapp.com/crm/api/property/`,
-        {
-          type,
-          address,
-          files,
-          images,
-        },
+        formData,
         config
       );
       return data;
@@ -39,7 +43,15 @@ export const patchProperty = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       };
-
+      // const formData = new FormData();
+      // obj.type && formData.append("type", obj.type);
+      // obj.address && formData.append("address", obj.address);
+      // for (let i = 0; i < obj.imagesArray.length; i++) {
+      //   formData.append("images", obj.imagesArray[i]);
+      // }
+      // for (let i = 0; i < obj.filesArray.length; i++) {
+      //   formData.append("files", obj.filesArray[i]);
+      // }
       const { data } = await axios.patch(
         `https://bt-back-demo.herokuapp.com/crm/api/property/${id}/`,
         obj,
