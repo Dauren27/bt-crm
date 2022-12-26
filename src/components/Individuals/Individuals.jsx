@@ -56,8 +56,6 @@ const Individuals = ({ isModal = false }) => {
     id_property: null,
   });
   useEffect(() => {
-    const token = JSON.parse(sessionStorage.getItem("userToken"));
-    token && dispatch(getUserDetail(token.access));
     dispatch(getGuarantors());
     dispatch(getProperties());
     dispatch(getConversations());

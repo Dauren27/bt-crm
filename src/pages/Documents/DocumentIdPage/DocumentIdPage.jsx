@@ -8,7 +8,6 @@ import { BsPlusLg } from "react-icons/bs";
 import { Modal } from "antd";
 import Individuals from "../../../components/Individuals/Individuals";
 import Entities from "../../../components/EntitiesComponent/Entities";
-import { getUserDetail } from "../../../features/user/userActions";
 import {
   getClient,
   getClients,
@@ -40,7 +39,6 @@ const DocumentIdPage = () => {
     id_entity: documentInfo && documentInfo.id_entity,
   });
   useEffect(() => {
-    dispatch(getUserDetail());
     dispatch(getClients());
     dispatch(getEntities());
   }, [dispatch]);

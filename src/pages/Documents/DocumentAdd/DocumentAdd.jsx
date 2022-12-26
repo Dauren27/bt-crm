@@ -8,15 +8,11 @@ import { BsPlusLg } from "react-icons/bs";
 import { Modal } from "antd";
 import Individuals from "../../../components/Individuals/Individuals";
 import Entities from "../../../components/EntitiesComponent/Entities";
-import { getUserDetail } from "../../../features/user/userActions";
 import {
   getClient,
   getClients,
 } from "../../../features/clients/clientsActions";
-import {
-  fetchDocuments,
-  getDocuments,
-} from "../../../features/documents/documentsActions";
+import { fetchDocuments } from "../../../features/documents/documentsActions";
 import { getEntities, getEntity } from "../../../features/entity/entityActions";
 import Error from "../../../components/Error/Error";
 import Loading from "../../../components/Loading/Loading";
@@ -42,7 +38,6 @@ const DocumentAdd = () => {
     id_spec: null,
   });
   useEffect(() => {
-    dispatch(getUserDetail());
     dispatch(getClients());
     dispatch(getEntities());
   }, [dispatch]);
@@ -210,6 +205,7 @@ const DocumentAdd = () => {
                 <Select
                   showSearch
                   allowClear
+                  disabled={state.id_entity}
                   onChange={(e) => {
                     setState({ ...state, id_client: e });
                   }}
@@ -241,6 +237,7 @@ const DocumentAdd = () => {
                 //rules={[{ required: true, message: "Заполните это поле" }]}
               >
                 <Select
+                  disabled={state.id_client}
                   showSearch
                   allowClear
                   onChange={(e) => {

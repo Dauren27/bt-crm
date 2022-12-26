@@ -13,12 +13,21 @@ import { BiSearch } from "react-icons/bi";
 import Loading from "../../../components/Loading/Loading";
 import Success from "../../../components/Success/Success";
 import Error from "../../../components/Error/Error";
+import { Select } from "antd";
+import { getEntities } from "../../../features/entity/entityActions";
+import { getClients } from "../../../features/clients/clientsActions";
 const ConversationsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getConversations());
+    dispatch(getClients());
+    dispatch(getEntities());
   }, [dispatch]);
+  const { clients } = useSelector((state) => state.counterparties);
+  const { entities } = useSelector((state) => state.entity);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [filtredConversation, setFiltredConversation] = useState(null);
   const {
     conversations,
     deleteLoading,
@@ -79,12 +88,94 @@ const ConversationsList = () => {
           <div className={cl.content__search}>
             <input
               type="text"
+              disabled={
+                filtredConversation &&
+                filtredConversation.id &&
+                filtredConversation.id
+              }
               onChange={(e) => {
                 setSearchValue(e.target.value.toLocaleLowerCase());
               }}
               placeholder="Поиск"
             />
             <BiSearch />
+          </div>
+          <div className={cl.content__filter}>
+            <Select
+              className={cl.content__select}
+              onChange={(e) => setSelectedOption(e)}
+            >
+              <Select.Option value="client">Физические лица</Select.Option>
+              <Select.Option value="entity">Юридические лица</Select.Option>
+            </Select>
+            {selectedOption === "client" ? (
+              <Select
+                showSearch
+                allowClear
+                onChange={(e) => {
+                  setFiltredConversation({ id: e, label: "client" });
+                }}
+                className={`${cl.content__select} ${cl.right__select}`}
+                fieldNames={{
+                  label: "full_name",
+                  value: "id",
+                }}
+                filterOption={(input, option) =>
+                  (option?.full_name.toLocaleLowerCase() ?? "").includes(
+                    input.toLocaleLowerCase()
+                  )
+                }
+                options={clients && clients}
+              />
+            ) : selectedOption === "entity" ? (
+              <Select
+                showSearch
+                allowClear
+                onChange={(e) => {
+                  setFiltredConversation({ id: e, label: "entity" });
+                }}
+                className={`${cl.content__select} ${cl.right__select}`}
+                fieldNames={{
+                  label: "full_name_director",
+                  value: "id",
+                }}
+                filterOption={(input, option) =>
+                  (option?.full_name.toLocaleLowerCase() ?? "").includes(
+                    input.toLocaleLowerCase()
+                  )
+                }
+                options={entities && entities}
+              />
+            ) : null}
+            {/* <Select
+              showSearch
+              allowClear
+              disabled={!selectedOption}
+              onChange={(e) => {
+                setFiltredConversation(e);
+              }}
+              className={`${cl.content__select} ${cl.right__select}`}
+              fieldNames={{
+                label:
+                  selectedOption === "client"
+                    ? "full_name"
+                    : "full_name_director",
+                value: "id",
+              }}
+              filterOption={(input, option) =>
+                (option?.full_name.toLocaleLowerCase() ?? "").includes(
+                  input.toLocaleLowerCase()
+                )
+              }
+              options={
+                selectedOption === "client"
+                  ? clients && clients
+                  : selectedOption === "entity"
+                  ? entities && entities
+                  : null
+              }
+            /> */}
+            {/* <button className={cl.content__button}>Поиск</button> */}
           </div>
           <div className={cl.content__deleteDiv}>
             <button className={cl.content__delete} onClick={deleteDoc}>
@@ -125,30 +216,61 @@ const ConversationsList = () => {
                   <th>Название</th>
                   <th>Дата</th>
                 </tr>
-                {conversationsList
-                  .filter((item) =>
-                    item.client.toLowerCase().includes(searchValue)
-                  )
-                  .map((conversation) => (
-                    <tr
-                      key={conversation.id}
-                      className="body__tr"
-                      onClick={() => navigateToConversation(conversation.id)}
-                    >
-                      <td>
-                        <input
-                          type="checkbox"
-                          name={conversation.id}
-                          checked={conversation?.isChecked || false}
-                          onChange={handleChange}
-                          onClick={(event) => event.stopPropagation()}
-                        />
-                      </td>
-                      <td className="main_field">{conversation.id}</td>
-                      <td>{conversation.client}</td>
-                      <td>{conversation.date}</td>
-                    </tr>
-                  ))}
+                {filtredConversation && filtredConversation.id
+                  ? conversationsList
+                      .filter((item) =>
+                        filtredConversation.label === "client"
+                          ? item.client_id == filtredConversation.id
+                          : item.entity_id == filtredConversation.id
+                      )
+                      .map((conversation) => (
+                        <tr
+                          key={conversation.id}
+                          className="body__tr"
+                          onClick={() =>
+                            navigateToConversation(conversation.id)
+                          }
+                        >
+                          <td>
+                            <input
+                              type="checkbox"
+                              name={conversation.id}
+                              checked={conversation?.isChecked || false}
+                              onChange={handleChange}
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          </td>
+                          <td className="main_field">{conversation.id}</td>
+                          <td>{conversation.client}</td>
+                          <td>{conversation.date}</td>
+                        </tr>
+                      ))
+                  : conversationsList
+                      .filter((item) =>
+                        item.client.toLowerCase().includes(searchValue)
+                      )
+                      .map((conversation) => (
+                        <tr
+                          key={conversation.id}
+                          className="body__tr"
+                          onClick={() =>
+                            navigateToConversation(conversation.id)
+                          }
+                        >
+                          <td>
+                            <input
+                              type="checkbox"
+                              name={conversation.id}
+                              checked={conversation?.isChecked || false}
+                              onChange={handleChange}
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          </td>
+                          <td className="main_field">{conversation.id}</td>
+                          <td>{conversation.client}</td>
+                          <td>{conversation.date}</td>
+                        </tr>
+                      ))}
               </Table>
             ) : (
               <h1 className={cl.documents__loading}>Загрузка...</h1>

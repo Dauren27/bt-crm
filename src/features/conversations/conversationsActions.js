@@ -4,7 +4,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchConversations = createAsyncThunk(
   "conversations",
   async (
-    { is_meeting, client, phone, desc, results_report, statistics },
+    {
+      is_meeting,
+      client,
+      phone,
+      desc,
+      results_report,
+      statistics,
+      client_id,
+      entity_id,
+    },
     { rejectWithValue }
   ) => {
     try {
@@ -21,6 +30,8 @@ export const fetchConversations = createAsyncThunk(
           phone,
           desc,
           results_report,
+          client_id,
+          entity_id,
         },
         config
       );

@@ -1,50 +1,12 @@
 .conversations {
   padding-bottom: 50px;
-
   .title {
     font-weight: 400;
     font-style: normal;
     font-size: 26px;
     margin-top: 20px;
   }
-  .conversations__checkboxes {
-    display: flex;
-    margin-top: 40px;
-    padding-bottom: 30px;
-    width: 100%;
-    @media (max-width: 555px) {
-      flex-direction: column;
-    }
-    label {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      @media (max-width: 555px) {
-        width: 400px;
-      }
-      @media (max-width: 455px) {
-        width: 100%;
-      }
-      &:last-child {
-        margin-left: 46px;
-        @media (max-width: 555px) {
-          margin-left: 0;
-          margin-top: 20px;
-        }
-      }
-      span {
-        font-weight: 400;
-        font-size: 20px;
-        line-height: 23px;
-      }
-      input {
-        width: 24px;
-        height: 24px;
-        margin-left: 10px;
-      }
-    }
-  }
-  .conversations__checkbox{
+  .conversations__checkbox {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -56,12 +18,11 @@
       font-size: 24px;
       line-height: 28px;
     }
-    input{
+    input {
       width: 25px;
       height: 25px;
       margin-left: 25px;
     }
-    
   }
   .conversations__category {
     width: 482px;
@@ -70,12 +31,21 @@
     @media (max-width: 555px) {
       width: 100%;
     }
-    .file__name{
+    .file__name {
       max-width: 90%;
       font-size: 16px;
       overflow: hidden;
       color: #42b4f4;
       margin-top: 10px;
+    }
+    .add__svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      &.disabled {
+        color: #aaa;
+      }
     }
     .conversations__title {
       font-weight: 400;
@@ -127,6 +97,20 @@
       padding: 10px;
       @media (max-width: 555px) {
         width: 100%;
+      }
+    }
+    .conversations__select__container {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      .conversations__accor {
+        width: 267px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        cursor: pointer;
+        span {
+          cursor: pointer;
+        }
       }
     }
   }
