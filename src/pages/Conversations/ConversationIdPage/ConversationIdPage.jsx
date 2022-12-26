@@ -245,7 +245,6 @@ const ConversationIdPage = () => {
               <div className={cl.conversations__select__container}>
                 <Form.Item name="client_id">
                   <Select
-                    disabled={state.entity_id}
                     showSearch
                     allowClear
                     onChange={(e) => {
@@ -284,7 +283,6 @@ const ConversationIdPage = () => {
               <div className={cl.conversations__select__container}>
                 <Form.Item name="entity_id">
                   <Select
-                    disabled={state.client_id}
                     showSearch
                     allowClear
                     onChange={(e) => {
