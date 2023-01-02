@@ -34,10 +34,10 @@ const PropertyIdPageContent = ({
     filesArray: propertyInfo && [...propertyInfo.files],
   });
   const [imageFiles, setImageFiles] = useState(
-    propertyInfo && propertyInfo.files.length
+    propertyInfo && propertyInfo.images.length
   );
   const [fileFiles, setFileFiles] = useState(
-    propertyInfo && propertyInfo.images.length
+    propertyInfo && propertyInfo.files.length
   );
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -50,6 +50,7 @@ const PropertyIdPageContent = ({
   useEffect(() => {
     propertyInfo &&
       setState({
+        ...state,
         type: propertyInfo && propertyInfo.type,
         address: propertyInfo && propertyInfo.address,
       });
@@ -75,7 +76,9 @@ const PropertyIdPageContent = ({
             {propertyInfo.id}.{propertyInfo.type}
           </h2>
           <div className={cl.mortgagedProperty__category}>
-            <h2 className={cl.mortgagedProperty__title}>Залоговое имущество</h2>
+            <h2 className={cl.mortgagedProperty__title}>
+              Залоговое имущество:
+            </h2>
             <Input
               type="text"
               className={cl.mortgagedProperty__input}
@@ -87,7 +90,7 @@ const PropertyIdPageContent = ({
           </div>
           <div className={cl.mortgagedProperty__category}>
             <h2 className={cl.mortgagedProperty__title}>
-              Местонахождение залога
+              Местонахождение залога:
             </h2>
             <Input
               type="text"
@@ -102,13 +105,15 @@ const PropertyIdPageContent = ({
           </div>
           <div className={cl.mortgagedProperty__category}>
             <h2 className={cl.mortgagedProperty__title}>
-              Документы на залоговое имущество
+              Документы на залоговое имущество:
             </h2>
             {propertyInfo.files.map((item, index) => (
               <>
                 <input
                   type="file"
-                  onChange={(e) => state.filesArray.push(e.target.files[0])}
+                  onChange={(e) => {
+                    state.filesArray[index] = e.target.files[0];
+                  }}
                 />
                 <p className={cl.file__name}>
                   Текущий файл :{" "}
@@ -118,7 +123,7 @@ const PropertyIdPageContent = ({
                 </p>
               </>
             ))}
-            {[...Array(fileFiles)].map((item) => (
+            {[...Array(fileFiles - propertyInfo.files.length)].map((item) => (
               <input
                 className={cl.mortgagedProperty__additionalFiles}
                 type="file"
@@ -141,13 +146,16 @@ const PropertyIdPageContent = ({
           </div>
           <div className={cl.mortgagedProperty__category}>
             <h2 className={cl.mortgagedProperty__title}>
-              Фотографии залогового имущество
+              Фотографии залогового имущество:
             </h2>
             {propertyInfo.images.map((item, index) => (
               <>
                 <input
                   type="file"
-                  onChange={(e) => state.imagesArray.push(e.target.files[0])}
+                  onChange={(e) => {
+                    state.imagesArray[index] = e.target.files[0];
+
+                  }}
                 />
                 <p className={cl.file__name}>
                   Текущий файл :{" "}
@@ -157,7 +165,7 @@ const PropertyIdPageContent = ({
                 </p>
               </>
             ))}
-            {[...Array(imageFiles)].map((item) => (
+            {[...Array(imageFiles - propertyInfo.images.length)].map((item) => (
               <input
                 className={cl.mortgagedProperty__additionalFiles}
                 type="file"

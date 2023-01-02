@@ -63,7 +63,9 @@ export const fetchClients = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      if (error.response && error.response.data) {
+      if (error.response.status == 401) {
+        return rejectWithValue("Unauthorized")
+      } else if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -88,7 +90,9 @@ export const patchClient = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      if (error.response && error.response.data) {
+      if (error.response.status == 401) {
+        return rejectWithValue("Unauthorized")
+      } else if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);

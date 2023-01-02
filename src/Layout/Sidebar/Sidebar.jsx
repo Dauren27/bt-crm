@@ -3,8 +3,7 @@ import cl from "./Sidebar.module.scss";
 import { NavLink } from "react-router-dom";
 import { SidebarContext } from "../../context";
 import { CloseOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails } from "../../features/user/userActions";
+import { useDispatch } from "react-redux";
 import { logout } from "../../features/user/userSlice";
 
 const Sidebar = () => {
@@ -31,7 +30,7 @@ const Sidebar = () => {
           <ul className={cl.sidebar__menu__links}>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/documents"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}
@@ -41,7 +40,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/companies"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}
@@ -51,7 +50,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/counterparties"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}
@@ -61,7 +60,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/recipients"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}
@@ -71,7 +70,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/properties"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}
@@ -81,7 +80,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                exact
+                exact="true"
                 to="/conversations"
                 className={({ isActive }) => (isActive ? cl.active : "")}
                 onClick={() => clickHandler()}

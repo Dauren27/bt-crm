@@ -38,8 +38,7 @@ export const updateToken = createAsyncThunk(
         { refresh },
         config
       );
-      sessionStorage.setItem("userToken", JSON.stringify(data));
-      console.log("refreshToken", data);
+      sessionStorage.setItem("userToken", JSON.stringify({ ...data, refresh }));
       return data;
     } catch (error) {
       if (error.response.status == 401 || error.response.status == 400) {
@@ -142,7 +141,7 @@ export const getUserDetail = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      if (error.response.status == 401 || error.response.status == 400) {
+      if (error.response.status == 401) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);

@@ -11,7 +11,10 @@ function App() {
   const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(updateToken());
+    const interval = setInterval(() => {
+      dispatch(updateToken());
+    }, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
   return (
     <>

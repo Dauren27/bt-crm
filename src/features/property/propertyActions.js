@@ -43,9 +43,12 @@ export const patchProperty = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       };
-      // const formData = new FormData();
-      // obj.type && formData.append("type", obj.type);
-      // obj.address && formData.append("address", obj.address);
+
+      const formData = new FormData();
+      formData.append("type", obj.type);
+      formData.append("address", obj.address);
+      formData.append("images", obj.imagesArray);
+      formData.append("files", obj.filesArray);
       // for (let i = 0; i < obj.imagesArray.length; i++) {
       //   formData.append("images", obj.imagesArray[i]);
       // }
@@ -54,7 +57,7 @@ export const patchProperty = createAsyncThunk(
       // }
       const { data } = await axios.patch(
         `https://bt-back-demo.herokuapp.com/crm/api/property/${id}/`,
-        obj,
+        formData,
         config
       );
       return data;

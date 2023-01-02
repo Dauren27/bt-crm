@@ -50,7 +50,7 @@ const PropertyContent = ({ isModal = false }) => {
       onFinishFailed={() => alert("Заполните все поля")}
     >
       <div className={cl.mortgagedProperty__category}>
-        <h2 className={cl.mortgagedProperty__title}>Залоговое имущество</h2>
+        <h2 className={cl.mortgagedProperty__title}>Залоговое имущество:</h2>
         <Form.Item
           name="text"
           rules={[{ required: true, message: "Заполните это поле" }]}
@@ -67,7 +67,7 @@ const PropertyContent = ({ isModal = false }) => {
         )}
       </div>
       <div className={cl.mortgagedProperty__category}>
-        <h2 className={cl.mortgagedProperty__title}>Местонахождение залога</h2>
+        <h2 className={cl.mortgagedProperty__title}>Местонахождение залога:</h2>
         <Form.Item
           name="address"
           rules={[{ required: true, message: "Заполните это поле" }]}
@@ -85,7 +85,7 @@ const PropertyContent = ({ isModal = false }) => {
       </div>
       <div className={cl.mortgagedProperty__category}>
         <h2 className={cl.mortgagedProperty__title}>
-          Документы на залоговое имущество
+          Документы на залоговое имущество:
         </h2>
         <Form.Item
           name="files"
@@ -119,7 +119,7 @@ const PropertyContent = ({ isModal = false }) => {
       </div>
       <div className={cl.mortgagedProperty__category}>
         <h2 className={cl.mortgagedProperty__title}>
-          Фотографии залогового имущество
+          Фотографии залогового имущество:
         </h2>
         <Form.Item
           name="images"
