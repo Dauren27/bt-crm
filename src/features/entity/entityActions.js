@@ -72,7 +72,6 @@ export const fetchEntities = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response && error.response.data) {
-        console.log(error);
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
@@ -115,7 +114,6 @@ export const getEntity = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       };
-      console.log("heloo");
       const { data } = await axios.get(
         `https://bt-back-demo.herokuapp.com/crm/api/entity/${id}/`,
         config

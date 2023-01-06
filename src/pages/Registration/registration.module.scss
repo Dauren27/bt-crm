@@ -20,7 +20,7 @@
     button {
       width: 395px;
       margin-top: 60px;
-      @media(max-width:420px){
+      @media (max-width: 420px) {
         width: 100%;
       }
     }
@@ -50,6 +50,20 @@
         }
         @media (max-width: 340px) {
           width: 260px;
+        }
+      }
+      .select {
+        width: 267px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        margin-top: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        span {
+          cursor: pointer;
+        }
+        @media (max-width: 555px) {
+          font-size: 15px;
         }
       }
     }

@@ -5,9 +5,9 @@ import {
   fetchActivites,
   getActivities,
 } from "../../features/activity/activityActions";
-import Button from "../Button/Button";
-import Loading from "../Loading/Loading";
-import Success from "../Success/Success";
+import Button from "../UI/Button/Button";
+import Loading from "../UI/Loading/Loading";
+import Success from "../UI/Success/Success";
 import cl from "./Actives.module.scss";
 
 const Activites = () => {

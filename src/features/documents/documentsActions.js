@@ -103,7 +103,6 @@ export const getDocument = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      console.log(id);
       const { data } = await axios.get(
         `https://bt-back-demo.herokuapp.com/crm/api/dataKK/${id}/`,
         config

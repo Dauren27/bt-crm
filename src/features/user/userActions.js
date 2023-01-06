@@ -87,7 +87,6 @@ export const registerUser = createAsyncThunk(
         config
       );
     } catch (error) {
-      console.log(error);
       if (error.response.status == 401 || error.response.status == 400) {
         return rejectWithValue(error.response.data);
       } else {

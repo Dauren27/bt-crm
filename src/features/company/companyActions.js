@@ -110,7 +110,6 @@ export const getCompany = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      console.log(id);
       const { data } = await axios.get(
         `https://bt-back-demo.herokuapp.com/crm/api/company/${id}/`,
         config
@@ -143,7 +142,6 @@ export const deleteCompany = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
