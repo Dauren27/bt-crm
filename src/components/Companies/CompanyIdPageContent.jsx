@@ -14,20 +14,20 @@ import { getActivities } from "../../features/activity/activityActions";
 import Error from "../UI/Error/Error";
 import Loading from "../UI/Loading/Loading";
 import Success from "../UI/Success/Success";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/router";
 
 const CompanyIdPageContent = ({
   isModal = false,
   handleCancelSeven = false,
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { push } = useRouter();
   const { patchError, patchLoading, patchSuccess, companyInfo } = useSelector(
     (state) => state.companies
   );
   const { activities } = useSelector((state) => state.activites);
   useEffect(() => {
-    if (!companyInfo) navigate("/companies");
+    if (!companyInfo) push("/companies");
   }, []);
   const [state, setState] = useState({
     company_name: companyInfo && companyInfo.company_name,
@@ -65,7 +65,7 @@ const CompanyIdPageContent = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (!isModal && patchSuccess) navigate("/companies");
+    if (!isModal && patchSuccess) push("/companies");
     if (isModal && patchSuccess) {
       handleCancelSeven && handleCancelSeven();
     }

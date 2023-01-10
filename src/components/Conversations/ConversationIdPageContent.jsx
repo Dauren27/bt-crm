@@ -10,7 +10,6 @@ import {
   patchConversation,
 } from "../../features/conversations/conversationsActions";
 import cl from "../style.module.scss";
-import { useNavigate } from "react-router";
 import Individuals from "../Clients/ClientAddContent";
 import Entities from "../Entities/EntityAddContent";
 import { getClient, getClients } from "../../features/clients/clientsActions";
@@ -19,6 +18,7 @@ import ClientIdPageContent from "../../components/Clients/ClientIdPageContent";
 import { BsPlusLg } from "react-icons/bs";
 import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
+import { useRouter } from "next/router";
 
 const ConversationIdPageContent = () => {
   //----API-----
@@ -43,12 +43,12 @@ const ConversationIdPageContent = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const navigate = useNavigate();
+  const { push } = useRouter();
   useEffect(() => {
-    if (!conversationInfo) navigate("/conversations");
+    if (!conversationInfo) push("/conversations");
   }, []);
   useEffect(() => {
-    if (patchSuccess) navigate("/conversations");
+    if (patchSuccess) push("/conversations");
   }, [patchSuccess]);
   const reversed = (arr) => {
     const arr2 = [...arr];
@@ -189,9 +189,7 @@ const ConversationIdPageContent = () => {
               )}
             </div>
             <div className={cl.content__category}>
-              <h2 className={cl.content__title}>
-                Отчёт по результатам:{" "}
-              </h2>
+              <h2 className={cl.content__title}>Отчёт по результатам: </h2>
               <input
                 className={cl.content__file}
                 type="file"

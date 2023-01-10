@@ -21,22 +21,22 @@ import Error from "../UI/Error/Error";
 import Success from "../UI/Success/Success";
 import Loading from "../UI/Loading/Loading";
 import PropertyContent from "../Properties/PropertyAddContent";
-import { useNavigate } from "react-router";
 import { RiPencilFill } from "react-icons/ri";
 import RecipientIdPageContent from "../Recipients/RecipietntIdPageContent";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
+import { useRouter } from "next/router";
 
 const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { push } = useRouter();
   const { guarantors } = useSelector((state) => state.guarantor);
   const { properties } = useSelector((state) => state.property);
   const { patchLoading, patchError, patchSuccess, clientInfo } = useSelector(
     (state) => state.counterparties
   );
   useEffect(() => {
-    if (!clientInfo) navigate("/counterparties");
+    if (!clientInfo) push("/counterparties");
   }, []);
   const [state, setState] = useState({
     address: clientInfo && clientInfo.address,
@@ -80,7 +80,7 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
       });
   }, [clientInfo]);
   useEffect(() => {
-    if (!isModal && patchSuccess) navigate("/counterparties");
+    if (!isModal && patchSuccess) push("/counterparties");
     if (isModal && patchSuccess) {
       handleCancelClientModal && handleCancelClientModal();
     }
