@@ -16,13 +16,13 @@ const Navbar = () => {
     if (
       location.pathname === "/documents" ||
       location.pathname === "/documents/add" ||
-      location.pathname.includes("/documents/document/")
+      location.pathname.includes("/documents/")
     ) {
       setList("Документы на КК");
     } else if (
       location.pathname === "/companies" ||
       location.pathname === "/companies/add" ||
-      location.pathname.includes("/companies/company/")
+      location.pathname.includes("/companies/")
     ) {
       setList("Компании");
     } else if (
@@ -35,19 +35,19 @@ const Navbar = () => {
     } else if (
       location.pathname === "/recipients" ||
       location.pathname === "/recipients/add" ||
-      location.pathname.includes("/recipients/recipient/")
+      location.pathname.includes("/recipients/")
     ) {
       setList("Поручители");
     } else if (
       location.pathname === "/conversations" ||
       location.pathname === "/conversations/add" ||
-      location.pathname.includes("/conversations/conversation/")
+      location.pathname.includes("/conversations/")
     ) {
       setList("Переговоры");
     } else if (
       location.pathname === "/properties" ||
       location.pathname === "/properties/add" ||
-      location.pathname.includes("/properties/property/")
+      location.pathname.includes("/properties/")
     ) {
       setList("Залоговые имущества");
     } else {
