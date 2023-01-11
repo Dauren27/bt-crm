@@ -24,7 +24,7 @@ const ConversationsContent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [value, setValue] = useState(true);
+  const [value, setValue] = useState(false);
   const [state, setState] = useState({
     is_meeting: value,
     client: "",
