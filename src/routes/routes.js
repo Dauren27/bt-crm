@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import CompaniesAdd from "../pages/Companies/CompaniesAdd";
 import CompaniesList from "../pages/Companies/CompaniesList";
 import CompanyIdPage from "../pages/Companies/CompanyIdPage";
@@ -39,7 +39,7 @@ export const PrivateRoutes = () => {
       <Route path="/properties/add" element={<PropertyAdd />} />
       <Route path="/properties" element={<PropertyList />} />
       <Route path="/properties/:id" element={<PropertyIdPage />} />
-      <Route path="*" element={<DocumentsList />} />
+      <Route path="*" element={<Navigate to="/documents" replace />} />
       <Route path="/counterparties/add" element={<CounterpartiesAdd />} />
       <Route path="/counterparties" element={<CounterpartiesList />} />
       <Route path="/counterparties/client/:id" element={<ClientIdPage />} />
@@ -53,7 +53,7 @@ export const PublicRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registration" element={<Registration />} />
-      <Route path="/*" element={<Login />} />
+      <Route path="/*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
