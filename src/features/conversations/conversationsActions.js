@@ -10,7 +10,6 @@ export const fetchConversations = createAsyncThunk(
       phone,
       desc,
       results_report,
-      statistics,
       client_id,
       entity_id,
     },
@@ -97,7 +96,6 @@ export const getConversations = createAsyncThunk(
   "getConversations",
   async (arg, { getState, rejectWithValue }) => {
     try {
-      const { recipients } = getState();
       const config = {
         headers: {
           "Content-Type": "application/json",
