@@ -189,7 +189,7 @@ const RecipientsContent = ({ isModal = false }) => {
           </Error>
         )}
         {successModal && <Success>Данные успешно отправлены.</Success>}
-        <Button>Отправить</Button>
+        <Button disabled={loading}>Отправить</Button>
       </Form>
     </div>
   );

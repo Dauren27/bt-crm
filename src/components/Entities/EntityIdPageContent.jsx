@@ -621,7 +621,7 @@ const EntityIdPageContent = ({
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно отправлены.</Success>}
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Activites />

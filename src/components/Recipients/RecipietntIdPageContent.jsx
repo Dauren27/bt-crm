@@ -196,7 +196,7 @@ const RecipientIdPageContent = ({ isModal = false, handleCancelFour }) => {
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
 
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
         </div>
       )}

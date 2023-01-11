@@ -24,9 +24,7 @@ const PropertyContent = ({ isModal = false }) => {
   });
   const [imageFiles, setImageFiles] = useState(2);
   const [fileFiles, setFileFiles] = useState(2);
-  const { loading, error, success } = useSelector(
-    (state) => state.property
-  );
+  const { loading, error, success } = useSelector((state) => state.property);
 
   const submitForm = () => {
     if (isModal) {
@@ -67,9 +65,7 @@ const PropertyContent = ({ isModal = false }) => {
           )}
         </div>
         <div className={cl.content__category}>
-          <h2 className={cl.content__title}>
-            Местонахождение залога:
-          </h2>
+          <h2 className={cl.content__title}>Местонахождение залога:</h2>
           <Form.Item
             name="address"
             rules={[{ required: true, message: "Заполните это поле" }]}
@@ -162,7 +158,7 @@ const PropertyContent = ({ isModal = false }) => {
           </Error>
         )}
         {success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Отправить</Button>
+        <Button disabled={loading}>Отправить</Button>
       </Form>
     </div>
   );

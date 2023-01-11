@@ -188,7 +188,7 @@ const PropertyIdPageContent = ({
             </Error>
           )}
           {patchSuccess && <Success>Данные успешно изменены.</Success>}
-          <Button>Сохранить</Button>
+          <Button disabled={patchLoading}>Сохранить</Button>
         </Form>
       )}
     </div>

@@ -44,7 +44,7 @@ const Activites = () => {
       {success && <Success>Данные были успешно отправлены</Success>}
       {loading && <Loading>Загрузка...</Loading>}
       {error && <Success>Данные не были отправлены</Success>}
-      <Button>Submit</Button>
+      <Button disabled={loading}>Submit</Button>
     </form>
   );
 };

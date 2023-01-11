@@ -21,22 +21,22 @@ import Error from "../UI/Error/Error";
 import Success from "../UI/Success/Success";
 import Loading from "../UI/Loading/Loading";
 import PropertyContent from "../Properties/PropertyAddContent";
+import { useNavigate } from "react-router";
 import { RiPencilFill } from "react-icons/ri";
 import RecipientIdPageContent from "../Recipients/RecipietntIdPageContent";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
-import { useRouter } from "next/router";
 
 const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-  const { push } = useRouter();
+  const navigate = useNavigate();
   const { guarantors } = useSelector((state) => state.guarantor);
   const { properties } = useSelector((state) => state.property);
   const { patchLoading, patchError, patchSuccess, clientInfo } = useSelector(
     (state) => state.counterparties
   );
   useEffect(() => {
-    if (!clientInfo) push("/counterparties");
+    if (!clientInfo) navigate("/counterparties");
   }, []);
   const [state, setState] = useState({
     address: clientInfo && clientInfo.address,
@@ -80,7 +80,7 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
       });
   }, [clientInfo]);
   useEffect(() => {
-    if (!isModal && patchSuccess) push("/counterparties");
+    if (!isModal && patchSuccess) navigate("/counterparties");
     if (isModal && patchSuccess) {
       handleCancelClientModal && handleCancelClientModal();
     }
@@ -571,7 +571,7 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Recipients isModal={true} />

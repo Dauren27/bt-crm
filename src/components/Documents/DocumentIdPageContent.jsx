@@ -282,7 +282,7 @@ const DocumentIdPageContent = () => {
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Individuals isModal={true} />

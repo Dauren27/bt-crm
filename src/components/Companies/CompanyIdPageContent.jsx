@@ -14,20 +14,20 @@ import { getActivities } from "../../features/activity/activityActions";
 import Error from "../UI/Error/Error";
 import Loading from "../UI/Loading/Loading";
 import Success from "../UI/Success/Success";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router";
 
 const CompanyIdPageContent = ({
   isModal = false,
   handleCancelSeven = false,
 }) => {
   const dispatch = useDispatch();
-  const { push } = useRouter();
+  const navigate = useNavigate();
   const { patchError, patchLoading, patchSuccess, companyInfo } = useSelector(
     (state) => state.companies
   );
   const { activities } = useSelector((state) => state.activites);
   useEffect(() => {
-    if (!companyInfo) push("/companies");
+    if (!companyInfo) navigate("/companies");
   }, []);
   const [state, setState] = useState({
     company_name: companyInfo && companyInfo.company_name,
@@ -65,7 +65,7 @@ const CompanyIdPageContent = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (!isModal && patchSuccess) push("/companies");
+    if (!isModal && patchSuccess) navigate("/companies");
     if (isModal && patchSuccess) {
       handleCancelSeven && handleCancelSeven();
     }
@@ -259,7 +259,7 @@ const CompanyIdPageContent = ({
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
 
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

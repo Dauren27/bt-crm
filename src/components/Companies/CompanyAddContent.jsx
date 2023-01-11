@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../UI/Button/Button";
+//import cl from "../../pages/Companies/companies.module.scss";
 import cl from "../style.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { BsPlusLg } from "react-icons/bs";
@@ -14,11 +15,12 @@ import { getActivities } from "../../features/activity/activityActions";
 import Error from "../UI/Error/Error";
 import Loading from "../UI/Loading/Loading";
 import Success from "../UI/Success/Success";
+import { useNavigate } from "react-router";
 
 const CompaniesContent = ({ isModal = false }) => {
   //----API-----
   const dispatch = useDispatch();
-  const { push } = useRouter();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchCompany());
     dispatch(getActivities());
@@ -50,7 +52,7 @@ const CompaniesContent = ({ isModal = false }) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
-    if (!isModal) if (success) push("/companies");
+    if (!isModal) if (success) navigate("/companies");
   }, [success]);
   const reversed = (arr) => {
     const arr2 = [...arr];
@@ -253,7 +255,7 @@ const CompaniesContent = ({ isModal = false }) => {
           </Error>
         )}
         {successModal && <Success>Данные успешно отправлены.</Success>}
-        <Button>Отправить</Button>
+        <Button disabled={loading}>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Activites />

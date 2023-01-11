@@ -10,6 +10,7 @@ import {
   patchConversation,
 } from "../../features/conversations/conversationsActions";
 import cl from "../style.module.scss";
+import { useNavigate } from "react-router";
 import Individuals from "../Clients/ClientAddContent";
 import Entities from "../Entities/EntityAddContent";
 import { getClient, getClients } from "../../features/clients/clientsActions";
@@ -18,7 +19,6 @@ import ClientIdPageContent from "../../components/Clients/ClientIdPageContent";
 import { BsPlusLg } from "react-icons/bs";
 import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
-import { useRouter } from "next/router";
 
 const ConversationIdPageContent = () => {
   //----API-----
@@ -43,12 +43,12 @@ const ConversationIdPageContent = () => {
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { push } = useRouter();
+  const navigate = useNavigate();
   useEffect(() => {
-    if (!conversationInfo) push("/conversations");
+    if (!conversationInfo) navigate("/conversations");
   }, []);
   useEffect(() => {
-    if (patchSuccess) push("/conversations");
+    if (patchSuccess) navigate("/conversations");
   }, [patchSuccess]);
   const reversed = (arr) => {
     const arr2 = [...arr];
@@ -318,7 +318,7 @@ const ConversationIdPageContent = () => {
               </Error>
             )}
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
-            <Button>Сохранить</Button>
+            <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
           <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Individuals isModal={true} />

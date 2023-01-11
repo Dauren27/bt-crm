@@ -1,6 +1,7 @@
 import { Form, Input, Select, Modal } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import Button from "../UI/Button/Button";
 import Error from "../UI/Error/Error";
 import Loading from "../UI/Loading/Loading";
@@ -18,12 +19,11 @@ import ClientIdPageContent from "../Clients/ClientIdPageContent";
 import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../Entities/EntityIdPageContent";
 import { getClient, getClients } from "../../features/clients/clientsActions";
-import { useRouter } from "next/router";
 
 const ConversationsContent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-  const { push } = useRouter();
+  const navigate = useNavigate();
   const [value, setValue] = useState(true);
   const [state, setState] = useState({
     is_meeting: value,
@@ -58,7 +58,7 @@ const ConversationsContent = ({ isModal = false }) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
-    if (!isModal) if (success) push("/conversations");
+    if (!isModal) if (success) navigate("/conversations");
   }, [success]);
 
   const reversed = (arr) => {
@@ -277,7 +277,7 @@ const ConversationsContent = ({ isModal = false }) => {
         {isModal && successModal && (
           <Success>Данные успешно отправлены.</Success>
         )}
-        <Button>Отправить</Button>
+        <Button disabled={loading}>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Individuals isModal={true} />

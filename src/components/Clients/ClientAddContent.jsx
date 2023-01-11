@@ -26,15 +26,15 @@ import Success from "../UI/Success/Success";
 import Loading from "../UI/Loading/Loading";
 import { RiPencilFill } from "react-icons/ri";
 import RecipientIdPageContent from "../Recipients/RecipietntIdPageContent";
+import { useNavigate } from "react-router";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
-import { useRouter } from "next/router";
 
 const ClientAddContent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const { guarantors } = useSelector((state) => state.guarantor);
   const { properties } = useSelector((state) => state.property);
-  const { push } = useRouter();
+  const navigate = useNavigate();
   const [state, setState] = useState({
     full_name: "",
     credit_type: "",
@@ -80,7 +80,7 @@ const ClientAddContent = ({ isModal = false }) => {
     return arr2;
   };
   useEffect(() => {
-    if (!isModal) if (success) push("/counterparties");
+    if (!isModal) if (success) navigate("/counterparties");
   }, [success]);
 
   const openRecipientModal = (id) => {
@@ -519,7 +519,7 @@ const ClientAddContent = ({ isModal = false }) => {
           </Error>
         )}
         {isModal && success && <Success>Данные успешно отправлены.</Success>}
-        <Button>Отправить</Button>
+        <Button disabled={loading}>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Recipients isModal={true} />
