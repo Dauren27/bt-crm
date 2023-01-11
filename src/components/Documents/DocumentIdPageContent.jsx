@@ -10,6 +10,7 @@ import Individuals from "../Clients/ClientAddContent";
 import Entities from "../Entities/EntityAddContent";
 import { getClient, getClients } from "../../features/clients/clientsActions";
 import {
+  getDocument,
   getDocuments,
   patchDocument,
 } from "../../features/documents/documentsActions";
@@ -17,7 +18,7 @@ import { getEntities, getEntity } from "../../features/entity/entityActions";
 import Error from "../../components/UI/Error/Error";
 import Loading from "../../components/UI/Loading/Loading";
 import Success from "../../components/UI/Success/Success";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ClientIdPageContent from "../../components/Clients/ClientIdPageContent";
 import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
@@ -25,6 +26,8 @@ import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
 const DocumentIdPageContent = () => {
   //----API-----
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
   const { patchLoading, patchError, patchSuccess, documentInfo } = useSelector(
     (state) => state.documents
   );
@@ -36,13 +39,12 @@ const DocumentIdPageContent = () => {
     id_entity: documentInfo && documentInfo.id_entity,
   });
   useEffect(() => {
+    if (!documentInfo) navigate("/documents");
+  }, []);
+  useEffect(() => {
     dispatch(getClients());
     dispatch(getEntities());
   }, [dispatch]);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!documentInfo) navigate("/documents");
-  }, []);
   useEffect(() => {
     if (patchSuccess) navigate("/documents");
   }, [patchSuccess]);

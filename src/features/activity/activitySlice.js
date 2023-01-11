@@ -58,7 +58,7 @@ const activitySlice = createSlice({
     },
     [getActivities.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.activities = payload;
+      state.activities = payload.results;
     },
     [getActivities.rejected]: (state, { payload }) => {
       state.loading = false;

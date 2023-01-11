@@ -60,9 +60,7 @@ const CompaniesList = () => {
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
   const navigateToCompany = (id) => {
-    dispatch(getCompany({ id: id })).then(() =>
-      navigate(`/companies/${id}`)
-    );
+    dispatch(getCompany({ id: id })).then(() => navigate(`/companies/${id}`));
   };
   return (
     <Layout>

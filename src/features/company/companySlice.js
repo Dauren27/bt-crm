@@ -82,11 +82,12 @@ const companiesSlice = createSlice({
       })
       .addCase(getCompanies.fulfilled, (state, action) => {
         state.getLoading = false;
-        state.companies = action.payload;
+        state.companies = action.payload.results;
         state.success = false;
         state.loading = false;
         state.error = null;
         state.patchSuccess = false;
+        state.companyInfo = null;
       })
       .addCase(getCompanies.rejected, (state, action) => {
         state.getLoading = false;

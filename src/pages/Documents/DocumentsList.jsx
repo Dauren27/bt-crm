@@ -37,9 +37,11 @@ const DocumentsList = () => {
       }
     });
   };
-  const [documents, setDocuments] = useState(documentsList && documentsList);
+  const [documents, setDocuments] = useState(
+    documentsList && documentsList.results
+  );
   useEffect(() => {
-    setDocuments(documentsList);
+    documentsList && setDocuments(documentsList.results);
   }, [documentsList]);
   const handleChange = (e) => {
     const { name, checked } = e.target;

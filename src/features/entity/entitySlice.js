@@ -79,7 +79,7 @@ const entitySlice = createSlice({
     },
     [getEntities.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
-      state.entities = payload;
+      state.entities = payload.results;
       state.success = false;
       state.error = null;
       state.patchSuccess = false;

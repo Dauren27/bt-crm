@@ -90,7 +90,7 @@ const guarantorsSlice = createSlice({
     },
     [getGuarantors.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
-      state.guarantors = payload;
+      state.guarantors = payload.results;
       state.success = false;
       state.error = null;
       state.patchSuccess = false;

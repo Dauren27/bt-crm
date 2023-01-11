@@ -61,7 +61,7 @@ const conversationsSlice = createSlice({
     },
     [getConversations.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
-      state.conversations = payload;
+      state.conversations = payload.results;
       state.success = false;
       state.error = null;
       state.patchSuccess = false;

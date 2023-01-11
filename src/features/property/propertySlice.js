@@ -73,7 +73,7 @@ const propertiesSlice = createSlice({
     },
     [getProperties.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
-      state.properties = payload;
+      state.properties = payload.results;
       state.success = false;
       state.error = null;
       state.patchSuccess = false;

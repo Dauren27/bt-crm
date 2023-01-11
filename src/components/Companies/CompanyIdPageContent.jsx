@@ -8,6 +8,7 @@ import { Select, Form, Input } from "antd";
 import Activites from "../Actives/Actives";
 import {
   getCompanies,
+  getCompany,
   patchCompany,
 } from "../../features/company/companyActions";
 import { getActivities } from "../../features/activity/activityActions";
@@ -90,8 +91,8 @@ const CompanyIdPageContent = ({
     setIsModalOpen(false);
   };
   return (
-    <div>
-      {companyInfo && (
+    companyInfo && (
+      <div>
         <div className={cl.content}>
           <h2 className={cl.title}>
             {companyInfo.id}.{companyInfo.company_name}
@@ -266,8 +267,8 @@ const CompanyIdPageContent = ({
             <Activites />
           </Modal>
         </div>
-      )}
-    </div>
+      </div>
+    )
   );
 };
 

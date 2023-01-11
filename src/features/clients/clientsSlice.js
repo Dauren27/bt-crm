@@ -79,7 +79,7 @@ const counterpartiesSlice = createSlice({
     },
     [getClients.fulfilled]: (state, { payload }) => {
       state.getLoading = false;
-      state.clients = payload;
+      state.clients = payload.results;
       state.success = false;
       state.error = null;
       state.patchSuccess = false;
