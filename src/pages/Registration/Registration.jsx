@@ -11,6 +11,7 @@ import { registerUser } from "../../features/user/userActions";
 import Button from "../../components/UI/Button/Button";
 import Loading from "../../components/UI/Loading/Loading";
 import Success from "../../components/UI/Success/Success";
+import { Select } from "antd";
 
 const Registration = () => {
   const { registerLoading, registerError, registerSuccess } = useSelector(
@@ -19,9 +20,12 @@ const Registration = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const submitForm = (data) => {
-    data.email = data.email.toLowerCase();
-    dispatch(registerUser(data));
+  const [state, setState] = useState({});
+  const submitForm = () => {
+    dispatch(registerUser(state));
+  };
+  const handleInput = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
     if (registerSuccess) navigate("/login");
@@ -38,9 +42,10 @@ const Registration = () => {
           <input
             type="text"
             className={cl.input}
-            {...register("full_name")}
+            name="full_name"
             required
             autoComplete="off"
+            onChange={handleInput}
           />
           {registerError && registerError.full_name && (
             <Error>{registerError.full_name}</Error>
@@ -51,9 +56,10 @@ const Registration = () => {
           <input
             className={cl.input}
             type="tel"
-            {...register("phone_number")}
+            name="phone_number"
             required
             autoComplete="off"
+            onChange={handleInput}
           />
           {registerError && registerError.phone_number && (
             <Error>{registerError.phone_number}</Error>
@@ -61,27 +67,28 @@ const Registration = () => {
         </div>
         <div className={cl.registration__row}>
           <h4 className={cl.title}>Должность:</h4>
-          <select {...register("occupation")} required>
-            <option value="admin" {...register("admin")} required>
-              Кредитный админ
-            </option>
-            <option value="spec" {...register("spec")} required>
-              Кредититный спец
-            </option>
-          </select>
+          <Select
+            id="occupation"
+            className={cl.select}
+            required
+            onChange={(e) => setState({ ...state, occupation: e })}
+          >
+            <Select.Option value="admin">Кредитный админ</Select.Option>
+            <Select.Option value="spec">Кредититный специалист</Select.Option>
+          </Select>
           {registerError && registerError.occupation && (
             <Error>{registerError.occupation}</Error>
           )}
         </div>
-
         <div className={cl.registration__row}>
           <h4 className={cl.title}>Логин:</h4>
           <input
             type="email"
-            {...register("email")}
+            name="email"
             required
             className={cl.input}
             autoComplete="off"
+            onChange={handleInput}
           />
           {registerError && registerError.email && (
             <Error>{registerError.email}</Error>
@@ -92,9 +99,10 @@ const Registration = () => {
           <input
             type="password"
             className={cl.input}
-            {...register("password")}
+            name="password"
             required
             autoComplete="off"
+            onChange={handleInput}
           />
           {registerError && registerError.password && (
             <Error>{registerError.password}</Error>
@@ -105,9 +113,10 @@ const Registration = () => {
           <input
             type="password"
             className={cl.input}
-            {...register("password_confirm")}
+            name="password_confirm"
             required
             autoComplete="off"
+            onChange={handleInput}
           />
           {registerError && registerError.password_confirm && (
             <Error>{registerError.password_confirm}</Error>

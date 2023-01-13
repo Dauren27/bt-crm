@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getUserDetails,
   registerUser,
   userLogin,
   getUserDetail,
@@ -73,6 +72,7 @@ const userSlice = createSlice({
     },
     [getUserDetail.fulfilled]: (state, { payload }) => {
       state.userInfo = payload;
+      state.registerSuccess = false;
     },
     [getUserDetail.rejected]: (state, { payload }) => {
       state.userDetailError = true;
