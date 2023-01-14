@@ -16,6 +16,7 @@ import Error from "../../components/UI/Error/Error";
 import { Select } from "antd";
 import { getEntities } from "../../features/entity/entityActions";
 import { getClients } from "../../features/clients/clientsActions";
+
 const ConversationsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -147,35 +148,6 @@ const ConversationsList = () => {
                 options={entities && entities}
               />
             ) : null}
-            {/* <Select
-              showSearch
-              allowClear
-              disabled={!selectedOption}
-              onChange={(e) => {
-                setFiltredConversation(e);
-              }}
-              className={`${cl.content__select} ${cl.right__select}`}
-              fieldNames={{
-                label:
-                  selectedOption === "client"
-                    ? "full_name"
-                    : "full_name_director",
-                value: "id",
-              }}
-              filterOption={(input, option) =>
-                (option?.full_name.toLocaleLowerCase() ?? "").includes(
-                  input.toLocaleLowerCase()
-                )
-              }
-              options={
-                selectedOption === "client"
-                  ? clients && clients
-                  : selectedOption === "entity"
-                  ? entities && entities
-                  : null
-              }
-            /> */}
-            {/* <button className={cl.content__button}>Поиск</button> */}
           </div>
           <div className={cl.content__deleteDiv}>
             <button className={cl.content__delete} onClick={deleteDoc}>
