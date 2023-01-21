@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchClients = createAsyncThunk(
-  "clients",
+  "clients/fetch",
   async (
     {
       id_credit_spec,
@@ -64,7 +64,7 @@ export const fetchClients = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response.status == 401) {
-        return rejectWithValue("Unauthorized")
+        return rejectWithValue("Unauthorized");
       } else if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
@@ -74,7 +74,7 @@ export const fetchClients = createAsyncThunk(
   }
 );
 export const patchClient = createAsyncThunk(
-  "client/patch",
+  "clients/patch",
   async ({ obj, id }, { rejectWithValue }) => {
     try {
       const config = {
@@ -91,7 +91,7 @@ export const patchClient = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response.status == 401) {
-        return rejectWithValue("Unauthorized")
+        return rejectWithValue("Unauthorized");
       } else if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
@@ -101,7 +101,7 @@ export const patchClient = createAsyncThunk(
   }
 );
 export const getClient = createAsyncThunk(
-  "client/get",
+  "clients/get/id",
   async ({ id }, { rejectWithValue }) => {
     try {
       const config = {
@@ -124,7 +124,7 @@ export const getClient = createAsyncThunk(
   }
 );
 export const getClients = createAsyncThunk(
-  "getClients",
+  "clients/get",
   async (arg, { getState, rejectWithValue }) => {
     try {
       const config = {
@@ -147,7 +147,7 @@ export const getClients = createAsyncThunk(
   }
 );
 export const deleteClient = createAsyncThunk(
-  "deleteClient",
+  "clients/delete",
   async ({ id }, { rejectWithValue }) => {
     try {
       const config = {

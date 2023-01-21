@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchActivites = createAsyncThunk(
-  "activites",
+  "activites/fetch",
   async ({ activites_add }, { rejectWithValue }) => {
     try {
       const config = {
@@ -52,7 +52,7 @@ export const patchActivity = createAsyncThunk(
   }
 );
 export const getActivities = createAsyncThunk(
-  "getActivities",
+  "activities/get",
   async (arg, { getState, rejectWithValue }) => {
     try {
       const config = {

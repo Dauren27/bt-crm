@@ -2,7 +2,8 @@
   "name": "srm",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://dauren27.github.io/",
+  "homepage": ".",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
     "antd": "^4.23.2",
