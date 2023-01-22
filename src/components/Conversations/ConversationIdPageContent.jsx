@@ -211,29 +211,6 @@ const ConversationIdPageContent = () => {
                 <Error>{patchError.results_report}</Error>
               )}
             </div>
-            {/* <div className={cl.content__category}>
-              <h2 className={cl.content__title}>Статистика: </h2>
-              <input
-                type="file"
-                className={cl.content__file}
-                name="statistics"
-                onChange={(e) => {
-                  setState({
-                    ...state,
-                    statistics: e.target.files[0],
-                  });
-                }}
-              />
-              <p className={cl.file__name}>
-                Текущий файл :{" "}
-                <a href={conversationInfo.statistics}>
-                  {conversationInfo.statistics}
-                </a>
-              </p>
-              {patchError && patchError.statistics && (
-                <Error>{patchError.statistics}</Error>
-              )}
-            </div> */}
             <div className={cl.content__category}>
               <h2 className={cl.content__title}>Физическое лицо:</h2>
               <div className={cl.content__select__container}>
