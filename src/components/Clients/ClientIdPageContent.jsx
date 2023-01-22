@@ -370,22 +370,6 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                 <Error>{patchError.client_actual_address}</Error>
               )}
             </div>
-
-            {/* {(clientInfo.credit_type == "LS" || state.credit_type == "LS") && (
-              <>
-                <h2>Размер собственного взноса:</h2>
-                <Input
-                  className={cl.content__input}
-                  type="number"
-                  onChange={handleInput}
-                  defaultValue={clientInfo.own_contribution}
-                  name="own_contribution"
-                />
-                {patchError && patchError.own_contribution && (
-                  <Error>{patchError.own_contribution}</Error>
-                )}
-              </>
-            )} */}
             <div className={cl.content__category}>
               <h2 className={cl.content__title}>Справка о доходах:</h2>
               <input
@@ -487,8 +471,12 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                     setState({ ...state, id_guarantor: e });
                   }}
                   value={{
-                    label: state.id_guarantor,
-                    value: state.id_guarantor,
+                    label: state.id_guarantor.full_name
+                      ? state.id_guarantor.full_name
+                      : state.id_guarantor,
+                    value: state.id_guarantor.id
+                      ? state.id_guarantor.id
+                      : state.id_guarantor,
                   }}
                   fieldNames={{ label: "full_name", value: "id" }}
                   filterOption={(input, option) =>
@@ -505,7 +493,9 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                   }`}
                   onClick={() => {
                     state.id_guarantor &&
-                      openRecipientModal(state.id_guarantor);
+                      (state.id_guarantor.id
+                        ? openRecipientModal(state.id_guarantor.id)
+                        : openRecipientModal(state.id_guarantor));
                   }}
                 />
               </div>

@@ -6,7 +6,6 @@ import App from "./App";
 import "./index.scss";
 import "antd/dist/antd.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 const container = document.getElementById("root");
 const root = createRoot(container);
 

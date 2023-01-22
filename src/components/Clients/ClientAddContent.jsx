@@ -385,10 +385,7 @@ const ClientAddContent = ({ isModal = false }) => {
           <h2 className={cl.content__title}>
             Договора с подрядчиками и поставщиками:
           </h2>
-          <Form.Item
-            name="contracts"
-            //rules={[{ required: true, message: "Заполните это поле" }]}
-          >
+          <Form.Item name="contracts">
             <input
               type="file"
               onChange={(e) =>
@@ -407,7 +404,6 @@ const ClientAddContent = ({ isModal = false }) => {
           </h2>
           <Form.Item
             name="report"
-            //rules={[{ required: true, message: "Заполните это поле" }]}
           >
             <input
               type="file"

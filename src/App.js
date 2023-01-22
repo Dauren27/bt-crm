@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "antd/dist/antd.min.css";
 import { BrowserRouter } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "./routes/routes";
 import { SidebarContext } from "./context";
 import { useDispatch, useSelector } from "react-redux";
-import { updateToken } from "./features/user/userActions";
+import { getUserDetail, updateToken } from "./features/user/userActions";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,6 +15,9 @@ function App() {
     }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    dispatch(getUserDetail());
+  }, [isAuth]);
   return (
     <>
       <BrowserRouter>

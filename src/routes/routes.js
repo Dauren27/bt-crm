@@ -39,11 +39,11 @@ export const PrivateRoutes = () => {
       <Route path="/properties/add" element={<PropertyAdd />} />
       <Route path="/properties" element={<PropertyList />} />
       <Route path="/properties/:id" element={<PropertyIdPage />} />
-      <Route path="*" element={<Navigate to="/documents" replace />} />
       <Route path="/counterparties/add" element={<CounterpartiesAdd />} />
       <Route path="/counterparties" element={<CounterpartiesList />} />
       <Route path="/counterparties/client/:id" element={<ClientIdPage />} />
       <Route path="/counterparties/entity/:id" element={<EntityIdPage />} />
+      <Route path="*" element={<Navigate to="/documents" replace />} />
     </Routes>
   );
 };

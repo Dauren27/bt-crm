@@ -3,13 +3,11 @@ import { SidebarContext } from "../../context";
 import cl from "./Navbar.module.scss";
 import { MdOutlineMenu } from "react-icons/md";
 import { useLocation } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserDetail } from "../../features/user/userActions";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
   const location = useLocation();
-  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
   const [list, setList] = useState("Документы на КК");
   useEffect(() => {
@@ -53,7 +51,6 @@ const Navbar = () => {
     } else {
       setList("Документы на КК");
     }
-    dispatch(getUserDetail());
   }, []);
 
   return (
