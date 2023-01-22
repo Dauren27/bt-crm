@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "antd/dist/antd.min.css";
 import { BrowserRouter } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "./routes/routes";
 import { SidebarContext } from "./context";
