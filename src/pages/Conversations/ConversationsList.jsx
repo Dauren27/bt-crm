@@ -16,6 +16,25 @@ import Error from "../../components/UI/Error/Error";
 import { Select } from "antd";
 import { getEntities } from "../../features/entity/entityActions";
 import { getClients } from "../../features/clients/clientsActions";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+} from "chart.js";
+import axios from "axios";
+ChartJS.register(
+  Title,
+  Tooltip,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement
+);
 
 const ConversationsList = () => {
   const navigate = useNavigate();
@@ -76,6 +95,50 @@ const ConversationsList = () => {
       navigate(`/conversations/${id}`)
     );
   };
+  const chartData = [
+    { date: "1.01", total: 7 },
+    { date: "2.01", total: 4 },
+    { date: "3.01", total: 13 },
+    { date: "5.01", total: 6 },
+    { date: "6.01", total: 7 },
+    { date: "7.01", total: 4 },
+    { date: "8.01", total: 13 },
+    { date: "9.01", total: 6 },
+    { date: "10.01", total: 7 },
+    { date: "11.01", total: 4 },
+    { date: "12.01", total: 13 },
+    { date: "13.01", total: 6 },
+    { date: "14.01", total: 7 },
+    { date: "15.01", total: 4 },
+    { date: "16.01", total: 13 },
+    { date: "17.01", total: 6 },
+  ];
+
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+  };
+  const [fetchedData, setFetchedData] = useState();
+  useEffect(() => {
+    axios
+      .get("https://bt-back-demo.herokuapp.com/crm/test/")
+      .then((response) => {
+        setFetchedData(response.data.Conversation);
+        console.log(response);
+      });
+  }, []);
+  const data = {
+    labels: fetchedData && [...fetchedData.map((item) => item.date)],
+    datasets: [
+      {
+        data: fetchedData && [...fetchedData.map((item) => item.total)],
+        pointStyle: "rect",
+        borderColor: "#42b4f4",
+      },
+    ],
+  };
+  console.log(data);
+  console.log("fetchedData", fetchedData);
   return (
     <Layout>
       <div className={cl.container}>
@@ -247,6 +310,9 @@ const ConversationsList = () => {
             ) : (
               <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
+          </div>
+          <div style={{ height: "350px", marginTop: "30px" }}>
+            {fetchedData && <Line options={options} data={data} />}
           </div>
         </div>
       </div>

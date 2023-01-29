@@ -23,7 +23,6 @@ const DocumentsList = () => {
     deleteSuccess,
     deleteLoading,
     patchMessage,
-    deletedDocument,
     successMessage,
     document,
     patchDocument,
