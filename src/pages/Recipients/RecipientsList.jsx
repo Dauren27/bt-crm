@@ -1,24 +1,21 @@
-import Layout from "../../Layout/Layout";
-import cl from "../Documents/documentsList.module.scss";
-import { useNavigate } from "react-router";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../../components/UI/Table/Table";
+import { BiSearch } from "react-icons/bi";
+
+import cl from "../Documents/documentsList.module.scss";
+import Layout from "../../Layout/Layout";
+import { Loading, Success, Table, Error } from "../../components/UI";
 import {
   deleteGuarantor,
   getGuarantor,
   getGuarantors,
-} from "../../features/guarantors/guarantorsActions";
-import { BiSearch } from "react-icons/bi";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
+} from "../../redux/reducers";
 
 const RecipientsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getGuarantors());
-  }, [dispatch]);
+
   const {
     guarantors,
     deleteLoading,
@@ -31,9 +28,8 @@ const RecipientsList = () => {
   const [guarantorsList, setGuarantorsList] = useState(
     guarantors && guarantors
   );
-  useEffect(() => {
-    setGuarantorsList(guarantors);
-  }, [guarantors]);
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -62,7 +58,15 @@ const RecipientsList = () => {
       navigate(`/recipients/${id}`)
     );
   };
-  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    dispatch(getGuarantors());
+  }, [dispatch]);
+  
+  useEffect(() => {
+    setGuarantorsList(guarantors);
+  }, [guarantors]);
+
   return (
     <Layout>
       <div className={cl.container}>

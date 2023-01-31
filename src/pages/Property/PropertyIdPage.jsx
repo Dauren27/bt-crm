@@ -1,6 +1,6 @@
 import React from "react";
+import { PropertyIdPageContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import PropertyIdPageContent from "../../components/Properties/PropertyIdPageContent";
 
 const PropertyIdPage = () => {
   return (

@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from "react";
-import "antd/dist/antd.min.css";
 import { BrowserRouter } from "react-router-dom";
-import { PrivateRoutes, PublicRoutes } from "./routes/routes";
-import { SidebarContext } from "./context";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetail, updateToken } from "./features/user/userActions";
+import "antd/dist/antd.min.css";
+
+import { PrivateRoutes, PublicRoutes } from "./routes/routes";
+import { GlobalContext } from "./context";
+import { getUserDetail, updateToken } from "./redux/reducers";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { isAuth } = useSelector((state) => state.user);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(updateToken());
     }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => {
     dispatch(getUserDetail());
   }, [isAuth]);
+
   return (
     <>
       <BrowserRouter>
-        <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
+        <GlobalContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
           {isAuth ? <PrivateRoutes /> : <PublicRoutes />}
-        </SidebarContext.Provider>
+        </GlobalContext.Provider>
       </BrowserRouter>
     </>
   );

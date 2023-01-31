@@ -1,5 +1,5 @@
 import React from "react";
-import ClientIdPageContent from "../../components/Clients/ClientIdPageContent";
+import { ClientIdPageContent } from "../../components";
 import Layout from "../../Layout/Layout";
 
 const ClientIdPage = () => {

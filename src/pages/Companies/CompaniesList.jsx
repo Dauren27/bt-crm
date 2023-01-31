@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../../components/UI/Table/Table";
 import { useNavigate } from "react-router";
-import Layout from "../../Layout/Layout";
-import cl from "../Documents/documentsList.module.scss";
-import {
-  deleteCompany,
-  getCompanies,
-  getCompany,
-} from "../../features/company/companyActions";
 import { BiSearch } from "react-icons/bi";
-import Success from "../../components/UI/Success/Success";
-import Loading from "../../components/UI/Loading/Loading";
+
+import cl from "../Documents/documentsList.module.scss";
+import Layout from "../../Layout/Layout";
+import { deleteCompany, getCompanies, getCompany } from "../../redux/reducers";
+import { Loading, Success, Table, Error } from "../../components/UI";
 
 const CompaniesList = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getCompanies());
-  }, [dispatch]);
+  const navigate = useNavigate();
+  
   const {
     companies,
     deleteSuccess,
@@ -27,11 +21,10 @@ const CompaniesList = () => {
     company,
     patchCompany,
     deletedCompany,
-  } = useSelector((state) => state.companies);
+  } = useSelector((state) => state.company);
   const [companiesList, setCompaniesList] = useState(companies && companies);
-  useEffect(() => {
-    setCompaniesList(companies);
-  }, [companies, dispatch]);
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -57,11 +50,17 @@ const CompaniesList = () => {
       }
     });
   };
-  const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
+
   const navigateToCompany = (id) => {
     dispatch(getCompany({ id: id })).then(() => navigate(`/companies/${id}`));
   };
+
+  useEffect(() => {
+    setCompaniesList(companies);
+  }, [companies, dispatch]);
+  useEffect(() => {
+    dispatch(getCompanies());
+  }, [dispatch]);
   return (
     <Layout>
       <div className={cl.container}>

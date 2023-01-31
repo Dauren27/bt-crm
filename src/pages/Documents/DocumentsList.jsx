@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
-import Table from "../../components/UI/Table/Table";
+
+import cl from "./documentsList.module.scss";
 import {
   deleteDocument,
   getDocument,
   getDocuments,
-} from "../../features/documents/documentsActions";
+} from "../../redux/reducers";
 import Layout from "../../Layout/Layout";
-import cl from "./documentsList.module.scss";
+import { Loading, Success, Table, Error } from "../../components/UI";
 
 const DocumentsList = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getDocuments());
-  }, [dispatch]);
+  const navigate = useNavigate();
+
   const {
     documentsList,
     deleteSuccess,
@@ -26,7 +24,12 @@ const DocumentsList = () => {
     successMessage,
     document,
     patchDocument,
-  } = useSelector((state) => state.documents);
+  } = useSelector((state) => state.document);
+  const [searchValue, setSearchValue] = useState("");
+  const [documents, setDocuments] = useState(
+    documentsList && documentsList.results
+  );
+
   const deleteDoc = () => {
     documents.map((doc) => {
       if (doc?.isChecked) {
@@ -36,12 +39,7 @@ const DocumentsList = () => {
       }
     });
   };
-  const [documents, setDocuments] = useState(
-    documentsList && documentsList.results
-  );
-  useEffect(() => {
-    documentsList && setDocuments(documentsList.results);
-  }, [documentsList]);
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -56,11 +54,18 @@ const DocumentsList = () => {
       setDocuments(tempDocuments);
     }
   };
-  const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
   const navigateToDocument = (id) => {
     dispatch(getDocument({ id: id })).then(() => navigate(`/documents/${id}`));
   };
+
+  useEffect(() => {
+    documentsList && setDocuments(documentsList.results);
+  }, [documentsList]);
+  
+  useEffect(() => {
+    dispatch(getDocuments());
+  }, [dispatch]);
+
   return (
     <Layout>
       <div className={cl.container}>

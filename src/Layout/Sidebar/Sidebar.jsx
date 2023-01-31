@@ -1,17 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import cl from "./Sidebar.module.scss";
 import { NavLink } from "react-router-dom";
-import { SidebarContext } from "../../context";
+import { GlobalContext } from "../../context";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/user/userSlice";
+import { logout } from "../../redux/reducers";
 
 const Sidebar = () => {
-  const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
+  
+  const dispatch = useDispatch();
+  const { sidebarOpen, setSidebarOpen } = useContext(GlobalContext);
   const clickHandler = () => {
     setSidebarOpen(false);
   };
-  const dispatch = useDispatch();
 
   return (
     <>

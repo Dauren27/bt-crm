@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { SidebarContext } from "../context";
+import { GlobalContext } from "../context";
 import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 
 function Layout({ children }) {
-  const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
+  const { sidebarOpen, setSidebarOpen } = useContext(GlobalContext);
   return (
     <div className={`${"App"} ${"open"}`}>
       <Sidebar />

@@ -1,6 +1,6 @@
 import React from "react";
+import { RecipientAddContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import RecipientAddContent from "../../components/Recipients/RecipientsAddContent";
 
 const RecipientsAdd = () => {
   return (

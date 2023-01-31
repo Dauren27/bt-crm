@@ -1,51 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
 import { Form, Input } from "antd";
-import Button from "../UI/Button/Button";
-import {
-  getProperties,
-  patchProperty,
-} from "../../features/property/propertyActions";
 import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import cl from "../style.module.scss";
 
-const PropertyIdPageContent = ({
-  isModal = false,
-  handleCancelFive = false,
-  handleCancelSix = false,
-}) => {
+import cl from "../style.module.scss";
+import { getProperties, patchProperty } from "../../redux/reducers";
+import { Loading, Button, Success, Error } from "../UI";
+
+const PropertyIdPageContent = ({ isModal = false, handleCancelPropertyModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { patchLoading, patchSuccess, patchError, propertyInfo } = useSelector(
     (state) => state.property
   );
-  useEffect(() => {
-    if (!propertyInfo) navigate("/properties");
-  }, []);
-  const [state, setState] = useState({
-    type: propertyInfo && propertyInfo.type,
-    address: propertyInfo && propertyInfo.address,
-    imagesArray: propertyInfo && [...propertyInfo.images],
-    filesArray: propertyInfo && [...propertyInfo.files],
-  });
+
+  const [state, setState] = useState(
+    propertyInfo && {
+      type: propertyInfo.type,
+      address: propertyInfo.address,
+      imagesArray: [...propertyInfo.images],
+      filesArray: [...propertyInfo.files],
+    }
+  );
   const [imageFiles, setImageFiles] = useState(
     propertyInfo && propertyInfo.images.length
   );
   const [fileFiles, setFileFiles] = useState(
     propertyInfo && propertyInfo.files.length
   );
+
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   const submitForm = () => {
-    dispatch(patchProperty({ id: propertyInfo.id, obj: state })).then(() => {
-      dispatch(getProperties());
-    });
+    dispatch(patchProperty({ id: propertyInfo.id, obj: state }));
   };
+
+  useEffect(() => {
+    if (!propertyInfo) navigate("/properties");
+  }, []);
   useEffect(() => {
     propertyInfo &&
       setState({
@@ -57,8 +52,8 @@ const PropertyIdPageContent = ({
   useEffect(() => {
     if (!isModal && patchSuccess) navigate("/properties");
     if (isModal && patchSuccess) {
-      handleCancelFive && handleCancelFive();
-      handleCancelSix && handleCancelSix();
+      dispatch(getProperties());
+      handleCancelPropertyModal && handleCancelPropertyModal();
     }
   }, [patchSuccess]);
   return (

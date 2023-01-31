@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Button from "../UI/Button/Button";
-import cl from "../style.module.scss";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { BsPlusLg } from "react-icons/bs";
-import { Modal } from "antd";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
+
+import cl from "../style.module.scss";
 import Activites from "../Actives/Actives";
 import {
   getCompanies,
-  getCompany,
   patchCompany,
-} from "../../features/company/companyActions";
-import { getActivities } from "../../features/activity/activityActions";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
-import { useNavigate } from "react-router";
+  getActivities,
+} from "../../redux/reducers";
+import { Loading, Button, Success, Error } from "../UI";
 
 const CompanyIdPageContent = ({
   isModal = false,
-  handleCancelSeven = false,
+  handleCancelCompany = false,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { patchError, patchLoading, patchSuccess, companyInfo } = useSelector(
-    (state) => state.companies
+    (state) => state.company
   );
-  const { activities } = useSelector((state) => state.activites);
-  useEffect(() => {
-    if (!companyInfo) navigate("/companies");
-  }, []);
+  const { activities } = useSelector((state) => state.activity);
   const [state, setState] = useState({
     company_name: companyInfo && companyInfo.company_name,
     inn: companyInfo && companyInfo.inn,
@@ -40,14 +34,20 @@ const CompanyIdPageContent = ({
     actual_address: companyInfo && companyInfo.actual_address,
     field_activity: companyInfo && companyInfo.field_activity,
   });
+
   const submitForm = () => {
-    dispatch(patchCompany({ id: companyInfo.id, obj: state })).then(() => {
-      dispatch(getCompanies());
-    });
+    dispatch(patchCompany({ id: companyInfo.id, obj: state }));
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    dispatch(getActivities());
+  }, [dispatch]);
+  useEffect(() => {
+    if (!companyInfo) navigate("/companies");
+  }, []);
   useEffect(() => {
     companyInfo &&
       setState({
@@ -62,21 +62,13 @@ const CompanyIdPageContent = ({
       });
   }, [companyInfo]);
   useEffect(() => {
-    dispatch(getActivities());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (!isModal && patchSuccess) navigate("/companies");
     if (isModal && patchSuccess) {
-      handleCancelSeven && handleCancelSeven();
+      dispatch(getCompanies());
+      handleCancelCompany && handleCancelCompany();
     }
   }, [patchSuccess]);
 
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -182,10 +174,12 @@ const CompanyIdPageContent = ({
                   onChange={(e) => {
                     setState({ ...state, field_activity: e });
                   }}
-                  value={{
-                    label: state.field_activity,
-                    value: state.field_activity,
-                  }}
+                  value={
+                    state.field_activity && {
+                      label: state.field_activity,
+                      value: state.field_activity,
+                    }
+                  }
                   className={cl.content__accor}
                   fieldNames={{ label: "activites_add", value: "id" }}
                   filterOption={(input, option) =>
@@ -193,7 +187,7 @@ const CompanyIdPageContent = ({
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={activities && reversed(activities)}
+                  options={activities && activities}
                 />
                 {patchError && patchError.activites_add && (
                   <Error>{patchError.activites_add}</Error>

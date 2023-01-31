@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import ClientAddContent from "../../components/Clients/ClientAddContent";
-import EntityAddContent from "../../components/Entities/EntityAddContent";
 import Layout from "../../Layout/Layout";
 import cl from "../../components/style.module.scss";
+import { ClientAddContent, EntityAddContent } from "../../components";
 
 const CounterpartiesAdd = () => {
   const [value, setValue] = useState(1);
   function changeValue(e) {
     setValue(e.target.value);
   }
-
   return (
     <Layout>
       <div className={cl.counterparties__content}>

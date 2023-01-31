@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchActivites,
-  getActivities,
-} from "../../features/activity/activityActions";
-import Button from "../UI/Button/Button";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
+
 import cl from "./Actives.module.scss";
+import { fetchActivity, getActivities } from "../../redux/reducers";
+import { Button, Error, Loading, Success } from "../UI";
 
 const Activites = () => {
   const dispatch = useDispatch();
-  const { success, loading, error } = useSelector((state) => state.activites);
-  useEffect(() => {
-    dispatch(fetchActivites());
-  }, [dispatch]);
+  const { handleSubmit } = useForm();
+
+  const [state, setState] = useState({});
+  const { success, loading, error } = useSelector((state) => state.activity);
+
   const submitForm = () => {
-    dispatch(fetchActivites(state)).then(() => dispatch(getActivities()));
+    dispatch(fetchActivity(state)).then(() => dispatch(getActivities()));
   };
-  const [state, setState] = useState({
-    activites_add: "",
-  });
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const { handleSubmit } = useForm();
+  useEffect(() => {
+    dispatch(fetchActivity());
+  }, [dispatch]);
 
   return (
     <form
@@ -43,7 +39,7 @@ const Activites = () => {
       />
       {success && <Success>Данные были успешно отправлены</Success>}
       {loading && <Loading>Загрузка...</Loading>}
-      {error && <Success>Данные не были отправлены</Success>}
+      {error && <Error>Данные не были отправлены</Error>}
       <Button disabled={loading}>Submit</Button>
     </form>
   );

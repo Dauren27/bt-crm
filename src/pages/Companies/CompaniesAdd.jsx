@@ -1,6 +1,6 @@
 import React from "react";
+import { CompanyAddContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import CompanyAddContent from "../../components/Companies/CompanyAddContent";
 
 const CompaniesAdd = () => {
   return (

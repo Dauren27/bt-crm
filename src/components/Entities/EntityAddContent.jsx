@@ -1,57 +1,35 @@
 import React, { useEffect, useState } from "react";
-import Button from "../UI/Button/Button";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import cl from "../style.module.scss";
-import { Modal } from "antd";
+import { useNavigate } from "react-router";
+import { RiPencilFill } from "react-icons/ri";
 import { BsPlusLg } from "react-icons/bs";
-import ConversationsContent from "../Conversations/ConversationAddContent";
+
+import cl from "../style.module.scss";
 import CompaniesContent from "../Companies/CompanyAddContent";
-import Activites from "../Actives/Actives";
 import {
   getCompanies,
   getCompany,
-} from "../../features/company/companyActions";
-import { getConversations } from "../../features/conversations/conversationsActions";
-import { getActivities } from "../../features/activity/activityActions";
-import {
-  fetchEntities,
+  getActivities,
+  fetchEntity,
   getEntities,
-} from "../../features/entity/entityActions";
-import {
   getProperties,
   getProperty,
-} from "../../features/property/propertyActions";
+} from "../../redux/reducers";
 import PropertyContent from "../Properties/PropertyAddContent";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
-import { useNavigate } from "react-router";
-import { RiPencilFill } from "react-icons/ri";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
 import CompanyIdPageContent from "../Companies/CompanyIdPageContent";
+import { Loading, Button, Success, Error } from "../UI";
 
-const EntitiesComponent = ({ isModal = false }) => {
+const EntitiesComponent = ({ isModal = false, handleCancelEntityAddModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { properties } = useSelector((state) => state.property);
-  useEffect(() => {
-    dispatch(getCompanies());
-    dispatch(getActivities());
-    dispatch(getProperties());
-    dispatch(getConversations());
-  }, [dispatch]);
-  const submitForm = () => {
-    if (isModal) {
-      dispatch(fetchEntities(state)).then(() => {
-        success && dispatch(getEntities());
-      });
-    } else {
-      dispatch(fetchEntities(state));
-    }
-  };
-  const { companies } = useSelector((state) => state.companies);
+  const { companies } = useSelector((state) => state.company);
+  const { loading, success, error } = useSelector((state) => state.entity);
+
   const [state, setState] = useState({
     id_credit_spec: "",
     client_company: "",
@@ -76,101 +54,76 @@ const EntitiesComponent = ({ isModal = false }) => {
     id_company: "",
     id_property: "",
   });
+
+  const submitForm = () => {
+    dispatch(fetchEntity(state));
+  };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { loading, success, error, successModal } = useSelector(
-    (state) => state.entity
-  );
-  useEffect(() => {
-    if (!isModal) if (success) navigate("/counterparties");
-  }, [success]);
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
+
   const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalSix());
+    dispatch(getProperty({ id: id })).then(() => showModalProperty());
   };
   const openCompanyModal = (id) => {
-    dispatch(getCompany({ id: id })).then(() => showModalSeven());
+    dispatch(getCompany({ id: id })).then(() => showModalCompany());
   };
+
+  useEffect(() => {
+    if (!isModal) if (success) navigate("/counterparties");
+    if (isModal && success) {
+      dispatch(getEntities());
+      handleCancelEntityAddModal && handleCancelEntityAddModal();
+    }
+  }, [success]);
+  useEffect(() => {
+    dispatch(getCompanies());
+    dispatch(getActivities());
+    dispatch(getProperties());
+  }, [dispatch]);
   //-------------------------------------------
 
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenPropertyAdd, setIsModalOpenPropertyAdd] = useState(false);
+  const showModalPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
+  const [isModalOpenCompanyAdd, setIsModalOpenCompanyAdd] = useState(false);
+  const showModalCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(true);
   };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleOkCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(false);
   };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(false);
   };
-
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+  const [isModalOpenProperty, setIsModalOpenProperty] = useState(false);
+  const showModalProperty = () => {
+    setIsModalOpenProperty(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkProperty = () => {
+    setIsModalOpenProperty(false);
   };
-  const handleCancelThree = () => {
-    setIsModalOpenThree(false);
-  };
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
-  };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const handleCancelFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const [isModalOpenFive, setIsModalOpenFive] = useState(false);
-  const showModalFive = () => {
-    setIsModalOpenFive(true);
-  };
-  const handleOkFive = () => {
-    setIsModalOpenFive(false);
-  };
-  const handleCancelFive = () => {
-    setIsModalOpenFive(false);
+  const handleCancelProperty = () => {
+    setIsModalOpenProperty(false);
   };
 
-  const [isModalOpenSix, setIsModalOpenSix] = useState(false);
-  const showModalSix = () => {
-    setIsModalOpenSix(true);
+  const [isModalOpenCompany, setIsModalOpenCompany] = useState(false);
+  const showModalCompany = () => {
+    setIsModalOpenCompany(true);
   };
-  const handleOkSix = () => {
-    setIsModalOpenSix(false);
+  const handleOkCompany = () => {
+    setIsModalOpenCompany(false);
   };
-  const handleCancelSix = () => {
-    setIsModalOpenSix(false);
-  };
-
-  const [isModalOpenSeven, setIsModalOpenSeven] = useState(false);
-  const showModalSeven = () => {
-    setIsModalOpenSeven(true);
-  };
-  const handleOkSeven = () => {
-    setIsModalOpenSeven(false);
-  };
-  const handleCancelSeven = () => {
-    setIsModalOpenSeven(false);
+  const handleCancelCompany = () => {
+    setIsModalOpenCompany(false);
   };
   //-------------------------------------------
   return (
@@ -237,10 +190,10 @@ const EntitiesComponent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={companies && reversed(companies)}
+                options={companies && companies}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalFour} />
+            <BsPlusLg className={cl.add__svg} onClick={showModalCompanyAdd} />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.id_company && cl.disabled}`}
               onClick={() => {
@@ -570,10 +523,7 @@ const EntitiesComponent = ({ isModal = false }) => {
         <div className={cl.content__category}>
           <h2 className={cl.content__title}>Залогове имущество:</h2>
           <div className={cl.content__select__container}>
-            <Form.Item
-              name="id_property"
-              //rules={[{ required: true, message: "Заполните это поле" }]}
-            >
+            <Form.Item name="id_property">
               <Select
                 className={cl.content__accor}
                 showSearch
@@ -587,10 +537,10 @@ const EntitiesComponent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={properties && reversed(properties)}
+                options={properties && properties}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+            <BsPlusLg className={cl.add__svg} onClick={showModalPropertyAdd} />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.id_property && cl.disabled}`}
               onClick={() => {
@@ -609,50 +559,45 @@ const EntitiesComponent = ({ isModal = false }) => {
         {isModal && success && <Success>Данные успешно отправлены.</Success>}
         <Button disabled={loading}>Отправить</Button>
       </Form>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Activites />
+      <Modal
+        open={isModalOpenPropertyAdd}
+        onOk={handleOkPropertyAdd}
+        onCancel={handleCancelPropertyAdd}
+      >
+        <PropertyContent
+          isModal={true}
+          handleCancelPropertyAdd={handleCancelPropertyAdd}
+        />
       </Modal>
       <Modal
-        open={isModalOpenTwo}
-        onOk={handleOkTwo}
-        onCancel={handleCancelTwo}
+        open={isModalOpenCompanyAdd}
+        onOk={handleOkCompanyAdd}
+        onCancel={handleCancelCompanyAdd}
       >
-        <PropertyContent isModal={true} />
+        <CompaniesContent
+          isModal={true}
+          handleCancelCompanyAdd={handleCancelCompanyAdd}
+        />
       </Modal>
       <Modal
-        open={isModalOpenThree}
-        onOk={handleOkThree}
-        onCancel={handleCancelThree}
+        open={isModalOpenProperty}
+        onOk={handleOkProperty}
+        onCancel={handleCancelProperty}
       >
-        <ConversationsContent isModal={true} />
+        <PropertyIdPageContent
+          isModal
+          handleCancelProperty={handleCancelProperty}
+        />
       </Modal>
       <Modal
-        open={isModalOpenFour}
-        onOk={handleOkFour}
-        onCancel={handleCancelFour}
+        open={isModalOpenCompany}
+        onOk={handleOkCompany}
+        onCancel={handleCancelCompany}
       >
-        <CompaniesContent isModal={true} />
-      </Modal>
-      <Modal
-        open={isModalOpenFive}
-        onOk={handleOkFive}
-        onCancel={handleCancelFive}
-      >
-        <Activites />
-      </Modal>
-      <Modal
-        open={isModalOpenSix}
-        onOk={handleOkSix}
-        onCancel={handleCancelSix}
-      >
-        <PropertyIdPageContent isModal handleCancelSix={handleCancelSix} />
-      </Modal>
-      <Modal
-        open={isModalOpenSeven}
-        onOk={handleOkSeven}
-        onCancel={handleCancelSeven}
-      >
-        <CompanyIdPageContent isModal handleCancelSeven={handleCancelSeven} />
+        <CompanyIdPageContent
+          isModal
+          handleCancelCompany={handleCancelCompany}
+        />
       </Modal>
     </div>
   );

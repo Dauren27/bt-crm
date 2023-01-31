@@ -2,28 +2,29 @@ import { Form, Input, Select, Modal } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import Button from "../UI/Button/Button";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
-import {
-  fetchConversations,
-  getConversations,
-} from "../../features/conversations/conversationsActions";
-import cl from "../style.module.scss";
 import { BsPlusLg } from "react-icons/bs";
+import { RiPencilFill } from "react-icons/ri";
+
+import cl from "../style.module.scss";
+import { Loading, Button, Success, Error } from "../UI";
+import {
+  fetchConversation,
+  getConversations,
+  getClient,
+  getClients,
+  getEntities,
+  getEntity,
+} from "../../redux/reducers";
 import Individuals from "../Clients/ClientAddContent";
 import Entities from "../Entities/EntityAddContent";
-import { getEntities, getEntity } from "../../features/entity/entityActions";
 import ClientIdPageContent from "../Clients/ClientIdPageContent";
-import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../Entities/EntityIdPageContent";
-import { getClient, getClients } from "../../features/clients/clientsActions";
 
-const ConversationsContent = ({ isModal = false }) => {
+const ConversationAddContent = ({ isModal = false }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [value, setValue] = useState(false);
   const [state, setState] = useState({
     is_meeting: value,
@@ -35,86 +36,84 @@ const ConversationsContent = ({ isModal = false }) => {
     client_id: null,
     entity_id: null,
   });
-  useEffect(() => {
-    dispatch(getClients());
-    dispatch(getEntities());
-  }, [dispatch]);
   const { loading, success, error, successModal } = useSelector(
-    (state) => state.conversations
+    (state) => state.conversation
   );
-  const { clients } = useSelector((state) => state.counterparties);
+  const { clients } = useSelector((state) => state.client);
   const { entities } = useSelector((state) => state.entity);
 
   const submitForm = () => {
     if (isModal) {
-      dispatch(fetchConversations(state)).then(() =>
+      dispatch(fetchConversation(state)).then(() =>
         dispatch(getConversations())
       );
     } else {
-      dispatch(fetchConversations(state));
+      dispatch(fetchConversation(state));
     }
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+  const openClientModal = (id) => {
+    dispatch(getClient({ id: id })).then(() => showModalClientModal());
+  };
+  const openEntityModal = (id) => {
+    dispatch(getEntity({ id: id })).then(() => showModalEntityModal());
+  };
+
   useEffect(() => {
     if (!isModal) if (success) navigate("/conversations");
   }, [success]);
-
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
-  const openClientModal = (id) => {
-    dispatch(getClient({ id: id })).then(() => showModalThree());
-  };
-  const openEntityModal = (id) => {
-    dispatch(getEntity({ id: id })).then(() => showModalFour());
-  };
+  useEffect(() => {
+    dispatch(getClients());
+    dispatch(getEntities());
+  }, [dispatch]);
 
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenClientAddModal, setIsModalOpenClientAddModal] =
+    useState(false);
+  const showModalClientAddModal = () => {
+    setIsModalOpenClientAddModal(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkClientAddModal = () => {
+    setIsModalOpenClientAddModal(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelClientAddModal = () => {
+    setIsModalOpenClientAddModal(false);
   };
 
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
+  const [isModalOpenEntityAddModal, setIsModalOpenEntityAddModal] =
+    useState(false);
+  const showModalEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(true);
   };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleOkEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(false);
   };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(false);
   };
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+
+  const [isModalOpenClientModal, setIsModalOpenClientModal] = useState(false);
+  const showModalClientModal = () => {
+    setIsModalOpenClientModal(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkClientModal = () => {
+    setIsModalOpenClientModal(false);
   };
   const handleCancelClientModal = () => {
-    setIsModalOpenThree(false);
+    setIsModalOpenClientModal(false);
   };
 
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
+  const [isModalOpenEntityModal, setIsModalOpenEntityModal] = useState(false);
+  const showModalEntityModal = () => {
+    setIsModalOpenEntityModal(true);
   };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
+  const handleOkEntityModal = () => {
+    setIsModalOpenEntityModal(false);
   };
   const handleCancelEntityModal = () => {
-    setIsModalOpenFour(false);
+    setIsModalOpenEntityModal(false);
   };
   //-------------------------------------------
   return (
@@ -224,10 +223,13 @@ const ConversationsContent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={clients && reversed(clients)}
+                options={clients && clients}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModal} />
+            <BsPlusLg
+              className={cl.add__svg}
+              onClick={showModalClientAddModal}
+            />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.client_id && cl.disabled}`}
               onClick={() => {
@@ -255,10 +257,13 @@ const ConversationsContent = ({ isModal = false }) => {
                     option?.full_name_director.toLocaleLowerCase() ?? ""
                   ).includes(input.toLocaleLowerCase())
                 }
-                options={entities && reversed(entities)}
+                options={entities && entities}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+            <BsPlusLg
+              className={cl.add__svg}
+              onClick={showModalEntityAddModal}
+            />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.entity_id && cl.disabled}`}
               onClick={() => {
@@ -279,19 +284,26 @@ const ConversationsContent = ({ isModal = false }) => {
         )}
         <Button disabled={loading}>Отправить</Button>
       </Form>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Individuals isModal={true} />
-      </Modal>
       <Modal
-        open={isModalOpenTwo}
-        onOk={handleOkTwo}
-        onCancel={handleCancelTwo}
+        open={isModalOpenClientAddModal}
+        onOk={handleOkClientAddModal}
+        onCancel={handleCancelClientAddModal}
       >
-        <Entities isModal={true} />
+        <Individuals isModal={true} handleCancel={handleCancelClientAddModal} />
       </Modal>
       <Modal
-        open={isModalOpenThree}
-        onOk={handleOkThree}
+        open={isModalOpenEntityAddModal}
+        onOk={handleOkEntityAddModal}
+        onCancel={handleCancelEntityAddModal}
+      >
+        <Entities
+          isModal={true}
+          handleCancelEntityAddModal={handleCancelEntityAddModal}
+        />
+      </Modal>
+      <Modal
+        open={isModalOpenClientModal}
+        onOk={handleOkClientModal}
         onCancel={handleCancelClientModal}
       >
         <ClientIdPageContent
@@ -300,8 +312,8 @@ const ConversationsContent = ({ isModal = false }) => {
         />
       </Modal>
       <Modal
-        open={isModalOpenFour}
-        onOk={handleOkFour}
+        open={isModalOpenEntityModal}
+        onOk={handleOkEntityModal}
         onCancel={handleCancelEntityModal}
       >
         <EntityIdPageContent
@@ -313,4 +325,4 @@ const ConversationsContent = ({ isModal = false }) => {
   );
 };
 
-export default ConversationsContent;
+export default ConversationAddContent;

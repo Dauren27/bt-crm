@@ -1,69 +1,71 @@
 import React, { useEffect, useState } from "react";
-import Button from "../UI/Button/Button";
-import cl from "../style.module.scss";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal } from "antd";
-import Recipients from "../Recipients/RecipientsAddContent";
+import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import ConversationsContent from "../Conversations/ConversationAddContent";
+import { RiPencilFill } from "react-icons/ri";
+
+import cl from "../style.module.scss";
+import RecipientIdPageContent from "../Recipients/RecipientIdPageContent";
+import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
+import { Loading, Button, Success, Error } from "../UI";
 import {
+  getClients,
+  getConversations,
   getGuarantor,
   getGuarantors,
-} from "../../features/guarantors/guarantorsActions";
-import { getConversations } from "../../features/conversations/conversationsActions";
-import { getClients, patchClient } from "../../features/clients/clientsActions";
-import {
   getProperties,
   getProperty,
-} from "../../features/property/propertyActions";
-import Error from "../UI/Error/Error";
-import Success from "../UI/Success/Success";
-import Loading from "../UI/Loading/Loading";
-import PropertyContent from "../Properties/PropertyAddContent";
-import { useNavigate } from "react-router";
-import { RiPencilFill } from "react-icons/ri";
-import RecipientIdPageContent from "../Recipients/RecipietntIdPageContent";
-import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
+  patchClient,
+} from "../../redux/reducers";
+import RecipientAddContent from "../Recipients/RecipientAddContent";
+import PropertyAddContent from "../Properties/PropertyAddContent";
 
 const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { guarantors } = useSelector((state) => state.guarantor);
   const { properties } = useSelector((state) => state.property);
   const { patchLoading, patchError, patchSuccess, clientInfo } = useSelector(
-    (state) => state.counterparties
+    (state) => state.client
   );
-  useEffect(() => {
-    if (!clientInfo) navigate("/counterparties");
-  }, []);
-  const [state, setState] = useState({
-    address: clientInfo && clientInfo.address,
-    client_actual_address: clientInfo && clientInfo.client_actual_address,
-    credit_sum: clientInfo && clientInfo.credit_sum,
-    credit_type: clientInfo && clientInfo.credit_type,
-    full_name: clientInfo && clientInfo.full_name,
-    id_guarantor: clientInfo && clientInfo.id_guarantor,
-    id_property: clientInfo && clientInfo.id_property,
-    marital_status: clientInfo && clientInfo.marital_status,
-    phone: clientInfo && clientInfo.phone,
-    status: clientInfo && clientInfo.status,
-  });
+  const [state, setState] = useState(
+    clientInfo && {
+      address: clientInfo.address,
+      client_actual_address: clientInfo.client_actual_address,
+      credit_sum: clientInfo.credit_sum,
+      credit_type: clientInfo.credit_type,
+      full_name: clientInfo.full_name,
+      id_guarantor: clientInfo.id_guarantor,
+      id_property: clientInfo.id_property,
+      marital_status: clientInfo.marital_status,
+      phone: clientInfo.phone,
+      status: clientInfo.status,
+    }
+  );
 
+  const submitForm = async (e) => {
+    dispatch(patchClient({ id: clientInfo.id, obj: state }));
+  };
+  const handleInput = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+  const openRecipientModal = (id) => {
+    dispatch(getGuarantor({ id: id })).then(() => showModalRecipientModal());
+  };
+  const openPropertyModal = (id) => {
+    dispatch(getProperty({ id: id })).then(() => showModalPropertyModal());
+  };
   useEffect(() => {
     dispatch(getGuarantors());
     dispatch(getProperties());
     dispatch(getConversations());
   }, [dispatch]);
-  const submitForm = async (e) => {
-    dispatch(patchClient({ id: clientInfo.id, obj: state })).then(() => {
-      dispatch(getClients());
-    });
-  };
-  const handleInput = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    if (!clientInfo) navigate("/counterparties");
+  }, []);
   useEffect(() => {
     clientInfo &&
       setState({
@@ -82,73 +84,56 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
   useEffect(() => {
     if (!isModal && patchSuccess) navigate("/counterparties");
     if (isModal && patchSuccess) {
+      dispatch(getClients());
       handleCancelClientModal && handleCancelClientModal();
     }
   }, [patchSuccess]);
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
-  const openRecipientModal = (id) => {
-    dispatch(getGuarantor({ id: id })).then(() => showModalFour());
-  };
-  const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalFive());
-  };
+
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenRecipientAdd, setIsModalOpenRecipientAdd] = useState(false);
+  const showModalRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
-  };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
-  };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(false);
   };
 
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+  const [isModalOpenPropertyAdd, setIsModalOpenPropertyAdd] = useState(false);
+  const showModalPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const handleCancelThree = () => {
-    setIsModalOpenThree(false);
-  };
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
-  };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const handleCancelFour = () => {
-    setIsModalOpenFour(false);
+  const handleCancelPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
 
-  const [isModalOpenFive, setIsModalOpenFive] = useState(false);
-  const showModalFive = () => {
-    setIsModalOpenFive(true);
+  const [isModalOpenRecipientModal, setIsModalOpenRecipientModal] =
+    useState(false);
+  const showModalRecipientModal = () => {
+    setIsModalOpenRecipientModal(true);
   };
-  const handleOkFive = () => {
-    setIsModalOpenFive(false);
+  const handleOkRecipientModal = () => {
+    setIsModalOpenRecipientModal(false);
   };
-  const handleCancelFive = () => {
-    setIsModalOpenFive(false);
+  const handleCancelRecipientModal = () => {
+    setIsModalOpenRecipientModal(false);
+  };
+
+  const [isModalOpenPropertyModal, setIsModalOpenPropertyModal] =
+    useState(false);
+  const showModalPropertyModal = () => {
+    setIsModalOpenPropertyModal(true);
+  };
+  const handleOkPropertyModal = () => {
+    setIsModalOpenPropertyModal(false);
+  };
+  const handleCancelPropertyModal = () => {
+    setIsModalOpenPropertyModal(false);
   };
   //-------------------------------------------
   return (
@@ -473,10 +458,8 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                   value={{
                     label: state.id_guarantor.full_name
                       ? state.id_guarantor.full_name
-                      : state.id_guarantor,
-                    value: state.id_guarantor.id
-                      ? state.id_guarantor.id
-                      : state.id_guarantor,
+                      : null,
+                    value: state.id_guarantor.id ? state.id_guarantor.id : null,
                   }}
                   fieldNames={{ label: "full_name", value: "id" }}
                   filterOption={(input, option) =>
@@ -484,18 +467,20 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={guarantors && reversed(guarantors)}
+                  options={guarantors && guarantors}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModal} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalRecipientAdd}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_guarantor && cl.disabled
                   }`}
                   onClick={() => {
                     state.id_guarantor &&
-                      (state.id_guarantor.id
-                        ? openRecipientModal(state.id_guarantor.id)
-                        : openRecipientModal(state.id_guarantor));
+                      state.id_guarantor.id &&
+                      openRecipientModal(state.id_guarantor.id);
                   }}
                 />
               </div>
@@ -524,9 +509,12 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={properties && reversed(properties)}
+                  options={properties && properties}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalPropertyAdd}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_property && cl.disabled
@@ -563,41 +551,44 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
             <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
-          <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Recipients isModal={true} />
-          </Modal>
           <Modal
-            open={isModalOpenTwo}
-            onOk={handleOkTwo}
-            onCancel={handleCancelTwo}
+            open={isModalOpenRecipientAdd}
+            onOk={handleOkRecipientAdd}
+            onCancel={handleCancelRecipientAdd}
           >
-            <PropertyContent />
-          </Modal>
-          <Modal
-            open={isModalOpenThree}
-            onOk={handleOkThree}
-            onCancel={handleCancelThree}
-          >
-            <ConversationsContent isModal={true} />
-          </Modal>
-          <Modal
-            open={isModalOpenFour}
-            onOk={handleOkFour}
-            onCancel={handleCancelFour}
-          >
-            <RecipientIdPageContent
-              isModal
-              handleCancelFour={handleCancelFour}
+            <RecipientAddContent
+              isModal={true}
+              handleCancelRecipientAdd={handleCancelRecipientAdd}
             />
           </Modal>
           <Modal
-            open={isModalOpenFive}
-            onOk={handleOkFive}
-            onCancel={handleCancelFive}
+            open={isModalOpenPropertyAdd}
+            onOk={handleOkPropertyAdd}
+            onCancel={handleCancelPropertyAdd}
+          >
+            <PropertyAddContent
+              isModal={true}
+              handleCancelPropertyAdd={handleCancelPropertyAdd}
+            />
+          </Modal>
+          <Modal
+            open={isModalOpenRecipientModal}
+            onOk={handleOkRecipientModal}
+            onCancel={handleCancelRecipientModal}
+          >
+            <RecipientIdPageContent
+              isModal
+              handleCancelRecipientModal={handleCancelRecipientModal}
+            />
+          </Modal>
+          <Modal
+            open={isModalOpenPropertyModal}
+            onOk={handleOkPropertyModal}
+            onCancel={handleCancelPropertyModal}
           >
             <PropertyIdPageContent
               isModal
-              handleCancelFive={handleCancelFive}
+              handleCancelPropertyModal={handleCancelPropertyModal}
             />
           </Modal>
         </div>

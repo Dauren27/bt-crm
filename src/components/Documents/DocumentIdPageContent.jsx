@@ -1,43 +1,57 @@
-import { Form, Select, Input } from "antd";
+import { Form, Select, Input, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../../components/UI/Button/Button";
-import cl from "../style.module.scss";
-
+import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import { Modal } from "antd";
+import { RiPencilFill } from "react-icons/ri";
+
+import cl from "../style.module.scss";
+import { Loading, Button, Success, Error } from "../UI";
 import Individuals from "../Clients/ClientAddContent";
 import Entities from "../Entities/EntityAddContent";
-import { getClient, getClients } from "../../features/clients/clientsActions";
 import {
-  getDocument,
+  getClient,
+  getClients,
   getDocuments,
   patchDocument,
-} from "../../features/documents/documentsActions";
-import { getEntities, getEntity } from "../../features/entity/entityActions";
-import Error from "../../components/UI/Error/Error";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
-import { useNavigate, useParams } from "react-router";
+  getEntities,
+  getEntity,
+} from "../../redux/reducers";
 import ClientIdPageContent from "../../components/Clients/ClientIdPageContent";
-import { RiPencilFill } from "react-icons/ri";
 import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
 
 const DocumentIdPageContent = () => {
   //----API-----
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+
   const { patchLoading, patchError, patchSuccess, documentInfo } = useSelector(
-    (state) => state.documents
+    (state) => state.document
   );
-  const { clients } = useSelector((state) => state.counterparties);
+  const { clients } = useSelector((state) => state.client);
   const { entities } = useSelector((state) => state.entity);
   const [state, setState] = useState({
     scoring: documentInfo && documentInfo.scoring,
     id_client: documentInfo && documentInfo.id_client,
     id_entity: documentInfo && documentInfo.id_entity,
   });
+
+  const handleInput = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+  const submitForm = () => {
+    dispatch(patchDocument({ id: documentInfo.id, obj: state })).then(() =>
+      dispatch(getDocuments())
+    );
+  };
+
+  const openClientModal = (id) => {
+    dispatch(getClient({ id: id })).then(() => showModalClientModal());
+  };
+  const openEntityModal = (id) => {
+    dispatch(getEntity({ id: id })).then(() => showModalEntityModal());
+  };
+
   useEffect(() => {
     if (!documentInfo) navigate("/documents");
   }, []);
@@ -48,70 +62,53 @@ const DocumentIdPageContent = () => {
   useEffect(() => {
     if (patchSuccess) navigate("/documents");
   }, [patchSuccess]);
-  const handleInput = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
-  const submitForm = () => {
-    dispatch(patchDocument({ id: documentInfo.id, obj: state })).then(() =>
-      dispatch(getDocuments())
-    );
-  };
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
-  const openClientModal = (id) => {
-    dispatch(getClient({ id: id })).then(() => showModalThree());
-  };
-  const openEntityModal = (id) => {
-    dispatch(getEntity({ id: id })).then(() => showModalFour());
-  };
   //-------------------------------------------
 
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenClientAddModal, setIsModalOpenClientAddModal] =
+    useState(false);
+  const showModalClientAddModal = () => {
+    setIsModalOpenClientAddModal(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkClientAddModal = () => {
+    setIsModalOpenClientAddModal(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
-  };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
-  };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelClientAddModal = () => {
+    setIsModalOpenClientAddModal(false);
   };
 
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+  const [isModalOpenEntityAddModal, setIsModalOpenEntityAddModal] =
+    useState(false);
+  const showModalEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(false);
+  };
+  const handleCancelEntityAddModal = () => {
+    setIsModalOpenEntityAddModal(false);
+  };
+
+  const [isModalOpenClientModal, setIsModalOpenClientModal] = useState(false);
+  const showModalClientModal = () => {
+    setIsModalOpenClientModal(true);
+  };
+  const handleOkClientModal = () => {
+    setIsModalOpenClientModal(false);
   };
   const handleCancelClientModal = () => {
-    setIsModalOpenThree(false);
+    setIsModalOpenClientModal(false);
   };
 
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
+  const [isModalOpenEntityModal, setIsModalOpenEntityModal] = useState(false);
+  const showModalEntityModal = () => {
+    setIsModalOpenEntityModal(true);
   };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
+  const handleOkEntityModal = () => {
+    setIsModalOpenEntityModal(false);
   };
   const handleCancelEntityModal = () => {
-    setIsModalOpenFour(false);
+    setIsModalOpenEntityModal(false);
   };
   //-------------------------------------------
   return (
@@ -224,9 +221,12 @@ const DocumentIdPageContent = () => {
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={clients && reversed(clients)}
+                  options={clients && clients}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModal} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalClientAddModal}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_client && cl.disabled
@@ -260,9 +260,12 @@ const DocumentIdPageContent = () => {
                       option?.full_name_director.toLocaleLowerCase() ?? ""
                     ).includes(input.toLocaleLowerCase())
                   }
-                  options={entities && reversed(entities)}
+                  options={entities && entities}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalEntityAddModal}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_entity && cl.disabled
@@ -286,19 +289,29 @@ const DocumentIdPageContent = () => {
             {patchSuccess && <Success>Данные успешно изменены.</Success>}
             <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
-          <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Individuals isModal={true} />
-          </Modal>
           <Modal
-            open={isModalOpenTwo}
-            onOk={handleOkTwo}
-            onCancel={handleCancelTwo}
+            open={isModalOpenClientAddModal}
+            onOk={handleOkClientAddModal}
+            onCancel={handleCancelClientAddModal}
           >
-            <Entities isModal={true} />
+            <Individuals
+              isModal={true}
+              handleCancel={handleCancelClientAddModal}
+            />
           </Modal>
           <Modal
-            open={isModalOpenThree}
-            onOk={handleOkThree}
+            open={isModalOpenEntityAddModal}
+            onOk={handleOkEntityAddModal}
+            onCancel={handleCancelEntityAddModal}
+          >
+            <Entities
+              isModal={true}
+              handleCancelEntityAddModal={handleCancelEntityAddModal}
+            />
+          </Modal>
+          <Modal
+            open={isModalOpenClientModal}
+            onOk={handleOkClientModal}
             onCancel={handleCancelClientModal}
           >
             <ClientIdPageContent
@@ -307,8 +320,8 @@ const DocumentIdPageContent = () => {
             />
           </Modal>
           <Modal
-            open={isModalOpenFour}
-            onOk={handleOkFour}
+            open={isModalOpenEntityModal}
+            onOk={handleOkEntityModal}
             onCancel={handleCancelEntityModal}
           >
             <EntityIdPageContent

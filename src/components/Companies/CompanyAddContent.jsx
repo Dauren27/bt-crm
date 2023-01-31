@@ -1,42 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Button from "../UI/Button/Button";
-//import cl from "../../pages/Companies/companies.module.scss";
-import cl from "../style.module.scss";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import { Modal } from "antd";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
+
+import cl from "../style.module.scss";
 import Activites from "../Actives/Actives";
+import { Loading, Button, Success, Error } from "../UI";
 import {
   fetchCompany,
+  getActivities,
   getCompanies,
-} from "../../features/company/companyActions";
-import { getActivities } from "../../features/activity/activityActions";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
-import { useNavigate } from "react-router";
+} from "../../redux/reducers";
 
-const CompaniesContent = ({ isModal = false }) => {
+const CompaniesContent = ({ isModal = false, handleCancelCompanyAdd }) => {
   //----API-----
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(fetchCompany());
-    dispatch(getActivities());
-  }, [dispatch]);
-  const { error, loading, company, success, successModal } = useSelector(
-    (state) => state.companies
-  );
-  const submitForm = () => {
-    if (isModal) {
-      dispatch(fetchCompany(state)).then(() => dispatch(getCompanies()));
-    } else {
-      dispatch(fetchCompany(state));
-    }
-  };
 
-  const { activities } = useSelector((state) => state.activites);
+  const { error, loading, success, successModal } = useSelector(
+    (state) => state.company
+  );
+  const { activities } = useSelector((state) => state.activity);
   const [state, setState] = useState({
     company_name: "",
     inn: "",
@@ -48,17 +33,26 @@ const CompaniesContent = ({ isModal = false }) => {
     field_activity: null,
     document: null,
   });
+
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    if (!isModal) if (success) navigate("/companies");
-  }, [success]);
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
+  const submitForm = () => {
+    dispatch(fetchCompany(state));
   };
+
+  useEffect(() => {
+    if (!isModal && success) navigate("/companies");
+    if (isModal && success) {
+      dispatch(getCompanies());
+      handleCancelCompanyAdd && handleCancelCompanyAdd();
+    }
+  }, [success]);
+
+  useEffect(() => {
+    dispatch(fetchCompany());
+    dispatch(getActivities());
+  }, [dispatch]);
   //-------------------------------------------
 
   //---Modals----------------------------------
@@ -185,7 +179,7 @@ const CompaniesContent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={activities && reversed(activities)}
+                options={activities && activities}
               />
             </Form.Item>
             {error && error.activites_add && (
@@ -254,7 +248,7 @@ const CompaniesContent = ({ isModal = false }) => {
             Данные не были отправлены. Проверьте корректность заполненых данных.
           </Error>
         )}
-        {successModal && <Success>Данные успешно отправлены.</Success>}
+        {success && <Success>Данные успешно отправлены.</Success>}
         <Button disabled={loading}>Отправить</Button>
       </Form>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

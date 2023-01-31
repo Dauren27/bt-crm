@@ -1,5 +1,5 @@
 import React from "react";
-import ConversationIdPageContent from "../../components/Conversations/ConversationIdPageContent";
+import { ConversationIdPageContent } from "../../components";
 import Layout from "../../Layout/Layout";
 
 const ConversationIdPage = () => {

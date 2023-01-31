@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "../../Layout/Layout";
-import cl from "../Documents/documentsList.module.scss";
 import { useNavigate } from "react-router";
-import Table from "../../components/UI/Table/Table";
-import {
-  deleteConversation,
-  getConversation,
-  getConversations,
-} from "../../features/conversations/conversationsActions";
 import { BiSearch } from "react-icons/bi";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
-import Error from "../../components/UI/Error/Error";
 import { Select } from "antd";
-import { getEntities } from "../../features/entity/entityActions";
-import { getClients } from "../../features/clients/clientsActions";
 import { Line } from "react-chartjs-2";
+import axios from "axios";
 import {
   Chart as ChartJS,
   Title,
@@ -26,7 +14,18 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
-import axios from "axios";
+
+import Layout from "../../Layout/Layout";
+import cl from "../Documents/documentsList.module.scss";
+import {
+  deleteConversation,
+  getConversation,
+  getConversations,
+  getEntities,
+  getClients,
+} from "../../redux/reducers";
+import { Loading, Success, Table, Error } from "../../components/UI";
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -39,14 +38,9 @@ ChartJS.register(
 const ConversationsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getConversations());
-    dispatch(getClients());
-    dispatch(getEntities());
-  }, [dispatch]);
-  const { clients } = useSelector((state) => state.counterparties);
+
+  const { clients } = useSelector((state) => state.client);
   const { entities } = useSelector((state) => state.entity);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [filtredConversation, setFiltredConversation] = useState(null);
   const {
     conversations,
@@ -57,13 +51,29 @@ const ConversationsList = () => {
     patchMessage,
     conversation,
     patchConversation,
-  } = useSelector((state) => state.conversations);
+  } = useSelector((state) => state.conversation);
+
+  const [selectedOption, setSelectedOption] = useState(null);
   const [conversationsList, setConversationsList] = useState(
     conversations && conversations
   );
-  useEffect(() => {
-    setConversationsList(conversations);
-  }, [conversations]);
+  const [searchValue, setSearchValue] = useState("");
+  const [fetchedData, setFetchedData] = useState();
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+  };
+  const data = {
+    labels: fetchedData && [...fetchedData.map((item) => item.date)],
+    datasets: [
+      {
+        data: fetchedData && [...fetchedData.map((item) => item.total)],
+        pointStyle: "rect",
+        borderColor: "#42b4f4",
+      },
+    ],
+  };
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -89,56 +99,32 @@ const ConversationsList = () => {
       }
     });
   };
-  const [searchValue, setSearchValue] = useState("");
   const navigateToConversation = (id) => {
     dispatch(getConversation({ id: id })).then(() =>
       navigate(`/conversations/${id}`)
     );
   };
-  const chartData = [
-    { date: "1.01", total: 7 },
-    { date: "2.01", total: 4 },
-    { date: "3.01", total: 13 },
-    { date: "5.01", total: 6 },
-    { date: "6.01", total: 7 },
-    { date: "7.01", total: 4 },
-    { date: "8.01", total: 13 },
-    { date: "9.01", total: 6 },
-    { date: "10.01", total: 7 },
-    { date: "11.01", total: 4 },
-    { date: "12.01", total: 13 },
-    { date: "13.01", total: 6 },
-    { date: "14.01", total: 7 },
-    { date: "15.01", total: 4 },
-    { date: "16.01", total: 13 },
-    { date: "17.01", total: 6 },
-  ];
 
-  const options = {
-    maintainAspectRatio: false,
-    responsive: true,
-  };
-  const [fetchedData, setFetchedData] = useState();
   useEffect(() => {
-    axios
-      .get("https://bt-back-demo.herokuapp.com/crm/test/")
-      .then((response) => {
-        setFetchedData(response.data.Conversation);
-        console.log(response);
-      });
+    try {
+      axios
+        .get("https://bt-back-demo.herokuapp.com/crm/test/")
+        .then((response) => {
+          setFetchedData(response.data.Conversation);
+        });
+    } catch (e) {}
   }, []);
-  const data = {
-    labels: fetchedData && [...fetchedData.map((item) => item.date)],
-    datasets: [
-      {
-        data: fetchedData && [...fetchedData.map((item) => item.total)],
-        pointStyle: "rect",
-        borderColor: "#42b4f4",
-      },
-    ],
-  };
-  console.log(data);
-  console.log("fetchedData", fetchedData);
+
+  useEffect(() => {
+    setConversationsList(conversations);
+  }, [conversations]);
+
+  useEffect(() => {
+    dispatch(getConversations());
+    dispatch(getClients());
+    dispatch(getEntities());
+  }, [dispatch]);
+
   return (
     <Layout>
       <div className={cl.container}>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../../Layout/Layout";
 import cls from "../../components/style.module.scss";
-import ClientsList from "../../components/Clients/ClientsList";
-import EntitiesList from "../../components/Entities/EntitiesList";
+import { ClientsList, EntitiesList } from "../../components";
 
 const CounterpartiesList = () => {
   const [value, setValue] = useState(1);

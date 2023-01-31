@@ -1,40 +1,30 @@
 import React, { useEffect, useState } from "react";
-import Button from "../UI/Button/Button";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import cl from "../style.module.scss";
-import { Modal } from "antd";
-import Recipients from "../Recipients/RecipientsAddContent";
+import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import ConversationsContent from "../Conversations/ConversationAddContent";
+import { RiPencilFill } from "react-icons/ri";
+
+import cl from "../style.module.scss";
+import { Loading, Button, Success, Error } from "../UI";
 import {
+  fetchClient,
+  getClients,
   getGuarantor,
   getGuarantors,
-} from "../../features/guarantors/guarantorsActions";
-import { getConversations } from "../../features/conversations/conversationsActions";
-import {
-  fetchClients,
-  getClients,
-} from "../../features/clients/clientsActions";
-import {
   getProperties,
   getProperty,
-} from "../../features/property/propertyActions";
-import PropertyContent from "../Properties/PropertyAddContent";
-import Error from "../UI/Error/Error";
-import Success from "../UI/Success/Success";
-import Loading from "../UI/Loading/Loading";
-import { RiPencilFill } from "react-icons/ri";
-import RecipientIdPageContent from "../Recipients/RecipietntIdPageContent";
-import { useNavigate } from "react-router";
+} from "../../redux/reducers";
+import RecipientAddContent from "../Recipients/RecipientAddContent";
+import PropertyAddContent from "../Properties/PropertyAddContent";
+import RecipientIdPageContent from "../Recipients/RecipientIdPageContent";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
 
-const ClientAddContent = ({ isModal = false }) => {
+const ClientAddContent = ({ isModal = false, handleCancelClientAddModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
-  const { guarantors } = useSelector((state) => state.guarantor);
-  const { properties } = useSelector((state) => state.property);
   const navigate = useNavigate();
+
   const [state, setState] = useState({
     full_name: "",
     credit_type: "",
@@ -54,97 +44,83 @@ const ClientAddContent = ({ isModal = false }) => {
     id_guarantor: null,
     id_property: null,
   });
-  useEffect(() => {
-    dispatch(getGuarantors());
-    dispatch(getProperties());
-    dispatch(getConversations());
-  }, [dispatch]);
-  const submitForm = async (e) => {
-    if (isModal) {
-      dispatch(fetchClients(state)).then(() => {
-        success && dispatch(getClients());
-      });
-    } else {
-      dispatch(fetchClients(state));
-    }
-  };
+
+  const { guarantors } = useSelector((state) => state.guarantor);
+  const { properties } = useSelector((state) => state.property);
+  const { loading, error, success } = useSelector((state) => state.client);
+
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const { loading, error, success, successModal } = useSelector(
-    (state) => state.counterparties
-  );
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
+  const submitForm = async (e) => {
+    dispatch(fetchClient(state));
   };
-  useEffect(() => {
-    if (!isModal) if (success) navigate("/counterparties");
-  }, [success]);
-
   const openRecipientModal = (id) => {
-    dispatch(getGuarantor({ id: id })).then(() => showModalFour());
+    dispatch(getGuarantor({ id: id })).then(() => showModalRecipientModal());
   };
   const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalFive());
+    dispatch(getProperty({ id: id })).then(() => showModalPropertyModal());
   };
+
+  useEffect(() => {
+    if (!isModal && success) navigate("/counterparties");
+    if (isModal && success) {
+      dispatch(getClients());
+      handleCancelClientAddModal && handleCancelClientAddModal();
+    }
+  }, [success]);
+
+  useEffect(() => {
+    dispatch(getGuarantors());
+    dispatch(getProperties());
+  }, [dispatch]);
   //-------------------------------------------
 
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenRecipientAdd, setIsModalOpenRecipientAdd] = useState(false);
+  const showModalRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
-  };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
-  };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelRecipientAdd = () => {
+    setIsModalOpenRecipientAdd(false);
   };
 
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+  const [isModalOpenPropertyAdd, setIsModalOpenPropertyAdd] = useState(false);
+  const showModalPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const handleCancelThree = () => {
-    setIsModalOpenThree(false);
-  };
-
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
-  };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const handleCancelFour = () => {
-    setIsModalOpenFour(false);
+  const handleCancelPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
 
-  const [isModalOpenFive, setIsModalOpenFive] = useState(false);
-  const showModalFive = () => {
-    setIsModalOpenFive(true);
+  const [isModalOpenRecipientModal, setIsModalOpenRecipientModal] =
+    useState(false);
+  const showModalRecipientModal = () => {
+    setIsModalOpenRecipientModal(true);
   };
-  const handleOkFive = () => {
-    setIsModalOpenFive(false);
+  const handleOkRecipientModal = () => {
+    setIsModalOpenRecipientModal(false);
   };
-  const handleCancelFive = () => {
-    setIsModalOpenFive(false);
+  const handleCancelRecipientModal = () => {
+    setIsModalOpenRecipientModal(false);
+  };
+
+  const [isModalOpenPropertyModal, setIsModalOpenPropertyModal] =
+    useState(false);
+  const showModalPropertyModal = () => {
+    setIsModalOpenPropertyModal(true);
+  };
+  const handleOkPropertyModal = () => {
+    setIsModalOpenPropertyModal(false);
+  };
+  const handleCancelPropertyModal = () => {
+    setIsModalOpenPropertyModal(false);
   };
   //-------------------------------------------
   return (
@@ -402,9 +378,7 @@ const ClientAddContent = ({ isModal = false }) => {
           <h2 className={cl.content__title}>
             Отчёт подрядчиков и поставщиков об оказанной услуге:
           </h2>
-          <Form.Item
-            name="report"
-          >
+          <Form.Item name="report">
             <input
               type="file"
               onChange={(e) =>
@@ -459,10 +433,10 @@ const ClientAddContent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={guarantors && reversed(guarantors)}
+                options={guarantors && guarantors}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModal} />
+            <BsPlusLg className={cl.add__svg} onClick={showModalRecipientAdd} />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.id_guarantor && cl.disabled}`}
               onClick={() => {
@@ -494,10 +468,10 @@ const ClientAddContent = ({ isModal = false }) => {
                     input.toLocaleLowerCase()
                   )
                 }
-                options={properties && reversed(properties)}
+                options={properties && properties}
               />
             </Form.Item>
-            <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+            <BsPlusLg className={cl.add__svg} onClick={showModalPropertyAdd} />
             <RiPencilFill
               className={`${cl.add__svg} ${!state.id_property && cl.disabled}`}
               onClick={() => {
@@ -517,36 +491,45 @@ const ClientAddContent = ({ isModal = false }) => {
         {isModal && success && <Success>Данные успешно отправлены.</Success>}
         <Button disabled={loading}>Отправить</Button>
       </Form>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Recipients isModal={true} />
+      <Modal
+        open={isModalOpenRecipientAdd}
+        onOk={handleOkRecipientAdd}
+        onCancel={handleCancelRecipientAdd}
+      >
+        <RecipientAddContent
+          isModal={true}
+          handleCancelRecipientAdd={handleCancelRecipientAdd}
+        />
       </Modal>
       <Modal
-        open={isModalOpenTwo}
-        onOk={handleOkTwo}
-        onCancel={handleCancelTwo}
+        open={isModalOpenPropertyAdd}
+        onOk={handleOkPropertyAdd}
+        onCancel={handleCancelPropertyAdd}
       >
-        <PropertyContent isModal={true} />
+        <PropertyAddContent
+          isModal={true}
+          handleCancelPropertyAdd={handleCancelPropertyAdd}
+        />
       </Modal>
       <Modal
-        open={isModalOpenThree}
-        onOk={handleOkThree}
-        onCancel={handleCancelThree}
+        open={isModalOpenRecipientModal}
+        onOk={handleOkRecipientModal}
+        onCancel={handleCancelRecipientModal}
       >
-        <ConversationsContent isModal={true} />
+        <RecipientIdPageContent
+          isModal
+          handleCancelRecipientModal={handleCancelRecipientModal}
+        />
       </Modal>
       <Modal
-        open={isModalOpenFour}
-        onOk={handleOkFour}
-        onCancel={handleCancelFour}
+        open={isModalOpenPropertyModal}
+        onOk={handleOkPropertyModal}
+        onCancel={handleCancelPropertyModal}
       >
-        <RecipientIdPageContent isModal handleCancelFour={handleCancelFour} />
-      </Modal>
-      <Modal
-        open={isModalOpenFive}
-        onOk={handleOkFive}
-        onCancel={handleCancelFive}
-      >
-        <PropertyIdPageContent isModal handleCancelFive={handleCancelFive} />
+        <PropertyIdPageContent
+          isModal
+          handleCancelPropertyModal={handleCancelPropertyModal}
+        />
       </Modal>
     </div>
   );

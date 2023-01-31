@@ -1,5 +1,5 @@
 import React from "react";
-import ConversationAddContent from "../../components/Conversations/ConversationAddContent";
+import { ConversationAddContent } from "../../components";
 import Layout from "../../Layout/Layout";
 
 const ConversationsAdd = () => {

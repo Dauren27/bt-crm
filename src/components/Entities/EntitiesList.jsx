@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../UI/Table/Table";
-import cl from "../../pages/Documents/documentsList.module.scss";
 import { useNavigate } from "react-router";
-import {
-  deleteEntity,
-  getEntities,
-  getEntity,
-} from "../../features/entity/entityActions";
 import { BiSearch } from "react-icons/bi";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
+
+import cl from "../../pages/Documents/documentsList.module.scss";
+import { deleteEntity, getEntities, getEntity } from "../../redux/reducers";
+import { Loading, Success, Table } from "../UI";
 
 const EntitiesList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getEntities());
-  }, [dispatch]);
+
   const {
     entities,
     deleteSuccess,
@@ -28,9 +21,8 @@ const EntitiesList = () => {
     patchEntity,
   } = useSelector((state) => state.entity);
   const [entitiesList, setEntitiesList] = useState(entities && entities);
-  useEffect(() => {
-    setEntitiesList(entities);
-  }, [entities]);
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -54,12 +46,20 @@ const EntitiesList = () => {
       }
     });
   };
-  const [searchValue, setSearchValue] = useState("");
   const navigateToEntity = (id) => {
     dispatch(getEntity({ id: id })).then(() =>
       navigate(`/counterparties/entity/${id}`)
     );
   };
+
+  useEffect(() => {
+    setEntitiesList(entities);
+  }, [entities]);
+
+  useEffect(() => {
+    dispatch(getEntities());
+  }, [dispatch]);
+  
   return (
     <div className={cl.container}>
       <div className={cl.container__header}>

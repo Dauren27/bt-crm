@@ -1,6 +1,6 @@
-import Layout from "../../Layout/Layout";
 import React from "react";
-import CompanyIdPageContent from "../../components/Companies/CompanyIdPageContent";
+import Layout from "../../Layout/Layout";
+import { CompanyIdPageContent } from "../../components";
 
 const CompanyIdPage = () => {
   return (

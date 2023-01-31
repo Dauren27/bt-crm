@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Select, Form, Input } from "antd";
+import { Select, Form, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import cl from "../style.module.scss";
-import { Modal } from "antd";
-import { BsPlusLg } from "react-icons/bs";
-import Error from "../UI/Error/Error";
-import Success from "../UI/Success/Success";
-import Loading from "../UI/Loading/Loading";
-import { getEntities, patchEntity } from "../../features/entity/entityActions";
 import { useNavigate } from "react-router";
-import Button from "../UI/Button/Button";
+import { BsPlusLg } from "react-icons/bs";
+import { RiPencilFill } from "react-icons/ri";
+
+import cl from "../style.module.scss";
 import {
+  getEntities,
+  patchEntity,
   getCompanies,
   getCompany,
-} from "../../features/company/companyActions";
-import { getActivities } from "../../features/activity/activityActions";
-import {
+  getActivities,
   getProperties,
   getProperty,
-} from "../../features/property/propertyActions";
-import { getConversations } from "../../features/conversations/conversationsActions";
+} from "../../redux/reducers";
 import PropertyContent from "../Properties/PropertyAddContent";
-import ConversationsContent from "../Conversations/ConversationAddContent";
-import { RiPencilFill } from "react-icons/ri";
 import CompaniesContent from "../Companies/CompanyAddContent";
-import Activites from "../Actives/Actives";
 import PropertyIdPageContent from "../Properties/PropertyIdPageContent";
 import CompanyIdPageContent from "../Companies/CompanyIdPageContent";
+import { Loading, Button, Success, Error } from "../UI";
 
 const EntityIdPageContent = ({
   isModal = false,
@@ -35,14 +28,13 @@ const EntityIdPageContent = ({
   //-----------API---------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { properties } = useSelector((state) => state.property);
-  const { companies } = useSelector((state) => state.companies);
+  const { companies } = useSelector((state) => state.company);
   const { entityInfo, patchLoading, patchSuccess, patchError } = useSelector(
     (state) => state.entity
   );
-  useEffect(() => {
-    if (!entityInfo) navigate("/counterparties");
-  }, []);
+
   const [state, setState] = useState({
     address: entityInfo && entityInfo.address,
     assets: entityInfo && entityInfo.assets,
@@ -60,21 +52,29 @@ const EntityIdPageContent = ({
     phone: entityInfo && entityInfo.phone,
     status: entityInfo && entityInfo.status,
   });
-  useEffect(() => {
-    dispatch(getCompanies());
-    dispatch(getActivities());
-    dispatch(getProperties());
-    dispatch(getConversations());
-  }, [dispatch]);
 
   const submitForm = () => {
-    dispatch(patchEntity({ id: entityInfo.id, obj: state })).then(() => {
-      dispatch(getEntities());
-    });
+    dispatch(patchEntity({ id: entityInfo.id, obj: state }));
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+
+  const openPropertyModal = (id) => {
+    dispatch(getProperty({ id: id })).then(() => showModalProperty());
+  };
+  const openCompanyModal = (id) => {
+    dispatch(getCompany({ id: id })).then(() => showModalCompany());
+  };
+
+  useEffect(() => {
+    dispatch(getCompanies());
+    dispatch(getActivities());
+    dispatch(getProperties());
+  }, [dispatch]);
+  useEffect(() => {
+    if (!entityInfo) navigate("/counterparties");
+  }, []);
   useEffect(() => {
     entityInfo &&
       setState({
@@ -98,94 +98,54 @@ const EntityIdPageContent = ({
   useEffect(() => {
     if (!isModal && patchSuccess) navigate("/counterparties");
     if (isModal && patchSuccess) {
+      dispatch(getEntities());
       handleCancelEntityModal && handleCancelEntityModal();
     }
   }, [patchSuccess]);
-  const reversed = (arr) => {
-    const arr2 = [...arr];
-    arr2.reverse();
-    return arr2;
-  };
-  const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalSix());
-  };
-  const openCompanyModal = (id) => {
-    dispatch(getCompany({ id: id })).then(() => showModalSeven());
-  };
+
   //-------------------------------------------
 
   //---Modals----------------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [isModalOpenPropertyAdd, setIsModalOpenPropertyAdd] = useState(false);
+  const showModalPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleOkPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelPropertyAdd = () => {
+    setIsModalOpenPropertyAdd(false);
   };
-  const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
-  const showModalTwo = () => {
-    setIsModalOpenTwo(true);
+  const [isModalOpenCompanyAdd, setIsModalOpenCompanyAdd] = useState(false);
+  const showModalCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(true);
   };
-  const handleOkTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleOkCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(false);
   };
-  const handleCancelTwo = () => {
-    setIsModalOpenTwo(false);
+  const handleCancelCompanyAdd = () => {
+    setIsModalOpenCompanyAdd(false);
   };
-
-  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
-  const showModalThree = () => {
-    setIsModalOpenThree(true);
+  const [isModalOpenProperty, setIsModalOpenProperty] = useState(false);
+  const showModalProperty = () => {
+    setIsModalOpenProperty(true);
   };
-  const handleOkThree = () => {
-    setIsModalOpenThree(false);
+  const handleOkProperty = () => {
+    setIsModalOpenProperty(false);
   };
-  const handleCancelThree = () => {
-    setIsModalOpenThree(false);
-  };
-  const [isModalOpenFour, setIsModalOpenFour] = useState(false);
-  const showModalFour = () => {
-    setIsModalOpenFour(true);
-  };
-  const handleOkFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const handleCancelFour = () => {
-    setIsModalOpenFour(false);
-  };
-  const [isModalOpenFive, setIsModalOpenFive] = useState(false);
-  const showModalFive = () => {
-    setIsModalOpenFive(true);
-  };
-  const handleOkFive = () => {
-    setIsModalOpenFive(false);
-  };
-  const handleCancelFive = () => {
-    setIsModalOpenFive(false);
-  };
-  const [isModalOpenSix, setIsModalOpenSix] = useState(false);
-  const showModalSix = () => {
-    setIsModalOpenSix(true);
-  };
-  const handleOkSix = () => {
-    setIsModalOpenSix(false);
-  };
-  const handleCancelSix = () => {
-    setIsModalOpenSix(false);
+  const handleCancelProperty = () => {
+    setIsModalOpenProperty(false);
   };
 
-  const [isModalOpenSeven, setIsModalOpenSeven] = useState(false);
-  const showModalSeven = () => {
-    setIsModalOpenSeven(true);
+  const [isModalOpenCompany, setIsModalOpenCompany] = useState(false);
+  const showModalCompany = () => {
+    setIsModalOpenCompany(true);
   };
-  const handleOkSeven = () => {
-    setIsModalOpenSeven(false);
+  const handleOkCompany = () => {
+    setIsModalOpenCompany(false);
   };
-  const handleCancelSeven = () => {
-    setIsModalOpenSeven(false);
+  const handleCancelCompany = () => {
+    setIsModalOpenCompany(false);
   };
   return (
     <div>
@@ -248,9 +208,12 @@ const EntityIdPageContent = ({
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={companies && reversed(companies)}
+                  options={companies && companies}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModalFour} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalCompanyAdd}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_company && cl.disabled
@@ -586,9 +549,12 @@ const EntityIdPageContent = ({
                       input.toLocaleLowerCase()
                     )
                   }
-                  options={properties && reversed(properties)}
+                  options={properties && properties}
                 />
-                <BsPlusLg className={cl.add__svg} onClick={showModalTwo} />
+                <BsPlusLg
+                  className={cl.add__svg}
+                  onClick={showModalPropertyAdd}
+                />
                 <RiPencilFill
                   className={`${cl.add__svg} ${
                     !state.id_property && cl.disabled
@@ -623,52 +589,44 @@ const EntityIdPageContent = ({
             {patchSuccess && <Success>Данные успешно отправлены.</Success>}
             <Button disabled={patchLoading}>Сохранить</Button>
           </Form>
-          <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Activites />
-          </Modal>
           <Modal
-            open={isModalOpenTwo}
-            onOk={handleOkTwo}
-            onCancel={handleCancelTwo}
+            open={isModalOpenPropertyAdd}
+            onOk={handleOkPropertyAdd}
+            onCancel={handleCancelPropertyAdd}
           >
-            <PropertyContent />
+            <PropertyContent
+              isModal={true}
+              handleCancelPropertyAdd={handleCancelPropertyAdd}
+            />
           </Modal>
           <Modal
-            open={isModalOpenThree}
-            onOk={handleOkThree}
-            onCancel={handleCancelThree}
+            open={isModalOpenCompanyAdd}
+            onOk={handleOkCompanyAdd}
+            onCancel={handleCancelCompanyAdd}
           >
-            <ConversationsContent isModal={true} />
+            <CompaniesContent
+              isModal={true}
+              handleCancelCompanyAdd={handleCancelCompanyAdd}
+            />
           </Modal>
           <Modal
-            open={isModalOpenFour}
-            onOk={handleOkFour}
-            onCancel={handleCancelFour}
+            open={isModalOpenProperty}
+            onOk={handleOkProperty}
+            onCancel={handleCancelProperty}
           >
-            <CompaniesContent isModal={true} />
+            <PropertyIdPageContent
+              isModal
+              handleCancelProperty={handleCancelProperty}
+            />
           </Modal>
           <Modal
-            open={isModalOpenFive}
-            onOk={handleOkFive}
-            onCancel={handleCancelFive}
-          >
-            <Activites />
-          </Modal>
-          <Modal
-            open={isModalOpenSix}
-            onOk={handleOkSix}
-            onCancel={handleCancelSix}
-          >
-            <PropertyIdPageContent isModal handleCancelSix={handleCancelSix} />
-          </Modal>
-          <Modal
-            open={isModalOpenSeven}
-            onOk={handleOkSeven}
-            onCancel={handleCancelSeven}
+            open={isModalOpenCompany}
+            onOk={handleOkCompany}
+            onCancel={handleCancelCompany}
           >
             <CompanyIdPageContent
               isModal
-              handleCancelSeven={handleCancelSeven}
+              handleCancelCompany={handleCancelCompany}
             />
           </Modal>
         </div>

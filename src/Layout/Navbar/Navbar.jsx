@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { SidebarContext } from "../../context";
+import { GlobalContext } from "../../context";
 import cl from "./Navbar.module.scss";
 import { MdOutlineMenu } from "react-icons/md";
 import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
+  const { sidebarOpen, setSidebarOpen } = useContext(GlobalContext);
   const location = useLocation();
   const { userInfo } = useSelector((state) => state.user);
   const [list, setList] = useState("Документы на КК");
@@ -52,7 +52,6 @@ const Navbar = () => {
       setList("Документы на КК");
     }
   }, []);
-
   return (
     <div className={cl.navbar}>
       <h2 className={cl.navbar__left}>

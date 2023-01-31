@@ -1,21 +1,18 @@
 import { Form, Input } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../UI/Button/Button";
-import Error from "../UI/Error/Error";
-import Loading from "../UI/Loading/Loading";
-import Success from "../UI/Success/Success";
-import {
-  fetchProperties,
-  getProperties,
-} from "../../features/property/propertyActions";
 import { useNavigate } from "react-router";
 import { BsPlusLg } from "react-icons/bs";
-import cl from "../style.module.scss";
 
-const PropertyContent = ({ isModal = false }) => {
+import cl from "../style.module.scss";
+import { fetchProperties, getProperties } from "../../redux/reducers";
+import { Loading, Button, Success, Error } from "../UI";
+
+const PropertyAddContent = ({ isModal = false, handleCancelPropertyAdd }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading, error, success } = useSelector((state) => state.property);
   const [state, setState] = useState({
     type: "",
     address: "",
@@ -24,20 +21,19 @@ const PropertyContent = ({ isModal = false }) => {
   });
   const [imageFiles, setImageFiles] = useState(2);
   const [fileFiles, setFileFiles] = useState(2);
-  const { loading, error, success } = useSelector((state) => state.property);
 
   const submitForm = () => {
-    if (isModal) {
-      dispatch(fetchProperties(state)).then(() => dispatch(getProperties()));
-    } else {
-      dispatch(fetchProperties(state));
-    }
+    dispatch(fetchProperties(state));
   };
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   useEffect(() => {
-    if (!isModal) if (success) navigate("/properties");
+    if (!isModal && success) navigate("/properties");
+    if (isModal && success) {
+      dispatch(getProperties());
+      handleCancelPropertyAdd && handleCancelPropertyAdd();
+    }
   }, [success]);
   return (
     <div className={cl.content}>
@@ -164,4 +160,4 @@ const PropertyContent = ({ isModal = false }) => {
   );
 };
 
-export default PropertyContent;
+export default PropertyAddContent;

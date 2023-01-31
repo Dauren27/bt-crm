@@ -1,24 +1,22 @@
 import classNames from "classnames";
 import React from "react";
-import cl from "./registration.module.scss";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Error from "../../components/UI/Error/Error";
-import { registerUser } from "../../features/user/userActions";
-import Button from "../../components/UI/Button/Button";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
 import { Select } from "antd";
+
+import cl from "./registration.module.scss";
+import { registerUser } from "../../redux/reducers";
+import { Loading, Button, Success, Error } from "../../components/UI";
 
 const Registration = () => {
   const { registerLoading, registerError, registerSuccess } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit } = useForm();
   const navigate = useNavigate();
   const [state, setState] = useState({});
   const submitForm = () => {

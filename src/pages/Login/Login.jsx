@@ -1,16 +1,15 @@
 import classNames from "classnames";
 import React from "react";
-import cl from "./Login.module.scss";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../features/user/userActions";
-import Button from "../../components/UI/Button/Button";
-import Loading from "../../components/UI/Loading/Loading";
-import Error from "../../components/UI/Error/Error";
+
+import cl from "./Login.module.scss";
+import { userLogin } from "../../redux/reducers";
+import { Loading, Button, Error } from "../../components/UI";
 
 const Login = () => {
-  const { loading, userInfo, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const submitForm = (data) => {

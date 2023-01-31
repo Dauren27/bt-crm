@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../UI/Table/Table";
-import cl from "../../pages/Documents/documentsList.module.scss";
 import { useNavigate } from "react-router";
-import {
-  deleteClient,
-  getClient,
-  getClients,
-} from "../../features/clients/clientsActions";
 import { BiSearch } from "react-icons/bi";
-import Success from "../UI/Success/Success";
-import Loading from "../UI/Loading/Loading";
+
+import cl from "../../pages/Documents/documentsList.module.scss";
+import { Loading, Success, Table } from "../UI";
+import { deleteClient, getClient, getClients } from "../../redux/reducers";
 
 const ClientsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch]);
+
   const {
     clients,
     deleteSuccess,
@@ -26,11 +19,10 @@ const ClientsList = () => {
     patchMessage,
     client,
     patchClient,
-  } = useSelector((state) => state.counterparties);
+  } = useSelector((state) => state.client);
   const [clientsList, setClientsList] = useState(clients && clients);
-  useEffect(() => {
-    setClientsList(clients);
-  }, [clients]);
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -54,12 +46,20 @@ const ClientsList = () => {
       }
     });
   };
-  const [searchValue, setSearchValue] = useState("");
   const navigateToClient = (id) => {
     dispatch(getClient({ id: id })).then(() =>
       navigate(`/counterparties/client/${id}`)
     );
   };
+
+  useEffect(() => {
+    dispatch(getClients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setClientsList(clients);
+  }, [clients]);
+  
   return (
     <div className={cl.container}>
       <div className={cl.container__header}>

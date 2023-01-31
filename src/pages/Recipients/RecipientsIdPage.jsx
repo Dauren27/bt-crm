@@ -1,6 +1,6 @@
 import React from "react";
+import { RecipientIdPageContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import RecipientIdPageContent from "../../components/Recipients/RecipietntIdPageContent";
 
 const RecipientsIdPage = () => {
   return (

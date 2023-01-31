@@ -1,11 +1,11 @@
 import React from "react";
+import { PropertyAddContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import PropertyContent from "../../components/Properties/PropertyAddContent";
 
 const PropertyAdd = () => {
   return (
     <Layout>
-      <PropertyContent />
+      <PropertyAddContent />
     </Layout>
   );
 };

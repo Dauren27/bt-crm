@@ -1,6 +1,6 @@
 import React from "react";
+import { EntityIdPageContent } from "../../components";
 import Layout from "../../Layout/Layout";
-import EntityIdPageContent from "../../components/Entities/EntityIdPageContent";
 
 const EntityIdPage = () => {
   return (

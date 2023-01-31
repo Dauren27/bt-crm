@@ -1,24 +1,21 @@
-import Layout from "../../Layout/Layout";
-import cl from "../Documents/documentsList.module.scss";
-import { useNavigate } from "react-router";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../../components/UI/Table/Table";
 import { BiSearch } from "react-icons/bi";
-import Loading from "../../components/UI/Loading/Loading";
-import Success from "../../components/UI/Success/Success";
+
+import cl from "../Documents/documentsList.module.scss";
+import Layout from "../../Layout/Layout";
 import {
   deleteProperty,
   getProperties,
   getProperty,
-} from "../../features/property/propertyActions";
+} from "../../redux/reducers";
+import { Loading, Success, Table, Error } from "../../components/UI";
 
 const PropertyList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProperties());
-  }, [dispatch]);
+
   const {
     properties,
     deleteLoading,
@@ -31,9 +28,8 @@ const PropertyList = () => {
   const [propertiesList, setPropertiesList] = useState(
     properties && properties
   );
-  useEffect(() => {
-    setPropertiesList(properties);
-  }, [properties]);
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -60,7 +56,15 @@ const PropertyList = () => {
   const navigateToProperty = (id) => {
     dispatch(getProperty({ id: id })).then(() => navigate(`/properties/${id}`));
   };
-  const [searchValue, setSearchValue] = useState("");
+
+
+  useEffect(() => {
+    setPropertiesList(properties);
+  }, [properties]);
+  useEffect(() => {
+    dispatch(getProperties());
+  }, [dispatch]);
+  
   return (
     <Layout>
       <div className={cl.container}>
