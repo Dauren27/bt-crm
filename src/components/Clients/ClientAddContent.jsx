@@ -59,7 +59,7 @@ const ClientAddContent = ({ isModal = false, handleCancelClientAddModal }) => {
     dispatch(getGuarantor({ id: id })).then(() => showModalRecipientModal());
   };
   const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalPropertyModal());
+    dispatch(getProperty({ id: id })).then(() => showModalProperty());
   };
 
   useEffect(() => {
@@ -111,16 +111,15 @@ const ClientAddContent = ({ isModal = false, handleCancelClientAddModal }) => {
     setIsModalOpenRecipientModal(false);
   };
 
-  const [isModalOpenPropertyModal, setIsModalOpenPropertyModal] =
-    useState(false);
-  const showModalPropertyModal = () => {
-    setIsModalOpenPropertyModal(true);
+  const [isModalOpenProperty, setIsModalOpenProperty] = useState(false);
+  const showModalProperty = () => {
+    setIsModalOpenProperty(true);
   };
-  const handleOkPropertyModal = () => {
-    setIsModalOpenPropertyModal(false);
+  const handleOkProperty = () => {
+    setIsModalOpenProperty(false);
   };
-  const handleCancelPropertyModal = () => {
-    setIsModalOpenPropertyModal(false);
+  const handleCancelProperty = () => {
+    setIsModalOpenProperty(false);
   };
   //-------------------------------------------
   return (
@@ -522,13 +521,13 @@ const ClientAddContent = ({ isModal = false, handleCancelClientAddModal }) => {
         />
       </Modal>
       <Modal
-        open={isModalOpenPropertyModal}
-        onOk={handleOkPropertyModal}
-        onCancel={handleCancelPropertyModal}
+        open={isModalOpenProperty}
+        onOk={handleOkProperty}
+        onCancel={handleCancelProperty}
       >
         <PropertyIdPageContent
           isModal
-          handleCancelPropertyModal={handleCancelPropertyModal}
+          handleCancelProperty={handleCancelProperty}
         />
       </Modal>
     </div>

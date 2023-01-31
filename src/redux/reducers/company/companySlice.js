@@ -87,6 +87,7 @@ const companySlice = createSlice({
         state.loading = false;
         state.error = null;
         state.patchSuccess = false;
+        state.patchError = null;
         state.companyInfo = null;
       })
       .addCase(getCompanies.rejected, (state, action) => {

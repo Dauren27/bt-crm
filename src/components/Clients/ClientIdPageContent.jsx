@@ -20,7 +20,6 @@ import {
 } from "../../redux/reducers";
 import RecipientAddContent from "../Recipients/RecipientAddContent";
 import PropertyAddContent from "../Properties/PropertyAddContent";
-
 const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
   //-----------API---------------------
   const dispatch = useDispatch();
@@ -56,7 +55,7 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
     dispatch(getGuarantor({ id: id })).then(() => showModalRecipientModal());
   };
   const openPropertyModal = (id) => {
-    dispatch(getProperty({ id: id })).then(() => showModalPropertyModal());
+    dispatch(getProperty({ id: id })).then(() => showModalProperty());
   };
   useEffect(() => {
     dispatch(getGuarantors());
@@ -124,16 +123,15 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
     setIsModalOpenRecipientModal(false);
   };
 
-  const [isModalOpenPropertyModal, setIsModalOpenPropertyModal] =
-    useState(false);
-  const showModalPropertyModal = () => {
-    setIsModalOpenPropertyModal(true);
+  const [isModalOpenProperty, setIsModalOpenProperty] = useState(false);
+  const showModalProperty = () => {
+    setIsModalOpenProperty(true);
   };
-  const handleOkPropertyModal = () => {
-    setIsModalOpenPropertyModal(false);
+  const handleOkProperty = () => {
+    setIsModalOpenProperty(false);
   };
-  const handleCancelPropertyModal = () => {
-    setIsModalOpenPropertyModal(false);
+  const handleCancelProperty = () => {
+    setIsModalOpenProperty(false);
   };
   //-------------------------------------------
   return (
@@ -582,13 +580,13 @@ const ClientIdPageContent = ({ isModal = false, handleCancelClientModal }) => {
             />
           </Modal>
           <Modal
-            open={isModalOpenPropertyModal}
-            onOk={handleOkPropertyModal}
-            onCancel={handleCancelPropertyModal}
+            open={isModalOpenProperty}
+            onOk={handleOkProperty}
+            onCancel={handleCancelProperty}
           >
             <PropertyIdPageContent
               isModal
-              handleCancelPropertyModal={handleCancelPropertyModal}
+              handleCancelProperty={handleCancelProperty}
             />
           </Modal>
         </div>

@@ -82,6 +82,7 @@ const entitySlice = createSlice({
       state.entities = payload.results;
       state.success = false;
       state.error = null;
+      state.patchError = null;
       state.patchSuccess = false;
     },
     [getEntities.rejected]: (state, { payload }) => {

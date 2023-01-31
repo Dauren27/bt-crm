@@ -8,7 +8,7 @@ import cl from "../style.module.scss";
 import { getProperties, patchProperty } from "../../redux/reducers";
 import { Loading, Button, Success, Error } from "../UI";
 
-const PropertyIdPageContent = ({ isModal = false, handleCancelPropertyModal }) => {
+const PropertyIdPageContent = ({ isModal = false, handleCancelProperty }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ const PropertyIdPageContent = ({ isModal = false, handleCancelPropertyModal }) =
     if (!isModal && patchSuccess) navigate("/properties");
     if (isModal && patchSuccess) {
       dispatch(getProperties());
-      handleCancelPropertyModal && handleCancelPropertyModal();
+      handleCancelProperty && handleCancelProperty();
     }
   }, [patchSuccess]);
   return (

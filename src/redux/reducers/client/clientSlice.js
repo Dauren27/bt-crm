@@ -82,6 +82,7 @@ const clientSlice = createSlice({
       state.clients = payload.results;
       state.success = false;
       state.error = null;
+      state.patchError = null;
       state.patchSuccess = false;
     },
     [getClients.rejected]: (state, { payload }) => {

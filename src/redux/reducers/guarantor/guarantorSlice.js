@@ -92,6 +92,7 @@ const guarantorSlice = createSlice({
       state.getLoading = false;
       state.guarantors = payload.results;
       state.success = false;
+      state.patchError = null;
       state.error = null;
       state.patchSuccess = false;
     },

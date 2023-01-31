@@ -79,6 +79,8 @@ const documentSlice = createSlice({
       state.gerLoading = false;
       state.documentsList = payload;
       state.success = false;
+      state.patchError = null;
+      state.patchError = null;
       state.patchSuccess = false;
     },
     [getDocuments.rejected]: (state, { payload }) => {

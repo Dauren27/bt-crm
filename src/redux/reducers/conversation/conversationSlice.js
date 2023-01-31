@@ -64,6 +64,7 @@ const conversationSlice = createSlice({
       state.conversations = payload.results;
       state.success = false;
       state.error = null;
+      state.patchError = null;
       state.patchSuccess = false;
     },
     [getConversations.rejected]: (state, { payload }) => {

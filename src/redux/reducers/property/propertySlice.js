@@ -77,6 +77,7 @@ const propertySlice = createSlice({
       state.success = false;
       state.error = null;
       state.patchSuccess = false;
+      state.patchError = null;
     },
     [getProperties.rejected]: (state, { payload }) => {
       state.getLoading = false;
