@@ -12,7 +12,7 @@ export const userLogin = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${BASE_URL}/users/login/`,
+        `${BASE_URL}/login/`,
         { email, password },
         config
       );
@@ -35,7 +35,7 @@ export const updateToken = createAsyncThunk(
       };
       const refresh = JSON.parse(sessionStorage.getItem("userToken")).refresh;
       const { data } = await axios.post(
-        `${BASE_URL}/users/token/refresh/`,
+        `${BASE_URL}/token/refresh/`,
         { refresh },
         config
       );
@@ -74,7 +74,7 @@ export const registerUser = createAsyncThunk(
       };
 
       await axios.post(
-        `${BASE_URL}/users/register/spec/`,
+        `${BASE_URL}/register/spec/`,
         {
           email,
           password,
@@ -135,7 +135,7 @@ export const getUserDetail = createAsyncThunk(
           Authorization: `Bearer ${token.access}`,
         },
       };
-      const { data } = await axios.get(`${BASE_URL}/users/full_name/`, config);
+      const { data } = await axios.get(`${BASE_URL}/full_name/`, config);
       return data;
     } catch (error) {
       if (error.response.status == 401) {

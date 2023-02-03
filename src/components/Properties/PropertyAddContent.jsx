@@ -19,8 +19,8 @@ const PropertyAddContent = ({ isModal = false, handleCancelPropertyAdd }) => {
     filesArray: [],
     imagesArray: [],
   });
-  const [imageFiles, setImageFiles] = useState(2);
-  const [fileFiles, setFileFiles] = useState(2);
+  const [imageFiles, setImageFiles] = useState(0);
+  const [fileFiles, setFileFiles] = useState(0);
 
   const submitForm = () => {
     dispatch(fetchProperties(state));
