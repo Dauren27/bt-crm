@@ -3,17 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BiSearch } from "react-icons/bi";
 import { Select } from "antd";
-import { Line } from "react-chartjs-2";
-import axios from "axios";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-} from "chart.js";
+import { TfiBarChart } from "react-icons/tfi";
 
 import Layout from "../../Layout/Layout";
 import cl from "../Documents/documentsList.module.scss";
@@ -25,15 +15,7 @@ import {
   getClients,
 } from "../../redux/reducers";
 import { Loading, Success, Table, Error } from "../../components/UI";
-
-ChartJS.register(
-  Title,
-  Tooltip,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement
-);
+import Chart from "../../components/UI/Chart/Chart";
 
 const ConversationsList = () => {
   const navigate = useNavigate();
@@ -58,22 +40,7 @@ const ConversationsList = () => {
     conversations && conversations
   );
   const [searchValue, setSearchValue] = useState("");
-  const [fetchedData, setFetchedData] = useState();
-  const options = {
-    maintainAspectRatio: false,
-    responsive: true,
-  };
-  const data = {
-    labels: fetchedData && [...fetchedData.map((item) => item.date)],
-    datasets: [
-      {
-        data: fetchedData && [...fetchedData.map((item) => item.total)],
-        pointStyle: "rect",
-        borderColor: "#42b4f4",
-      },
-    ],
-  };
-
+  const [chartToggle, setChartToggle] = useState(false);
   const handleChange = (e) => {
     const { name, checked } = e.target;
     if (name === "allSelect") {
@@ -104,16 +71,6 @@ const ConversationsList = () => {
       navigate(`/conversations/${id}`)
     );
   };
-
-  useEffect(() => {
-    try {
-      axios
-        .get("https://baitushum.pp.ua/crm/test/")
-        .then((response) => {
-          setFetchedData(response.data.Conversation);
-        });
-    } catch (e) {}
-  }, []);
 
   useEffect(() => {
     setConversationsList(conversations);
@@ -202,7 +159,15 @@ const ConversationsList = () => {
             <button className={cl.content__delete} onClick={deleteDoc}>
               Удалить
             </button>
+            <div
+              className={cl.chart__toggle}
+              onClick={() => setChartToggle(!chartToggle)}
+            >
+              {chartToggle ? <a>Скрыть График</a> : <a>Показать график</a>}
+              <TfiBarChart />
+            </div>
           </div>
+          {chartToggle && <Chart title="Переговоры" />}
           {deleteSuccess && <Success>Документ был успешно удален</Success>}
           {deleteLoading && <Loading>Удаление...</Loading>}
           {deleteError && <Error>Произошла ошибка при удалении...</Error>}
@@ -296,9 +261,6 @@ const ConversationsList = () => {
             ) : (
               <h1 className={cl.documents__loading}>Загрузка...</h1>
             )}
-          </div>
-          <div style={{ height: "350px", marginTop: "30px" }}>
-            {fetchedData && <Line options={options} data={data} />}
           </div>
         </div>
       </div>

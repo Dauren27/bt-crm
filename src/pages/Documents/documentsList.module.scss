@@ -104,7 +104,18 @@
     }
     .content__deleteDiv {
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column;
+      align-items: flex-end;
+      .chart__toggle {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        color: #0b6623;
+        font-size: 20px;
+        svg {
+          margin-left: 10px;
+        }
+      }
       .content__delete {
         width: 150px;
         height: 43px;
