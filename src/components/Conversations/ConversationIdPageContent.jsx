@@ -157,12 +157,12 @@ const ConversationIdPageContent = () => {
                 className={cl.content__input}
                 name="date"
                 disabled
-                defaultValue={conversationInfo.date}
+                defaultValue={conversationInfo.created_date}
                 onChange={handleInput}
                 maxLength="30"
               />
-              {patchError && patchError.date && (
-                <Error>{patchError.date}</Error>
+              {patchError && patchError.created_date && (
+                <Error>{patchError.created_date}</Error>
               )}
             </div>
             <div className={cl.content__category}>

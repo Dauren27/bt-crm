@@ -108,7 +108,7 @@ const ConversationsList = () => {
   useEffect(() => {
     try {
       axios
-        .get("https://bt-back-demo.herokuapp.com/crm/test/")
+        .get("https://baitushum.pp.ua/crm/test/")
         .then((response) => {
           setFetchedData(response.data.Conversation);
         });
